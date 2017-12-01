@@ -1,0 +1,29 @@
+.portfolio {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 30px;
+  padding-right: 20px;
+  padding-bottom: 30px;
+  padding-left: 20px;
+
+  border-width: 1px;
+  border-style: solid;
+}
+
+@include MQ(M) {
+  .portfolio {
+    display: flex;
+    justify-content: center;
+    width: 92.3%;
+  }
+}
+
+@include MQ(L) {
+  .portfolio {
+    display: flex;
+    width: 92.3%;
+  }
+}

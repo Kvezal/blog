@@ -1,0 +1,71 @@
+.filter {
+  &__title {
+    @include font(30px, 30px);
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    text-align: center;
+  }
+
+  &__item {
+    margin-bottom: 15px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  &__radio {
+    display: none;
+  }
+
+  &__label-radio {
+    display: block;
+    margin-bottom: 10px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  &__check {
+    display: none;
+  }
+
+  &__label-check {
+    display: block;
+    margin-bottom: 10px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@include MQ(M) {
+  .filter {
+    width: 18.75%;
+    margin-right: 30px;
+
+     &__title {
+      margin-top: 25px;
+      margin-bottom: 25px;
+      padding-right: 10px;
+      padding-left: 10px;
+
+      text-align: center;
+    }
+  }
+}
+
+@include MQ(L) {
+  .filter {
+    width: 18.75%;
+    margin-left: auto;
+    margin-right: 75px;
+    padding-right: 20px;
+    padding-left: 20px;
+
+    &__title {
+      @include font(48px, 48px);
+    }
+  }
+}

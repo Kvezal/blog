@@ -2,3 +2,14 @@
   width: 100%;
   max-width: 1200px;
 }
+
+@include MQ(M) {
+  .page-footer {
+    box-sizing: border-box;
+    display: flex;
+    width: 92.3%;
+    min-height: 70px;
+    padding-right: 6.25%;
+    padding-left: 6.25%;
+  }
+}

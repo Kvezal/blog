@@ -4,9 +4,7 @@
 }
 
 @include MQ(M) {
-
-}
-
-@include MQ(L) {
-
+  .page-header {
+    width: 92.3%;
+  }
 }
