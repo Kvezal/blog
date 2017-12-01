@@ -1,0 +1,12 @@
+.social {
+  display: inline-block;
+  min-width: 300px;
+  min-height: 70px;
+  margin: 0;
+
+  &__link {
+    font-size: 0;
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+}
