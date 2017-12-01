@@ -1,0 +1,51 @@
+.main-nav {
+  &__list {
+    @include clear-list;
+
+    font-size: 24px;
+  }
+
+  &__link {
+    display: block;
+    width: 100%;
+    min-height: 50px;
+
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  &__close {
+    display: block;
+    width: 30%;
+    height: 30px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@include MQ(M) {
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    height: 70px;
+
+    &__list {
+      display: flex;
+    }
+
+    &__item {
+      min-width: 150px;
+    }
+
+    &__link {
+      height: 65px;
+
+      line-height: 65px;
+    }
+
+    &__close {
+      display: none;
+    }
+  }
+}
