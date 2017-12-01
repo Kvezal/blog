@@ -1,12 +1,19 @@
 .social {
-  display: inline-block;
-  min-width: 300px;
-  min-height: 70px;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  width: 300px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 50%;
+
+  transform: translateX(-50%);
 
   &__link {
-    font-size: 0;
-    margin-left: 25px;
+    margin-top: 7px;
     margin-right: 25px;
+    margin-bottom: 8px;
+    margin-left: 25px;
+
+    font-size: 0;
   }
 }

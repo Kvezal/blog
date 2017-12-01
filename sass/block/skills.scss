@@ -1,0 +1,36 @@
+.skills {
+  width: 100%;
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  &__title {
+    @include font-set(700, 40px, 40px);
+
+    margin-top: 0;
+    margin-bottom: 30px;
+
+    text-align: center;
+  }
+
+  &__list {
+    @include clear-list();
+    @include font(16px, 22px);
+
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@include MQ(M) {
+  .skills {
+    width: 92%;
+  }
+}
