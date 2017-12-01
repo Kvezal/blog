@@ -1,10 +1,13 @@
-.skills {
+.education {
+  box-sizing: border-box;
   width: 100%;
   max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
   padding-top: 30px;
+  padding-right: 20px;
   padding-bottom: 30px;
+  padding-left: 20px;
 
   &__title {
     @include font-set(700, 40px, 40px);
@@ -14,30 +17,26 @@
 
     text-align: center;
   }
-
-  &__list {
-    @include clear-list();
-    @include font(16px, 22px);
-
-    display: flex;
-    flex-direction: column;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
 }
 
 @include MQ(M) {
-  .skills {
-    width: 92%;
-
-
+  .education {
     &__title {
       @include font-set(700, 60px, 60px);
 
-      margin-bottom: 50px;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+@include MQ(L) {
+  .education {
+    padding-right: 50px;
+    padding-left: 50px;
+
+    &__wrap {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }

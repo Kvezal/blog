@@ -1,0 +1,22 @@
+.certificates {
+  @include clear-list;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &__item {
+    width: 45%;
+    margin-bottom: 30px;
+  }
+}
+
+@include MQ(M) {
+  .certificates {
+    justify-content: space-between;
+
+    &__item {
+      width: 30%;
+    }
+  }
+}
