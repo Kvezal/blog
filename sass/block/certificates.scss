@@ -20,3 +20,14 @@
     }
   }
 }
+
+@include MQ(L) {
+  .certificates {
+    align-items: flex-start;
+    max-width: 500px;
+
+    &__item {
+      margin-bottom: 25px;
+    }
+  }
+}

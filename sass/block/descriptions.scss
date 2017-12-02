@@ -4,10 +4,17 @@
 
   &__item {
     margin-bottom: 25px;
+  }
 
-    &:last-of-type {
-      margin-bottom: 0;
-    }
+  &__text {
+    @include font(16px, 22px);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  &__name {
+    font-family: $font-secondary;
+    color: $third-color;
   }
 }
 
