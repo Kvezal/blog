@@ -112,6 +112,10 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 10px;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
     }
 
     &__name {

@@ -17,18 +17,18 @@ const svgmin = require('gulp-svgmin');
 const svgstore = require('gulp-svgstore');
 const server = require('browser-sync').create();
 const run = require('run-sequence');
+const rollup = require('gulp-better-rollup');
+const sourcemaps = require('gulp-sourcemaps');
 const ghPages = require('gulp-gh-pages');
 
 gulp.task('clean', function() {
   return del('build');
 });
 
-gulp.task('copy', function() {
+gulp.task('copy', ['html:copy', 'js:copy'], function() {
   return gulp.src([
     'fonts/**/*.{woff, woff2}',
-    'img/**',
-    'js/**',
-    '*.html'
+    'img/**'
   ], {
     base: '.'
   })
@@ -58,13 +58,22 @@ gulp.task('style', function() {
   ]);
 });
 
-gulp.task('compress', function () {
+/*gulp.task('compress', function () {
   pump([
     gulp.src('build/js/*.js'),
     uglify(),
     rename({suffix: '.min'}),
     gulp.dest('build/js-min'),
   ]);
+});*/
+
+gulp.task('scripts', function () {
+  return gulp.src('js/main.js')
+    .pipe(plumber())
+    .pipe(sourcemaps.init())
+    .pipe(rollup({}, 'iife'))
+    .pipe(sourcemaps.write(''))
+    .pipe(gulp.dest('build/js'));
 });
 
 gulp.task('image', function() {
@@ -94,7 +103,7 @@ gulp.task('serve', function() {
 
   gulp.watch('sass/**/*.scss', ['style']);
   gulp.watch('*.html', ['html:update']);
-  gulp.watch('js/*.js',['js:update']);
+  gulp.watch('js/**/*.js',['js:update']);
 });
 
 gulp.task('html:copy', function() {
@@ -109,12 +118,12 @@ gulp.task('html:update', ['html:copy'], function(done) {
 
 gulp.task('js:copy', function () {
   pump([
-    gulp.src('js/**.js'),
-    gulp.dest('build/js')
+    gulp.src('js/polyfills/*.js'),
+    gulp.dest('build/js/polyfills')
   ]);
 });
 
-gulp.task('js:update', ['js:copy', 'compress'], function (done) {
+gulp.task('js:update', ['scripts'], function (done) {
   server.reload();
   done();
 });
@@ -130,7 +139,7 @@ gulp.task('build', function(callback) {
     'clean',
     'copy',
     'style',
-    'compress',
+    'scripts',
     'image',
     'sprite',
     callback
