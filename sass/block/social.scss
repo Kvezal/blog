@@ -21,3 +21,15 @@
     fill: $secondary-color;
   }
 }
+
+@include MQ(L) {
+  .social {
+    &__svg {
+      transition-duration: .2s;
+    }
+
+    &__svg:hover {
+      fill: $third-color;
+    }
+  }
+}
