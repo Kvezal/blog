@@ -5,6 +5,17 @@
 
 @include MQ(M) {
   .page-header {
+    width: 100%;
+    overflow: hidden;
+
+    background-color: $primary-color;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+}
+
+@include MQ(L) {
+  .page-header {
     width: 92.3%;
   }
 }

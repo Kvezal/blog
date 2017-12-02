@@ -3,7 +3,7 @@
 @import "normalize.scss";
 @import "fonts.scss";
 @import "scaffolding.scss";
-@import "outlines.scss";
+// @import "outlines.scss";
 
 @import "block/page-header.scss";
 @import "block/main-nav.scss";
@@ -18,3 +18,5 @@
 @import "block/pagination.scss";
 @import "block/page-footer.scss";
 @import "block/social.scss";
+@import "block/item-features.scss";
+@import "block/item-description.scss";
