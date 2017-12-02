@@ -1,4 +1,9 @@
 .filter {
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparentize($primary-color, .8);
+
   &__title {
     @include font(30px, 30px);
     margin-top: 15px;
@@ -8,9 +13,19 @@
   }
 
   &__item {
-    margin-bottom: 15px;
-    padding-right: 0;
-    padding-left: 0;
+    @include font(16px, 22px);
+
+    margin-right: 0;
+    margin-bottom: 25px;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 20px;
+    padding-bottom: 0;
+    padding-left: 20px;
+
+    font-family: $font-secondary;
+
+    border: none;
   }
 
   &__radio {
@@ -18,11 +33,54 @@
   }
 
   &__label-radio {
+    position: relative;
+
     display: block;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 30px;
 
     &:last-of-type {
       margin-bottom: 0;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 0;
+
+      box-sizing: border-box;
+      width: 14px;
+      height: 14px;
+
+      border: 2px solid transparentize($primary-color, .8);
+      border-radius: 50%;
+
+      transition-duration: .2s;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 4px;
+
+      width: 6px;
+      height: 6px;
+
+      background-color: transparentize($primary-color, .4);
+      border-radius: 50%;
+      visibility: hidden;
+      opacity: 0;
+
+      transition-duration: .2s;
+    }
+  }
+
+  &__radio:checked + &__label-radio {
+    &::after {
+      visibility: visible;
+      opacity: 1;
     }
   }
 
@@ -31,18 +89,58 @@
   }
 
   &__label-check {
+    position: relative;
+
     display: block;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 30px;
 
     &:last-of-type {
       margin-bottom: 0;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 0;
+
+      box-sizing: border-box;
+      width: 14px;
+      height: 14px;
+
+      border: 2px solid transparentize($primary-color, .8);
+
+      transition-duration: .2s;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 4px;
+
+      width: 6px;
+      height: 6px;
+
+      background-color: transparentize($primary-color, .4);
+      visibility: hidden;
+      opacity: 0;
+
+      transition-duration: .2s;
+    }
+  }
+
+  &__check:checked + &__label-check {
+    &::after {
+      visibility: visible;
+      opacity: 1;
     }
   }
 }
 
 @include MQ(M) {
   .filter {
-    width: 18.75%;
     margin-right: 30px;
 
      &__title {
@@ -61,11 +159,36 @@
     width: 18.75%;
     margin-left: auto;
     margin-right: 75px;
-    padding-right: 20px;
-    padding-left: 20px;
 
     &__title {
       @include font(48px, 48px);
+    }
+
+    &__radio:hover + &__label-radio {
+      &::before {
+        border-color: transparentize($primary-color, .4);
+      }
+    }
+
+    &__radio:checked + &__label-radio {
+      &::after {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
+
+    &__check:hover + &__label-check {
+      &::before {
+        border-color: transparentize($primary-color, .4);
+      }
+    }
+
+    &__check:checked + &__label-check {
+      &::after {
+        visibility: visible;
+        opacity: 1;
+      }
     }
   }
 }

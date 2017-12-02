@@ -1,7 +1,6 @@
 .portfolio {
   box-sizing: border-box;
   width: 100%;
-  max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
   padding-top: 30px;
@@ -9,15 +8,17 @@
   padding-bottom: 30px;
   padding-left: 20px;
 
-  border-width: 1px;
-  border-style: solid;
+  background-color: $secondary-color;
+  border-radius: 5px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, .35);
+
 }
 
 @include MQ(M) {
   .portfolio {
     display: flex;
     justify-content: center;
-    width: 92.3%;
+    width: 923px;
   }
 }
 
@@ -25,5 +26,6 @@
   .portfolio {
     display: flex;
     width: 92.3%;
+    max-width: 1200px;
   }
 }

@@ -1,8 +1,108 @@
 .pagination {
-  left: 50%;
-
-  display: inline-block;
   margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
 
-  transform: translateX(-50%);
+  &__item {
+    @include font(14px, 14px);
+
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 20px;
+    height: 20px;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding: 3px;
+    padding-left: 1px;
+
+    text-decoration: none;
+    color: $secondary-color;
+    vertical-align: top;
+
+    background-color: transparentize($third-color, .5);
+    border-radius: 20px;
+
+    transition-duration: .2s;
+
+    &--current {
+      background-color: $third-color;
+    }
+
+    &--prev {
+      @include font(0, 0);
+
+      position: relative;
+
+      display: inline-block;
+      min-width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      margin-left: 5px;
+
+      background-color: transparentize($third-color, .5);
+      border-radius: 20px;
+      vertical-align: top;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 7px;
+
+        width: 6px;
+        height: 6px;
+
+        border-width: 2px;
+        border-style: solid;
+        border-color: $secondary-color;
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+        border-radius: 4px;
+        transform: rotate(-45deg);
+      }
+    }
+
+    &--next {
+      @include font(0, 0);
+
+      position: relative;
+
+      display: inline-block;
+      min-width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      margin-left: 5px;
+
+      background-color: transparentize($third-color, .5);
+      border-radius: 20px;
+      vertical-align: top;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 4px;
+
+        width: 6px;
+        height: 6px;
+
+        border-width: 2px;
+        border-style: solid;
+        border-color: $secondary-color;
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+        border-radius: 4px;
+        transform: rotate(135deg);
+      }
+    }
+  }
+}
+
+@include MQ(L) {
+  .pagination {
+    &__item:hover:not(&__item--current):not(&__item--disabled) {
+      background-color: transparentize($third-color, .35);
+
+    }
+  }
 }
