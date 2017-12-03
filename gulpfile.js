@@ -136,7 +136,6 @@ gulp.task('deploy', function () {
 
 gulp.task('assemble', function (callback) {
   run(
-    'clean',
     'copy',
     'style',
     'scripts',
@@ -144,8 +143,9 @@ gulp.task('assemble', function (callback) {
   );
 });
 
-gulp.task('build', function(callback) {
+gulp.task('build', function (callback) {
   run(
+    'clean',
     'assemble',
     'image',
     'sprite',
