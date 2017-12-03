@@ -95,7 +95,7 @@ gulp.task('sprite', function() {
   ]);
 });
 
-gulp.task('serve', function() {
+gulp.task('serve', ['assemble'], function() {
   server.init({
     server: 'build/',
     notify: false
@@ -134,12 +134,19 @@ gulp.task('deploy', function () {
     .pipe(ghPages());
 });
 
-gulp.task('build', function(callback) {
+gulp.task('assemble', function (callback) {
   run(
     'clean',
     'copy',
     'style',
     'scripts',
+    callback
+  );
+});
+
+gulp.task('build', function(callback) {
+  run(
+    'assemble',
     'image',
     'sprite',
     callback
