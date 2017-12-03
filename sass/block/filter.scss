@@ -53,7 +53,9 @@
       width: 14px;
       height: 14px;
 
-      border: 2px solid transparentize($primary-color, .8);
+      border-width: 2px;
+      border-style: solid;
+      border-color: transparentize($primary-color, .8);
       border-radius: 50%;
 
       transition-duration: .2s;
@@ -109,7 +111,9 @@
       width: 14px;
       height: 14px;
 
-      border: 2px solid transparentize($primary-color, .8);
+      border-width: 2px;
+      border-style: solid;
+      border-color: transparentize($primary-color, .8);
 
       transition-duration: .2s;
     }
@@ -164,7 +168,7 @@
       @include font(48px, 48px);
     }
 
-    &__radio:hover + &__label-radio {
+    &__label-radio:hover {
       &::before {
         border-color: transparentize($primary-color, .4);
       }
@@ -177,8 +181,7 @@
       }
     }
 
-
-    &__check:hover + &__label-check {
+    &__label-check:hover {
       &::before {
         border-color: transparentize($primary-color, .4);
       }

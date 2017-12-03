@@ -28,5 +28,13 @@
     margin-top: 0;
     margin-right: 0;
     margin-left: 0;
+
+    transition-duration: .3s;
+
+    &:hover {
+      color: $third-color;
+
+      background-color: $secondary-color;
+    }
   }
 }

@@ -136,3 +136,15 @@
     }
   }
 }
+
+@include MQ(L) {
+  .main-nav {
+    &__link {
+      transition-duration: .25s;
+    }
+
+    &__link:hover:not(&__link--current) {
+      background-color: transparentize($third-color, .6);
+    }
+  }
+}
