@@ -1,8 +1,10 @@
 import AbstractView from './abstract-view';
 
 class BlogView extends AbstractView {
-  constructor() {
+  constructor(data) {
     super();
+
+    this.data = data;
   }
 
   get template() {
@@ -21,34 +23,7 @@ class BlogView extends AbstractView {
         <section class="articles">
           <h1 class="articles__title">Статьи:</h1>
           <ul class="articles__list">
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
-            <li class="articles__item">
-              <p class="articles__name">Название статьи</p>
-              <button class="btn">Прочитать</button>
-            </li>
+            ${this.templateList}
           </ul>
           <div class="pagination">
             <a class="pagination__item  pagination__item--prev  pagination__item--disabled">Назад</a>
@@ -60,6 +35,21 @@ class BlogView extends AbstractView {
         </section>
       </section>`
     );
+  }
+
+  getTemplateListItem(item) {
+    return (
+      `<li class="articles__item">
+        <p class="articles__name">${item.title} - ${item.description}</p>
+        <a class="btn" href="${item.link}">Прочитать</a>
+      </li>`
+    );
+  }
+
+  get templateList() {
+    return this.data.map((item) => {
+      return this.getTemplateListItem(item);
+    }).join(``);
   }
 }
 

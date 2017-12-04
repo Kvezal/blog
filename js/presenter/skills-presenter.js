@@ -2,8 +2,8 @@ import SkillsView from '../views/skills-view';
 import Utils from '../lib/utils';
 
 class SkillsPresenter {
-  init() {
-    this.view = new SkillsView();
+  init(data) {
+    this.view = new SkillsView(data);
 
     Utils.displayElement(this.view.element, `page-main`);
   }

@@ -2,8 +2,8 @@ import BlogView from '../views/blog-view';
 import Utils from '../lib/utils';
 
 class BlogPresenter {
-  init() {
-    this.view = new BlogView();
+  init(data) {
+    this.view = new BlogView(data);
 
     Utils.displayElement(this.view.element, `page-main`);
   }

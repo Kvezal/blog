@@ -5,6 +5,8 @@ import skillsPresenter from './presenter/skills-presenter';
 import educationPresenter from './presenter/education-presenter';
 import portfolioPresenter from './presenter/portfolio-presenter';
 
+import data from './data/data';
+
 const ControllerId = {
   SKILLS: `skills`,
   EDUCATION: `education`,
@@ -26,7 +28,11 @@ class App {
   }
 
   static changeTab(tab) {
-    routerId[tab]();
+    if (!data[tab]) {
+      return routerId[tab]();
+    }
+    const currentData = [...data[tab]];
+    return routerId[tab](currentData);
   }
 
   static showMainNav() {

@@ -1,4 +1,6 @@
 .pagination {
+  @include font(0, 0);
+
   margin-top: 30px;
   margin-bottom: 30px;
   text-align: center;
@@ -10,8 +12,8 @@
     display: inline-block;
     min-width: 20px;
     height: 20px;
-    margin-right: 0px;
-    margin-left: 0px;
+    margin-right: 2px;
+    margin-left: 2px;
     padding: 3px;
     padding-left: 1px;
 
