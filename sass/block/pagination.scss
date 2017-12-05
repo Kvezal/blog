@@ -98,6 +98,10 @@
       }
     }
   }
+
+  &__placeholder {
+    @include font (14px, 14px);
+  }
 }
 
 @include MQ(L) {

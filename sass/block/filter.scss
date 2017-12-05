@@ -86,11 +86,11 @@
     }
   }
 
-  &__check {
+  &__checkbox {
     display: none;
   }
 
-  &__label-check {
+  &__label-checkbox {
     position: relative;
 
     display: block;
@@ -135,11 +135,19 @@
     }
   }
 
-  &__check:checked + &__label-check {
+  &__checkbox:checked + &__label-checkbox {
     &::after {
       visibility: visible;
       opacity: 1;
     }
+  }
+
+  &__btn {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 30px;
+
+    background-color: $primary-color;
   }
 }
 
@@ -181,16 +189,26 @@
       }
     }
 
-    &__label-check:hover {
+    &__label-checkbox:hover {
       &::before {
         border-color: transparentize($primary-color, .4);
       }
     }
 
-    &__check:checked + &__label-check {
+    &__checkbox:checked + &__label-checkbox {
       &::after {
         visibility: visible;
         opacity: 1;
+      }
+    }
+
+    &__btn {
+      margin-right: auto;
+      margin-left: auto;
+
+      &:hover {
+        color: $secondary-color;
+        background-color: transparentize($primary-color, .5);
       }
     }
   }

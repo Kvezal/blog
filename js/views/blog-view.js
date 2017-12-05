@@ -1,37 +1,45 @@
 import AbstractView from './abstract-view';
+import FilterPresenter from '../presenter/filter-presenter';
+import PaginationPresenter from '../presenter/pagination-presenter';
+import initialParameters from '../data/initial-parameters';
+
+const BLOG_FILTER_PARAMETERS = [
+  {
+    title: `По дате:`,
+    type: `radio`,
+    options: [
+      {
+        label: `Сначала старые`,
+        name: `date`,
+        id: `old`
+      },
+      {
+        label: `Сначала новые`,
+        name: `date`,
+        id: `new`
+      }
+    ]
+  }
+];
 
 class BlogView extends AbstractView {
-  constructor(data) {
+  constructor(data, state) {
     super();
 
     this.data = data;
+    this.state = state;
   }
 
   get template() {
     return (
       `<section class="blog">
-        <section class="filter">
-          <h2 class="filter__title">Фильтр:</h2>
-          <fieldset class="filter__item">
-            <legend class="filter__item-name">По дате:</legend>
-            <input type="radio" class="filter__radio" name="layout" id="fixed" checked>
-            <label class="filter__label-radio" for="fixed">Сначала старые</label>
-            <input type="radio" class="filter__radio" name="layout" id="adaptive">
-            <label class="filter__label-radio" for="adaptive">Сначала новые</label>
-          </fieldset>
-        </section>
+        <section class="filter"></section>
         <section class="articles">
           <h1 class="articles__title">Статьи:</h1>
           <ul class="articles__list">
             ${this.templateList}
           </ul>
-          <div class="pagination">
-            <a class="pagination__item  pagination__item--prev  pagination__item--disabled">Назад</a>
-            <a class="pagination__item  pagination__item--current">1</a>
-            <a class="pagination__item" href="#">2</a>
-            <a class="pagination__item" href="#">3</a>
-            <a class="pagination__item  pagination__item--next" href="#">Вперед</a>
-          </div>
+          <div class="pagination"></div>
         </section>
       </section>`
     );
@@ -47,9 +55,26 @@ class BlogView extends AbstractView {
   }
 
   get templateList() {
-    return this.data.map((item) => {
+    const lastPage = this.state.currentPageBlog + initialParameters.PAGE_BACK;
+    const startItemPage = lastPage * initialParameters.ITEMS_ON_PAGE_OF_BLOG;
+    const endItemPagethis = this.state.currentPageBlog * initialParameters.ITEMS_ON_PAGE_OF_BLOG;
+
+    return this.data.slice(startItemPage, endItemPagethis).map((item) => {
       return this.getTemplateListItem(item);
     }).join(``);
+  }
+
+  bind(element) {
+    const filter = element.querySelector(`.filter`);
+    new FilterPresenter().init(BLOG_FILTER_PARAMETERS, filter);
+
+    const pagination = element.querySelector(`.pagination`);
+    const parameters = {
+      amountDataItems: this.data.length,
+      state: this.state,
+      maxAmountItemsOnPage: initialParameters.ITEMS_ON_PAGE_OF_BLOG
+    };
+    new PaginationPresenter().init(parameters, pagination);
   }
 }
 

@@ -1,9 +1,56 @@
 import AbstractView from './abstract-view';
+import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
-import Utils from '../lib/utils';
 import initialParameters from '../data/initial-parameters';
 
-const ITEMS_ON_PAGE = 6;
+const PORTFOLIO_FILTER_PARAMETERS = [
+  {
+    title: `Сетка`,
+    type: `radio`,
+    options: [
+      {
+        label: `Фиксированная`,
+        name: `layout`,
+        id: `fixed`
+      },
+      {
+        label: `Адаптивная`,
+        name: `layout`,
+        id: `adaptive`
+      }
+    ]
+  },
+  {
+    title: `Технологии`,
+    type: `checkbox`,
+    options: [
+      {
+        label: `Препроцессоры`,
+        name: `preprocessor`,
+        id: `preprocessor`
+      },
+      {
+        label: `JavaScript`,
+        name: `js`,
+        id: `js`
+      },
+      {
+        label: `SVG`,
+        name: `svg`,
+        id: `svg`
+      },
+      {
+        label: `Promise`,
+        name: `promise`, id: `promise`
+      },
+      {
+        label: `SPA`,
+        name: `spa`,
+        id: `spa`
+      }
+    ]
+  },
+];
 
 class PortfolioView extends AbstractView {
   constructor(data, state) {
@@ -16,29 +63,7 @@ class PortfolioView extends AbstractView {
   get template() {
     return (
       `<section class="portfolio">
-        <section class="filter">
-          <h2 class="filter__title">Фильтр:</h2>
-          <fieldset class="filter__item">
-            <legend class="filter__item-name">Сетка:</legend>
-            <input type="radio" class="filter__radio" name="layout" id="fixed" checked>
-            <label class="filter__label-radio" for="fixed">Фиксированная</label>
-            <input type="radio" class="filter__radio" name="layout" id="adaptive">
-            <label class="filter__label-radio" for="adaptive">Адаптивная</label>
-          </fieldset>
-          <fieldset class="filter__item">
-            <legend class="filter__item-name">Технологии:</legend>
-            <input type="checkbox" class="filter__check" name="preprocessor" id="preprocessor" checked>
-            <label class="filter__label-check" for="preprocessor">Препроцессоры</label>
-            <input type="checkbox" class="filter__check" name="js" id="js" checked>
-            <label class="filter__label-check" for="js">JavaScript</label>
-            <input type="checkbox" class="filter__check" name="svg" id="svg" checked>
-            <label class="filter__label-check" for="svg">SVG</label>
-            <input type="checkbox" class="filter__check" name="promise" id="promise" checked>
-            <label class="filter__label-check" for="promise">Promise</label>
-            <input type="checkbox" class="filter__check" name="spa" id="spa" checked>
-            <label class="filter__label-check" for="spa">SPA</label>
-          </fieldset>
-        </section>
+        <section class="filter"></section>
         <section class="works">
           <h1 class="works__title">Работы</h1>
           <ul class="works__list">
@@ -63,9 +88,9 @@ class PortfolioView extends AbstractView {
   }
 
   get templateList() {
-    const lastPage = this.state.currentPage + initialParameters.PAGE_BACK;
-    const startItemPage = lastPage * ITEMS_ON_PAGE;
-    const endItemPagethis = this.state.currentPage * ITEMS_ON_PAGE;
+    const lastPage = this.state.currentPagePortfolio + initialParameters.PAGE_BACK;
+    const startItemPage = lastPage * initialParameters.ITEMS_ON_PAGE_OF_PORTFOLIO;
+    const endItemPagethis = this.state.currentPagePortfolio * initialParameters.ITEMS_ON_PAGE_OF_PORTFOLIO;
 
     return this.data.slice(startItemPage, endItemPagethis).map((item) => {
       return this.getTemplateListItem(item);
@@ -73,14 +98,16 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
+    const filter = element.querySelector(`.filter`);
+    new FilterPresenter().init(PORTFOLIO_FILTER_PARAMETERS, filter);
+
     const pagination = element.querySelector(`.pagination`);
     const parameters = {
       amountDataItems: this.data.length,
-      currentPage: this.state.currentPage,
-      maxAmountItemsOnPage: ITEMS_ON_PAGE,
-      oldElement: pagination
+      state: this.state,
+      maxAmountItemsOnPage: initialParameters.ITEMS_ON_PAGE_OF_PORTFOLIO
     };
-    new PaginationPresenter().init(parameters);
+    new PaginationPresenter().init(parameters, pagination);
   }
 }
 

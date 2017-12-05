@@ -40,6 +40,10 @@ class Utils {
     pageList.push(`<a class="pagination__item  pagination__item--next" href="#">Вперед</a>`);
     return pageList.join(``);
   }
+
+  static toUpperCaseFirstLetter(string) {
+    return `${string.slice(0, 1).toUpperCase()}${string.slice(1)}`;
+  }
 }
 
 export default Utils;

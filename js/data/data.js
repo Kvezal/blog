@@ -221,6 +221,174 @@ export default {
       description: `Описание 3`,
       data: new Date() - 3,
       article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 2`,
+      link: `#`,
+      description: `Описание 2`,
+      data: new Date() - 2,
+      article: `Текст статьи`
+    },
+    {
+      title: `Название статьи 3`,
+      link: `#`,
+      description: `Описание 3`,
+      data: new Date() - 3,
+      article: `Текст статьи`
     }
   ]
 };

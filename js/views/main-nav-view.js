@@ -10,16 +10,16 @@ class MainNavView extends AbstractView {
       `<nav class="main-nav">
         <ul class="main-nav__list">
           <li class="main-nav__item">
-            <a href="" class="main-nav__link  main-nav__link--current" id="skills">Навыки</a>
+            <a class="main-nav__link  main-nav__link--current" id="skills">Навыки</a>
           </li>
           <li class="main-nav__item">
-            <a href="" class="main-nav__link" id="education">Образование</a>
+            <a href="#" class="main-nav__link" id="education">Образование</a>
           </li>
           <li class="main-nav__item">
-            <a href="" class="main-nav__link" id="portfolio">Работы</a>
+            <a href="#" class="main-nav__link" id="portfolio">Работы</a>
           </li>
           <li class="main-nav__item">
-            <a href="" class="main-nav__link" id="blog">Блог</a>
+            <a href="#" class="main-nav__link" id="blog">Блог</a>
           </li>
         </ul>
         <button class="main-nav__close" type="button"></button>
