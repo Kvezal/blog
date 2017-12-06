@@ -97,6 +97,10 @@
         transform: rotate(135deg);
       }
     }
+
+    &--disabled {
+      background-color: transparentize($third-color, .8);
+    }
   }
 
   &__placeholder {

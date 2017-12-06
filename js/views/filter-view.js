@@ -12,7 +12,8 @@ class FilterView extends AbstractView {
       `<form href="#" method="get" class="filter">
         <h2 class="filter__title">Фильтр:</h2>
         ${this.templateFIlterList}
-        <button class="btn  filter__btn" type="submit">Применить фильтр</button>
+        <button class="btn  filter__btn" type="submit">Применить</button>
+        <button class="btn  filter__btn  filter__btn--reset" type="reset">Сбросить</button>
       </form>`
     );
   }

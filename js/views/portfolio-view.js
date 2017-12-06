@@ -1,68 +1,7 @@
 import AbstractView from './abstract-view';
 import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
-import {parametersOfApplication} from '../data/parameters';
-
-const PORTFOLIO_FILTER_PARAMETERS = [
-  {
-    title: `Сетка`,
-    type: `radio`,
-    options: [
-      {
-        label: `Фиксированная`,
-        name: `layout`,
-        id: `fixed`
-      },
-      {
-        label: `Адаптивная`,
-        name: `layout`,
-        id: `adaptive`
-      }
-    ]
-  },
-  {
-    title: `Тип работы`,
-    type: `checkbox`,
-    options: [
-      {
-        label: `Верстка`,
-        name: `murkup`,
-        id: `murkup`
-      },
-      {
-        label: `SPA`,
-        name: `spa`,
-        id: `spa`
-      }
-    ]
-  },
-  {
-    title: `Технологии`,
-    type: `checkbox`,
-    options: [
-      {
-        label: `Препроцессоры`,
-        name: `preprocessor`,
-        id: `preprocessor`
-      },
-      {
-        label: `JavaScript`,
-        name: `js`,
-        id: `js`
-      },
-      {
-        label: `SVG`,
-        name: `svg`,
-        id: `svg`
-      },
-      {
-        label: `Promise`,
-        name: `promise`,
-        id: `promise`
-      }
-    ]
-  }
-];
+import {parametersOfApplication, PORTFOLIO_FILTER_PARAMETERS} from '../data/parameters';
 
 class PortfolioView extends AbstractView {
   constructor(data, state) {

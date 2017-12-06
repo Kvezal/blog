@@ -143,11 +143,16 @@
   }
 
   &__btn {
+    width: 80%;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 
     background-color: $primary-color;
+
+    &--reset {
+      margin-bottom: 30px;
+    }
   }
 }
 

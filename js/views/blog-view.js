@@ -1,26 +1,7 @@
 import AbstractView from './abstract-view';
 import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
-import {parametersOfApplication} from '../data/parameters';
-
-const BLOG_FILTER_PARAMETERS = [
-  {
-    title: `По дате:`,
-    type: `radio`,
-    options: [
-      {
-        label: `Сначала старые`,
-        name: `date`,
-        id: `old`
-      },
-      {
-        label: `Сначала новые`,
-        name: `date`,
-        id: `new`
-      }
-    ]
-  }
-];
+import {parametersOfApplication, BLOG_FILTER_PARAMETERS} from '../data/parameters';
 
 class BlogView extends AbstractView {
   constructor(data, state) {
