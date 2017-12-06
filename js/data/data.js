@@ -29,9 +29,11 @@ export default {
       title: `Gllacy`,
       link: `https://kvezal.github.io/gllacy/`,
       features: [
+        `Markup`,
+        `Fixed`,
         `Progressive`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Базовая оптимизация`,
         `Валидный код`
       ],
@@ -42,9 +44,11 @@ export default {
       title: `Nerds`,
       link: `https://kvezal.github.io/nerds/`,
       features: [
+        `Markup`,
+        `Fixed`,
         `Progressive`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Базовая оптимизация`,
         `Валидный код`
       ],
@@ -55,9 +59,11 @@ export default {
       title: `Technomart`,
       link: `https://kvezal.github.io/technomart/`,
       features: [
+        `Markup`,
+        `Fixed`,
         `Progressive`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Базовая оптимизация`,
         `Валидный код`
       ],
@@ -68,9 +74,11 @@ export default {
       title: `Sedona`,
       link: `#`,
       features: [
+        `Markup`,
+        `Fixed`,
         `Progressive`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Базовая оптимизация`,
         `Валидный код`
       ],
@@ -81,11 +89,13 @@ export default {
       title: `Device`,
       link: `https://kvezal.github.io/device/`,
       features: [
+        `Markup`,
+        `Fixed`,
         `LESS`,
         `Gulp`,
         `Progressive`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Базовая оптимизация`,
         `Валидный код`
       ],
@@ -96,6 +106,7 @@ export default {
       title: `Mishka`,
       link: `https://kvezal.github.io/mishka/`,
       features: [
+        `Markup`,
         `Adaptive`,
         `Retina`,
         `Кадрирование изображений`,
@@ -106,7 +117,7 @@ export default {
         `Mobile First`,
         `Graceful Degradation`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Оптимизация`,
         `Валидный код`
       ],
@@ -117,6 +128,7 @@ export default {
       title: `Pink`,
       link: `https://kvezal.github.io/pink/`,
       features: [
+        `Markup`,
         `Adaptive`,
         `Retina`,
         `Кадрирование изображений`,
@@ -127,7 +139,7 @@ export default {
         `Mobile First`,
         `Progressive Enhancement`,
         `Pixel-Perfect`,
-        `JS`,
+        `ES5`,
         `Оптимизация`,
         `Валидный код`
       ],
@@ -139,6 +151,7 @@ export default {
       link: `https://kvezal.github.io/portfolio/`,
       features: [
         `Дизайн`,
+        `Markup`,
         `Adaptive`,
         `Retina`,
         `Кадрирование изображений`,
@@ -159,6 +172,7 @@ export default {
       link: `https://kvezal.github.io/keksobooking/`,
       tasks: `documents/specification-keksobooking.md`,
       features: [
+        `Fixed`,
         `SPA`,
         `ES5`,
         `Функциональный стиль`,
@@ -173,6 +187,7 @@ export default {
       link: `https://kvezal.github.io/kekstagram/`,
       tasks: `documents/specification-kekstagram.md`,
       features: [
+        `Fixed`,
         `SPA`,
         `ES5`,
         `Функциональный стиль`,
@@ -187,6 +202,7 @@ export default {
       link: `https://kvezal.github.io/pixel-hunter/`,
       tasks: `documents/specification-pixel-hunter.md`,
       features: [
+        `Fixed`,
         `SPA`,
         `Проектирование приложения`,
         `ES6+`,

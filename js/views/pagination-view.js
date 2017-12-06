@@ -1,9 +1,7 @@
 import AbstractView from './abstract-view';
 import Utils from '../lib/utils';
+import {parametersOfApplication} from '../data/parameters';
 
-const FIRST_PAGE = 1;
-const SPREADING = 2;
-const STEP = 1;
 const PLACEHOLDER = `<span class="pagination__placeholder"> ... </span>`;
 
 class PaginationView extends AbstractView {
@@ -29,24 +27,24 @@ class PaginationView extends AbstractView {
     const state = this.parameters.state;
     const tab = Utils.toUpperCaseFirstLetter(state.currentTab);
 
-    let startItem = state[`currentPage${tab}`] - SPREADING;
-    startItem = (startItem > FIRST_PAGE) ? startItem : FIRST_PAGE;
+    let startItem = state[`currentPage${tab}`] - parametersOfApplication.SPREADING;
+    startItem = (startItem > parametersOfApplication.FIRST_PAGE) ? startItem : parametersOfApplication.FIRST_PAGE;
 
-    let endItem = state[`currentPage${tab}`] + SPREADING;
+    let endItem = state[`currentPage${tab}`] + parametersOfApplication.SPREADING;
     endItem = (endItem < amountOfPage) ? endItem : amountOfPage;
 
     const pageList = [];
 
-    const previous = (state[`currentPage${tab}`] === FIRST_PAGE) ?
+    const previous = (state[`currentPage${tab}`] === parametersOfApplication.FIRST_PAGE) ?
       `<a class="pagination__item  pagination__item--prev  pagination__item--disabled">Назад</a>` :
       `<a class="pagination__item  pagination__item--prev" href="#">Назад</a>`;
     pageList.push(previous);
 
-    if (startItem > FIRST_PAGE) {
-      const nextElementOfPagination = FIRST_PAGE + STEP;
+    if (startItem > parametersOfApplication.FIRST_PAGE) {
+      const nextElementOfPagination = parametersOfApplication.FIRST_PAGE + parametersOfApplication.STEP;
       const paginationPlaceholder = (nextElementOfPagination === startItem) ?
-        `<a class="pagination__item" href="#">${FIRST_PAGE}</a>` :
-        `<a class="pagination__item" href="#">${FIRST_PAGE}</a> ${PLACEHOLDER}`;
+        `<a class="pagination__item" href="#">${parametersOfApplication.FIRST_PAGE}</a>` :
+        `<a class="pagination__item" href="#">${parametersOfApplication.FIRST_PAGE}</a> ${PLACEHOLDER}`;
       pageList.push(paginationPlaceholder);
     }
 
@@ -59,7 +57,7 @@ class PaginationView extends AbstractView {
     }
 
     if (endItem < amountOfPage) {
-      const previousElementOfPagination = amountOfPage - STEP;
+      const previousElementOfPagination = amountOfPage - parametersOfApplication.STEP;
       const paginationPlaceholder = (previousElementOfPagination === endItem) ?
         `<a class="pagination__item" href="#">${amountOfPage}</a>` :
         `${PLACEHOLDER} <a class="pagination__item" href="#">${amountOfPage}</a>`;

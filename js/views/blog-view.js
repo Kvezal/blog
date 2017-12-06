@@ -46,8 +46,16 @@ class BlogView extends AbstractView {
   }
 
   bind(element) {
+    const data = Object.assign(this.data);
+
     const filter = element.querySelector(`.filter`);
-    new FilterPresenter().init(BLOG_FILTER_PARAMETERS, filter);
+    const parametersOfFilter = {
+      filters: BLOG_FILTER_PARAMETERS,
+      oldElement: filter,
+      data,
+      state: this.state
+    };
+    new FilterPresenter().init(parametersOfFilter);
 
     const pagination = element.querySelector(`.pagination`);
     const parameters = {

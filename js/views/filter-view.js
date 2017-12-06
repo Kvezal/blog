@@ -30,15 +30,26 @@ class FilterView extends AbstractView {
   }
 
   getTemplateFilterOptions(options, type) {
-    const checked = (type === `checkbox`) ? `checked` : ``;
-
     return options.map((option) => {
+      const checked = (option.checked === true) ? `checked` : ``;
       const value = (type === `radio`) ? `value="${option.id}"` : ``;
+
       return (
         `<input type="${type}" class="filter__${type}" name="${option.name}" id="${option.id}" ${value} ${checked}>
         <label class="filter__label-${type}" for="${option.id}">${option.label}</label>`
       );
     }).join(``);
+  }
+
+  bind(element) {
+    const form = element.querySelector(`.filter`);
+    form.addEventListener(`submit`, this.applyFilterSettings);
+    form.addEventListener(`reset`, this.resetFilterSetting);
+
+    const filterOptions = form.querySelectorAll(`input`);
+    filterOptions.forEach((option) => {
+      option.addEventListener(`change`, this.changeStateOption);
+    });
   }
 }
 

@@ -29,33 +29,21 @@ class App {
     App.changeTab(cloneState);
   }
 
-  static changeTab(state = initialState) {
+  static changeTab(state = initialState, inputData) {
     if (!data[state.currentTab]) {
       return routerId[state.currentTab]();
     }
-    const currentData = [...data[state.currentTab]];
+
+    let currentData = inputData;
+    if (!currentData) {
+      currentData = [...data[state.currentTab]];
+    }
     return routerId[state.currentTab](currentData, state);
   }
 
   static showMainNav(state) {
     mainNavPresenter.init(state);
   }
-
-  /*static showSkills() {
-    routerId[`skills`]();
-  }
-
-  static showEducation() {
-    routerId[`education`]();
-  }
-
-  static showPortfolio() {
-    routerId[`portfolio`]();
-  }
-
-  static showBlog() {
-    routerId[`blog`]();
-  }*/
 }
 new App().init(initialState);
 

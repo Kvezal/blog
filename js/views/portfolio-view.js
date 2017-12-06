@@ -49,16 +49,24 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
+    const data = Object.assign(this.data);
+
     const filter = element.querySelector(`.filter`);
-    new FilterPresenter().init(PORTFOLIO_FILTER_PARAMETERS, filter);
+    const parametersOfFilter = {
+      filters: PORTFOLIO_FILTER_PARAMETERS,
+      oldElement: filter,
+      data,
+      state: this.state
+    };
+    new FilterPresenter().init(parametersOfFilter);
 
     const pagination = element.querySelector(`.pagination`);
-    const parameters = {
-      amountDataItems: this.data.length,
+    const parametersOfPagination = {
+      amountDataItems: data.length,
       state: this.state,
       maxAmountItemsOnPage: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO
     };
-    new PaginationPresenter().init(parameters, pagination);
+    new PaginationPresenter().init(parametersOfPagination, pagination);
   }
 }
 

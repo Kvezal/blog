@@ -1,13 +1,17 @@
-const initialState = {
-  currentPagePortfolio: 1,
-  currentPageBlog: 1,
-  currentTab: `skills`
-};
-
 const parametersOfApplication = {
   PAGE_BACK: -1,
   ITEMS_ON_PAGE_OF_PORTFOLIO: 6,
-  ITEMS_ON_PAGE_OF_BLOG: 7
+  ITEMS_ON_PAGE_OF_BLOG: 7,
+  FIRST_PAGE: 1,
+  FIRST_PAGE: 1,
+  SPREADING: 2,
+  STEP: 1
+};
+
+const initialState = {
+  currentPagePortfolio: parametersOfApplication.FIRST_PAGE,
+  currentPageBlog: parametersOfApplication.FIRST_PAGE,
+  currentTab: `skills`
 };
 
 const PORTFOLIO_FILTER_PARAMETERS = [
@@ -18,28 +22,32 @@ const PORTFOLIO_FILTER_PARAMETERS = [
       {
         label: `Фиксированная`,
         name: `layout`,
-        id: `fixed`
+        id: `fixed`,
+        checked: false
       },
       {
         label: `Адаптивная`,
         name: `layout`,
-        id: `adaptive`
+        id: `adaptive`,
+        checked: false
       }
     ]
   },
   {
     title: `Тип работы`,
-    type: `checkbox`,
+    type: `radio`,
     options: [
       {
-        label: `Верстка`,
-        name: `murkup`,
-        id: `murkup`
+        label: `Верстка(markup)`,
+        name: `type`,
+        id: `markup`,
+        checked: false
       },
       {
         label: `SPA`,
-        name: `spa`,
-        id: `spa`
+        name: `type`,
+        id: `spa`,
+        checked: false
       }
     ]
   },
@@ -50,27 +58,38 @@ const PORTFOLIO_FILTER_PARAMETERS = [
       {
         label: `SASS`,
         name: `sass`,
-        id: `sass`
+        id: `sass`,
+        checked: true
       },
       {
         label: `LESS`,
         name: `less`,
-        id: `less`
+        id: `less`,
+        checked: true
       },
       {
-        label: `JavaScript`,
-        name: `js`,
-        id: `js`
+        label: `ES5`,
+        name: `es5`,
+        id: `es5`,
+        checked: true
+      },
+      {
+        label: `ES6+`,
+        name: `es6+`,
+        id: `es6+`,
+        checked: true
       },
       {
         label: `SVG`,
         name: `svg`,
-        id: `svg`
+        id: `svg`,
+        checked: true
       },
       {
         label: `Promise`,
         name: `promise`,
-        id: `promise`
+        id: `promise`,
+        checked: true
       }
     ]
   }
