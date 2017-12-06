@@ -6,7 +6,7 @@ import educationPresenter from './presenter/education-presenter';
 import portfolioPresenter from './presenter/portfolio-presenter';
 
 import data from './data/data';
-import initialParameters from './data/initial-parameters';
+import {initialState} from './data/parameters';
 
 const ControllerId = {
   SKILLS: `skills`,
@@ -23,28 +23,13 @@ const routerId = {
 };
 
 class App {
-  /*init(tab) {
-    App.showMainNav();
-    App.changeTab(tab);
-  }
-
-  static changeTab(tab, state = initialParameters.state) {
-    const cloneState = Object.assign({}, state);
-    cloneState.currentTab = tab;
-    if (!data[tab]) {
-      return routerId[tab]();
-    }
-    const currentData = [...data[tab]];
-    return routerId[tab](currentData, cloneState);
-  }*/
-
   init(state) {
     const cloneState = Object.assign({}, state);
     App.showMainNav(cloneState);
     App.changeTab(cloneState);
   }
 
-  static changeTab(state = initialParameters.state) {
+  static changeTab(state = initialState) {
     if (!data[state.currentTab]) {
       return routerId[state.currentTab]();
     }
@@ -72,6 +57,6 @@ class App {
     routerId[`blog`]();
   }*/
 }
-new App().init(initialParameters.state);
+new App().init(initialState);
 
 export default App;

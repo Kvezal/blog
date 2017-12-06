@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view';
 import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
-import initialParameters from '../data/initial-parameters';
+import {parametersOfApplication} from '../data/parameters';
 
 const PORTFOLIO_FILTER_PARAMETERS = [
   {
@@ -17,6 +17,22 @@ const PORTFOLIO_FILTER_PARAMETERS = [
         label: `Адаптивная`,
         name: `layout`,
         id: `adaptive`
+      }
+    ]
+  },
+  {
+    title: `Тип работы`,
+    type: `checkbox`,
+    options: [
+      {
+        label: `Верстка`,
+        name: `murkup`,
+        id: `murkup`
+      },
+      {
+        label: `SPA`,
+        name: `spa`,
+        id: `spa`
       }
     ]
   },
@@ -41,15 +57,11 @@ const PORTFOLIO_FILTER_PARAMETERS = [
       },
       {
         label: `Promise`,
-        name: `promise`, id: `promise`
-      },
-      {
-        label: `SPA`,
-        name: `spa`,
-        id: `spa`
+        name: `promise`,
+        id: `promise`
       }
     ]
-  },
+  }
 ];
 
 class PortfolioView extends AbstractView {
@@ -88,9 +100,9 @@ class PortfolioView extends AbstractView {
   }
 
   get templateList() {
-    const lastPage = this.state.currentPagePortfolio + initialParameters.PAGE_BACK;
-    const startItemPage = lastPage * initialParameters.ITEMS_ON_PAGE_OF_PORTFOLIO;
-    const endItemPagethis = this.state.currentPagePortfolio * initialParameters.ITEMS_ON_PAGE_OF_PORTFOLIO;
+    const lastPage = this.state.currentPagePortfolio + parametersOfApplication.PAGE_BACK;
+    const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO;
+    const endItemPagethis = this.state.currentPagePortfolio * parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO;
 
     return this.data.slice(startItemPage, endItemPagethis).map((item) => {
       return this.getTemplateListItem(item);
@@ -105,7 +117,7 @@ class PortfolioView extends AbstractView {
     const parameters = {
       amountDataItems: this.data.length,
       state: this.state,
-      maxAmountItemsOnPage: initialParameters.ITEMS_ON_PAGE_OF_PORTFOLIO
+      maxAmountItemsOnPage: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO
     };
     new PaginationPresenter().init(parameters, pagination);
   }

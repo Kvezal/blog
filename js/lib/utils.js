@@ -1,4 +1,4 @@
-import initialParameters from '../data/initial-parameters';
+// import initialParameters from '../data/initial-parameters';
 
 class Utils {
   static getElementFromTemplate(murkup) {

@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view';
 import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
-import initialParameters from '../data/initial-parameters';
+import {parametersOfApplication} from '../data/parameters';
 
 const BLOG_FILTER_PARAMETERS = [
   {
@@ -55,9 +55,9 @@ class BlogView extends AbstractView {
   }
 
   get templateList() {
-    const lastPage = this.state.currentPageBlog + initialParameters.PAGE_BACK;
-    const startItemPage = lastPage * initialParameters.ITEMS_ON_PAGE_OF_BLOG;
-    const endItemPagethis = this.state.currentPageBlog * initialParameters.ITEMS_ON_PAGE_OF_BLOG;
+    const lastPage = this.state.currentPageBlog + parametersOfApplication.PAGE_BACK;
+    const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
+    const endItemPagethis = this.state.currentPageBlog * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
 
     return this.data.slice(startItemPage, endItemPagethis).map((item) => {
       return this.getTemplateListItem(item);
@@ -72,7 +72,7 @@ class BlogView extends AbstractView {
     const parameters = {
       amountDataItems: this.data.length,
       state: this.state,
-      maxAmountItemsOnPage: initialParameters.ITEMS_ON_PAGE_OF_BLOG
+      maxAmountItemsOnPage: parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG
     };
     new PaginationPresenter().init(parameters, pagination);
   }
