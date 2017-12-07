@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import Utils from '../lib/utils';
+// import Utils from '../lib/utils';
 import {parametersOfApplication} from '../data/parameters';
 
 const PLACEHOLDER = `<span class="pagination__placeholder"> ... </span>`;
@@ -25,17 +25,17 @@ class PaginationView extends AbstractView {
       return ``;
     }
     const state = this.parameters.state;
-    const tab = Utils.toUpperCaseFirstLetter(state.currentTab);
+    const tab = state.currentTab;
 
-    let startItem = state[`currentPage${tab}`] - parametersOfApplication.SPREADING;
+    let startItem = state.currentPage[tab] - parametersOfApplication.SPREADING;
     startItem = (startItem > parametersOfApplication.FIRST_PAGE) ? startItem : parametersOfApplication.FIRST_PAGE;
 
-    let endItem = state[`currentPage${tab}`] + parametersOfApplication.SPREADING;
+    let endItem = state.currentPage[tab] + parametersOfApplication.SPREADING;
     endItem = (endItem < amountOfPage) ? endItem : amountOfPage;
 
     const pageList = [];
 
-    const previous = (state[`currentPage${tab}`] === parametersOfApplication.FIRST_PAGE) ?
+    const previous = (state.currentPage[tab] === parametersOfApplication.FIRST_PAGE) ?
       `<a class="pagination__item  pagination__item--prev  pagination__item--disabled">Назад</a>` :
       `<a class="pagination__item  pagination__item--prev" href="#">Назад</a>`;
     pageList.push(previous);
@@ -49,7 +49,7 @@ class PaginationView extends AbstractView {
     }
 
     for (let i = startItem; i <= endItem; i++) {
-      if (i === state[`currentPage${tab}`]) {
+      if (i === state.currentPage[tab]) {
         pageList.push(`<a class="pagination__item  pagination__item--current">${i}</a>`);
         continue;
       }
@@ -64,7 +64,7 @@ class PaginationView extends AbstractView {
       pageList.push(paginationPlaceholder);
     }
 
-    const next = (state[`currentPage${tab}`] === amountOfPage) ?
+    const next = (state.currentPage[tab] === amountOfPage) ?
       `<a class="pagination__item  pagination__item--next  pagination__item--disabled">Вперед</a>` :
       `<a class="pagination__item  pagination__item--next" href="#">Вперед</a>`;
     pageList.push(next);

@@ -1,15 +1,19 @@
 import App from '../application';
 import FilterView from '../views/filter-view';
 import Utils from '../lib/utils';
-import {parametersOfApplication} from '../data/parameters';
+import {parametersOfApplication, FILTERS} from '../data/parameters';
 
 class FilterPresenter {
-  init(parameters) {
-    this.view = new FilterView(parameters.filters);
+  init(viewTab) {
+    const tab = viewTab.state.currentTab;
+    const filters = viewTab.state.currentFilter[tab];
+
+    this.view = new FilterView(filters);
+    viewTab.data = this.filterData(viewTab.data, filters);
 
     this.view.changeStateOption = (evt) => {
       evt.preventDefault();
-      parameters.filters.forEach((item) => {
+      filters.forEach((item) => {
         if (item.type === `radio`) {
           this.changeStateRadio(item.options, evt.target);
           return;
@@ -20,17 +24,17 @@ class FilterPresenter {
 
     this.view.applyFilterSettings = (evt) => {
       evt.preventDefault();
-      const data = this.filterData(parameters.data, parameters.filters);
-      const tab = Utils.toUpperCaseFirstLetter(parameters.state.currentTab);
-      parameters.state[`currentPage${tab}`] = parametersOfApplication.FIRST_PAGE;
-      App.changeTab(parameters.state, data);
+      viewTab.state.currentPage[tab] = parametersOfApplication.FIRST_PAGE;
+      App.changeTab(viewTab.state);
     };
 
     this.view.resetFilterSetting = () => {
-      App.changeTab(parameters.state);
+      viewTab.state.currentFilter[tab] = Utils.deepClone(FILTERS[tab]);
+      viewTab.state.currentPage[tab] = parametersOfApplication.FIRST_PAGE;
+      App.changeTab(viewTab.state);
     };
 
-    Utils.replaceOldElement(this.view.element, parameters.oldElement);
+    return this.view.element;
   }
 
   isCurrentSetting(options, id) {

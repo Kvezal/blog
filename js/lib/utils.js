@@ -44,6 +44,11 @@ class Utils {
   static toUpperCaseFirstLetter(string) {
     return `${string.slice(0, 1).toUpperCase()}${string.slice(1)}`;
   }
+
+  static deepClone(obj) {
+    const string = JSON.stringify(obj);
+    return JSON.parse(string);
+  }
 }
 
 export default Utils;

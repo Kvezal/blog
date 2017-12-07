@@ -29,15 +29,12 @@ class App {
     App.changeTab(cloneState);
   }
 
-  static changeTab(state = initialState, inputData) {
+  static changeTab(state = initialState) {
     if (!data[state.currentTab]) {
       return routerId[state.currentTab]();
     }
 
-    let currentData = inputData;
-    if (!currentData) {
-      currentData = [...data[state.currentTab]];
-    }
+    const currentData = [...data[state.currentTab]];
     return routerId[state.currentTab](currentData, state);
   }
 

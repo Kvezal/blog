@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view';
 import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
-import {parametersOfApplication, BLOG_FILTER_PARAMETERS} from '../data/parameters';
+import {parametersOfApplication} from '../data/parameters';
 
 class BlogView extends AbstractView {
   constructor(data, state) {
