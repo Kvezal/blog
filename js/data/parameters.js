@@ -144,6 +144,10 @@ const initialState = {
   currentFilter: {
     portfolio: Utils.deepClone(FILTERS.portfolio),
     blog: Utils.deepClone(FILTERS.blog)
+  },
+  amountItems: {
+    portfolio: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO,
+    blog: parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG
   }
 };
 

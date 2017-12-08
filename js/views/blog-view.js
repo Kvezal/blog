@@ -1,5 +1,4 @@
 import AbstractView from './abstract-view';
-import PaginationPresenter from '../presenter/pagination-presenter';
 import {parametersOfApplication} from '../data/parameters';
 import Utils from '../lib/utils';
 
@@ -16,7 +15,7 @@ class BlogView extends AbstractView {
       `<section class="blog">
         <section class="filter"></section>
         <section class="articles">
-          <h1 class="articles__title">Статьи:</h1>
+          <h1 class="articles__title">Статьи</h1>
           <ul class="articles__list">
             ${this.templateList}
           </ul>
@@ -50,12 +49,7 @@ class BlogView extends AbstractView {
     Utils.replaceOldElement(this.filter, filter);
 
     const pagination = element.querySelector(`.pagination`);
-    const parameters = {
-      amountDataItems: this.data.length,
-      state: this.state,
-      maxAmountItemsOnPage: parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG
-    };
-    new PaginationPresenter().init(parameters, pagination);
+    Utils.replaceOldElement(this.pagination, pagination);
   }
 }
 

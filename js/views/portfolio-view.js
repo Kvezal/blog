@@ -1,5 +1,4 @@
 import AbstractView from './abstract-view';
-import PaginationPresenter from '../presenter/pagination-presenter';
 import {parametersOfApplication} from '../data/parameters';
 import Utils from '../lib/utils';
 
@@ -41,8 +40,8 @@ class PortfolioView extends AbstractView {
   get templateList() {
     const currentPage = this.state.currentPage[`portfolio`];
     const lastPage = currentPage + parametersOfApplication.PAGE_BACK;
-    const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO;
-    const endItemPagethis = currentPage * parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO;
+    const startItemPage = lastPage * this.state.amountItems[`portfolio`];
+    const endItemPagethis = currentPage * this.state.amountItems[`portfolio`];
 
     return this.data.slice(startItemPage, endItemPagethis).map((item) => {
       return this.getTemplateListItem(item);
@@ -54,12 +53,7 @@ class PortfolioView extends AbstractView {
     Utils.replaceOldElement(this.filter, filter);
 
     const pagination = element.querySelector(`.pagination`);
-    const parametersOfPagination = {
-      amountDataItems: this.data.length,
-      state: this.state,
-      maxAmountItemsOnPage: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO
-    };
-    new PaginationPresenter().init(parametersOfPagination, pagination);
+    Utils.replaceOldElement(this.pagination, pagination);
   }
 }
 

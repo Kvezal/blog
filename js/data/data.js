@@ -221,7 +221,7 @@ export default {
       title: `Название статьи 1`,
       link: `#`,
       description: `Описание 1`,
-      data: new Date() - 1,
+      date: new Date() - 1,
       article: `Текст статьи`,
       features: [
         `html`
@@ -231,7 +231,7 @@ export default {
       title: `Название статьи 2`,
       link: `#`,
       description: `Описание 2`,
-      data: new Date() - 2,
+      date: new Date() - 2,
       article: `Текст статьи`,
       features: [
         `css`
@@ -241,7 +241,7 @@ export default {
       title: `Название статьи 3`,
       link: `#`,
       description: `Описание 3`,
-      data: new Date() - 3,
+      date: new Date() - 3,
       article: `Текст статьи`,
       features: [
         `js`

@@ -1,12 +1,11 @@
 import App from '../application';
 import PaginationView from '../views/pagination-view';
-import Utils from '../lib/utils';
 
 class PaginationPresenter {
-  init(parameters, oldElement) {
-    this.view = new PaginationView(parameters);
+  init(viewTab) {
+    this.view = new PaginationView(viewTab);
 
-    const state = this.view.parameters.state;
+    const state = this.view.state;
     const tab = state.currentTab;
 
     this.view.showPage = (evt) => {
@@ -27,7 +26,7 @@ class PaginationPresenter {
       App.changeTab(state);
     };
 
-    Utils.replaceOldElement(this.view.element, oldElement);
+    return this.view;
   }
 }
 
