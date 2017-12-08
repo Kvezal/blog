@@ -1,5 +1,4 @@
 import AbstractView from './abstract-view';
-import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
 import {parametersOfApplication} from '../data/parameters';
 import Utils from '../lib/utils';
@@ -51,14 +50,12 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
-    const data = Object.assign(this.data);
-
     const filter = element.querySelector(`.filter`);
     Utils.replaceOldElement(this.filter, filter);
 
     const pagination = element.querySelector(`.pagination`);
     const parametersOfPagination = {
-      amountDataItems: data.length,
+      amountDataItems: this.data.length,
       state: this.state,
       maxAmountItemsOnPage: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO
     };

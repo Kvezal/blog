@@ -14,11 +14,11 @@ class FilterPresenter {
     this.view.changeStateOption = (evt) => {
       evt.preventDefault();
       filters.forEach((item) => {
-        if (item.type === `radio`) {
-          this.changeStateRadio(item.options, evt.target);
+        if (item.type === `checkbox`) {
+          this.changeStateCheckbox(item.options, evt.target);
           return;
         }
-        this.changeStateCheckbox(item.options, evt.target);
+        this.changeStateRadio(item.options, evt.target);
       });
     };
 
@@ -82,6 +82,34 @@ class FilterPresenter {
     return currentSettings;
   }
 
+  filterRadios(data, radios) {
+    if (!radios.length) {
+      return data;
+    }
+
+    const filteredData = data.filter((item) => {
+      return radios.every((radio) => {
+        if (radio === `new` || radio === `old`) {
+          return true;
+        }
+        return item.features.some((feature) => {
+          feature = feature.toLowerCase();
+          return feature === radio;
+        });
+      });
+    });
+
+    radios.forEach((radio) => {
+      if (radio === `new`) {
+        filteredData.sort((left, right) => left.data - right.data);
+      } else if (radio === `old`) {
+        filteredData.sort((left, right) => right.data - left.data);
+      }
+    });
+
+    return filteredData;
+  }
+
   filterCheckboxes(data, checkboxes) {
     if (!checkboxes.length) {
       return [];
@@ -92,21 +120,6 @@ class FilterPresenter {
         feature = feature.toLowerCase();
         return checkboxes.some((checkbox) => {
           return checkbox === feature;
-        });
-      });
-    });
-  }
-
-  filterRadios(data, radios) {
-    if (!radios.length) {
-      return data;
-    }
-
-    return data.filter((item) => {
-      return radios.every((radio) => {
-        return item.features.some((feature) => {
-          feature = feature.toLowerCase();
-          return feature === radio;
         });
       });
     });

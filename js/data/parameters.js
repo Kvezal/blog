@@ -107,6 +107,30 @@ const FILTERS = {
           id: `new`
         }
       ]
+    },
+    {
+      title: `Технологии:`,
+      type: `checkbox`,
+      options: [
+        {
+          label: `JavaScript`,
+          name: `js`,
+          id: `js`,
+          checked: true
+        },
+        {
+          label: `CSS`,
+          name: `css`,
+          id: `css`,
+          checked: true
+        },
+        {
+          label: `HTML`,
+          name: `html`,
+          id: `html`,
+          checked: true
+        }
+      ]
     }
   ]
 };

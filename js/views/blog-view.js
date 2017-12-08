@@ -1,7 +1,7 @@
 import AbstractView from './abstract-view';
-import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
 import {parametersOfApplication} from '../data/parameters';
+import Utils from '../lib/utils';
 
 class BlogView extends AbstractView {
   constructor(data, state) {
@@ -36,9 +36,9 @@ class BlogView extends AbstractView {
   }
 
   get templateList() {
-    const lastPage = this.state.currentPageBlog + parametersOfApplication.PAGE_BACK;
+    const lastPage = this.state.currentPage[`blog`] + parametersOfApplication.PAGE_BACK;
     const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
-    const endItemPagethis = this.state.currentPageBlog * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
+    const endItemPagethis = this.state.currentPage[`blog`] * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
 
     return this.data.slice(startItemPage, endItemPagethis).map((item) => {
       return this.getTemplateListItem(item);
@@ -46,16 +46,8 @@ class BlogView extends AbstractView {
   }
 
   bind(element) {
-    const data = Object.assign(this.data);
-
     const filter = element.querySelector(`.filter`);
-    const parametersOfFilter = {
-      filters: BLOG_FILTER_PARAMETERS,
-      oldElement: filter,
-      data,
-      state: this.state
-    };
-    new FilterPresenter().init(parametersOfFilter);
+    Utils.replaceOldElement(this.filter, filter);
 
     const pagination = element.querySelector(`.pagination`);
     const parameters = {

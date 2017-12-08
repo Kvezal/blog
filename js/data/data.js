@@ -222,21 +222,30 @@ export default {
       link: `#`,
       description: `Описание 1`,
       data: new Date() - 1,
-      article: `Текст статьи`
+      article: `Текст статьи`,
+      features: [
+        `html`
+      ]
     },
     {
       title: `Название статьи 2`,
       link: `#`,
       description: `Описание 2`,
       data: new Date() - 2,
-      article: `Текст статьи`
+      article: `Текст статьи`,
+      features: [
+        `css`
+      ]
     },
     {
       title: `Название статьи 3`,
       link: `#`,
       description: `Описание 3`,
       data: new Date() - 3,
-      article: `Текст статьи`
+      article: `Текст статьи`,
+      features: [
+        `js`
+      ]
     }
   ]
 };
