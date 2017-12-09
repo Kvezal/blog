@@ -9,6 +9,25 @@ const parametersOfApplication = {
   STEP: 1
 };
 
+const NAVIGATION_PARAMERETS = [
+  {
+    name: `Навыки`,
+    id: ``
+  },
+  {
+    name: `Образование`,
+    id: `education`
+  },
+  {
+    name: `Работы`,
+    id: `portfolio`
+  },
+  {
+    name: `Блог`,
+    id: `blog`
+  }
+];
+
 const FILTERS = {
   portfolio: [
     {
@@ -136,7 +155,7 @@ const FILTERS = {
 };
 
 const initialState = {
-  currentTab: `skills`,
+  currentTab: ``,
   currentPage: {
     portfolio: parametersOfApplication.FIRST_PAGE,
     blog: parametersOfApplication.FIRST_PAGE
@@ -152,7 +171,8 @@ const initialState = {
 };
 
 export {
-  initialState,
   parametersOfApplication,
-  FILTERS
+  NAVIGATION_PARAMERETS,
+  FILTERS,
+  initialState
 };

@@ -3,7 +3,6 @@ import FilterPresenter from '../presenter/filter-presenter';
 import PaginationPresenter from '../presenter/pagination-presenter';
 import Utils from '../lib/utils';
 
-
 class PortfolioPresenter {
   init(data, state) {
     this.view = new PortfolioView(data, state);

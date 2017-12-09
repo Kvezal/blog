@@ -7,9 +7,10 @@ import portfolioPresenter from './presenter/portfolio-presenter';
 
 import data from './data/data';
 import {initialState} from './data/parameters';
+import Utils from './lib/utils';
 
 const ControllerId = {
-  SKILLS: `skills`,
+  SKILLS: ``,
   EDUCATION: `education`,
   PORTFOLIO: `portfolio`,
   BLOG: `blog`
@@ -22,14 +23,39 @@ const routerId = {
   [ControllerId.BLOG]: blogPresenter.init
 };
 
+const loadState = (dataString) => {
+  try {
+    dataString = decodeURIComponent(dataString);
+    return JSON.parse(dataString);
+  } catch (err) {
+    return initialState;
+  }
+};
+
+
 class App {
-  init(state) {
-    const cloneState = Object.assign({}, state);
-    App.showMainNav(cloneState);
-    App.changeTab(cloneState);
+  init() {
+    let currentState = initialState;
+
+    const changeHashHandler = () => {
+      const hashValue = location.hash.replace(`#`, ``);
+      currentState = loadState(hashValue);
+      App.changeTab(currentState);
+    };
+
+    window.onhashchange = changeHashHandler;
+    changeHashHandler();
+
+    mainNavPresenter.init(currentState);
   }
 
-  static changeTab(state = initialState) {
+  static changeTab(state) {
+    Utils.saveURL(state);
+    if (state.currentTab === ``) {
+      const currentData = [...data[`skills`]];
+      return routerId[state.currentTab](currentData, state);
+    }
+
     if (!data[state.currentTab]) {
       return routerId[state.currentTab]();
     }
@@ -37,11 +63,8 @@ class App {
     const currentData = [...data[state.currentTab]];
     return routerId[state.currentTab](currentData, state);
   }
-
-  static showMainNav(state) {
-    mainNavPresenter.init(state);
-  }
 }
-new App().init(initialState);
+
+new App().init();
 
 export default App;

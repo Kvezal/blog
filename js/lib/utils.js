@@ -1,5 +1,3 @@
-// import initialParameters from '../data/initial-parameters';
-
 class Utils {
   static getElementFromTemplate(murkup) {
     const template = document.createElement(`template`);
@@ -48,6 +46,11 @@ class Utils {
   static deepClone(obj) {
     const string = JSON.stringify(obj);
     return JSON.parse(string);
+  }
+
+  static saveURL(state) {
+    const encodeState = encodeURIComponent(JSON.stringify(state));
+    location.hash = encodeState;
   }
 }
 
