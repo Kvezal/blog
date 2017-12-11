@@ -1,5 +1,6 @@
-import App from '../application';
+// import App from '../application';
 import PaginationView from '../views/pagination-view';
+import {saveState} from '../lib/change-url';
 
 class PaginationPresenter {
   init(viewTab) {
@@ -11,19 +12,19 @@ class PaginationPresenter {
     this.view.showPage = (evt) => {
       evt.preventDefault();
       state.currentPage[tab] = +evt.target.textContent;
-      App.changeTab(state);
+      saveState(state);
     };
 
     this.view.showPreviousPage = (evt) => {
       evt.preventDefault();
       --state.currentPage[tab];
-      App.changeTab(state);
+      saveState(state);
     };
 
     this.view.showNextPage = (evt) => {
       evt.preventDefault();
       ++state.currentPage[tab];
-      App.changeTab(state);
+      saveState(state);
     };
 
     return this.view;

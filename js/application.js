@@ -6,8 +6,8 @@ import educationPresenter from './presenter/education-presenter';
 import portfolioPresenter from './presenter/portfolio-presenter';
 
 import data from './data/data';
-import {initialState} from './data/parameters';
-import Utils from './lib/utils';
+import {loadState} from './lib/change-url';
+
 
 const ControllerId = {
   SKILLS: ``,
@@ -16,6 +16,7 @@ const ControllerId = {
   BLOG: `blog`
 };
 
+
 const routerId = {
   [ControllerId.SKILLS]: skillsPresenter.init,
   [ControllerId.EDUCATION]: educationPresenter.init,
@@ -23,34 +24,20 @@ const routerId = {
   [ControllerId.BLOG]: blogPresenter.init
 };
 
-const loadState = (dataString) => {
-  try {
-    dataString = decodeURIComponent(dataString);
-    return JSON.parse(dataString);
-  } catch (err) {
-    return initialState;
-  }
-};
-
 
 class App {
   init() {
-    let currentState = initialState;
-
     const changeHashHandler = () => {
-      const hashValue = location.hash.replace(`#`, ``);
-      currentState = loadState(hashValue);
+      const currentState = loadState();
       App.changeTab(currentState);
     };
-
     window.onhashchange = changeHashHandler;
     changeHashHandler();
 
-    mainNavPresenter.init(currentState);
+    mainNavPresenter.init();
   }
 
   static changeTab(state) {
-    Utils.saveURL(state);
     if (state.currentTab === ``) {
       const currentData = [...data[`skills`]];
       return routerId[state.currentTab](currentData, state);

@@ -1,11 +1,15 @@
 import MainNavView from '../views/main-nav-view';
 import Utils from '../lib/utils';
+import {saveState, loadState} from '../lib/change-url';
 
 class MainNavPresenter {
-  init(state) {
+  init() {
+    const state = loadState();
     this.view = new MainNavView(state);
 
     this.view.changeTab = (evt) => {
+      const currentState = loadState();
+
       evt.preventDefault();
       const tab = evt.target;
 
@@ -17,8 +21,8 @@ class MainNavPresenter {
       tab.classList.add(`main-nav__link--current`);
       tab.removeAttribute(`href`);
 
-      state.currentTab = tab.id;
-      Utils.saveURL(state);
+      currentState.currentTab = tab.id;
+      saveState(currentState);
     };
 
     Utils.displayElement(this.view.element, `page-header`);

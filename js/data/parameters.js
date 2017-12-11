@@ -1,4 +1,4 @@
-import Utils from '../lib/utils';
+import deepClone from '../lib/deep-clone';
 
 const parametersOfApplication = {
   PAGE_BACK: -1,
@@ -118,12 +118,14 @@ const FILTERS = {
         {
           label: `Сначала старые`,
           name: `date`,
-          id: `old`
+          id: `old`,
+          checked: false
         },
         {
           label: `Сначала новые`,
           name: `date`,
-          id: `new`
+          id: `new`,
+          checked: false
         }
       ]
     },
@@ -160,13 +162,13 @@ const initialState = {
     portfolio: parametersOfApplication.FIRST_PAGE,
     blog: parametersOfApplication.FIRST_PAGE
   },
-  currentFilter: {
-    portfolio: Utils.deepClone(FILTERS.portfolio),
-    blog: Utils.deepClone(FILTERS.blog)
-  },
   amountItems: {
     portfolio: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO,
     blog: parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG
+  },
+  currentFilter: {
+    portfolio: deepClone(FILTERS.portfolio),
+    blog: deepClone(FILTERS.blog)
   }
 };
 

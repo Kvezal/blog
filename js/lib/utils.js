@@ -42,16 +42,6 @@ class Utils {
   static toUpperCaseFirstLetter(string) {
     return `${string.slice(0, 1).toUpperCase()}${string.slice(1)}`;
   }
-
-  static deepClone(obj) {
-    const string = JSON.stringify(obj);
-    return JSON.parse(string);
-  }
-
-  static saveURL(state) {
-    const encodeState = encodeURIComponent(JSON.stringify(state));
-    location.hash = encodeState;
-  }
 }
 
 export default Utils;
