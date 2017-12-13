@@ -101,7 +101,7 @@ const loadState = () => {
     const state = decompressState(hashValue);
     return state;
   } catch (err) {
-    return initialState;
+    return deepClone(initialState);
   }
 };
 

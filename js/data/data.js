@@ -72,7 +72,7 @@ export default {
     },
     {
       title: `Sedona`,
-      link: `#`,
+      link: `https://kvezal.github.io/sedona/`,
       features: [
         `Markup`,
         `Fixed`,

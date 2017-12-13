@@ -1,3 +1,46 @@
 .item-features {
-  //display
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+
+  max-width: 350px;
+  padding-right: 25px;
+  padding-bottom: 20px;
+  padding-left: 25px;
+
+  background-color: $secondary-color;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparentize($primary-color, .8);
+  border-radius: 5px;
+  box-shadow: 0 0 10px transparentize($primary-color, .6);
+
+  &__title {
+    @include font(30px, 30px);
+    margin-bottom: 15px;
+
+    text-align: center;
+  }
+
+  &__list {
+    @include clear-list;
+  }
+
+  &__element {
+    @include font(14px, 24px);
+    display: inline;
+
+    font-family: $font-secondary;
+  }
+
+  &__helper {
+    text-align: center;
+  }
+
+  &__svg {
+    position: relative;
+    top: 10px;
+    margin-left: 10px;
+  }
 }

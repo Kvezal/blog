@@ -23,7 +23,7 @@ class FilterView extends AbstractView {
     return this.filters.map((item) => {
       return (
         `<fieldset class="filter__item">
-          <legend class="filter__item-name">${item.title}</legend>
+          <legend class="filter__item-name">${item.title}:</legend>
           ${this.getTemplateFilterOptions(item.options, item.type)}
         </fieldset>`
       );

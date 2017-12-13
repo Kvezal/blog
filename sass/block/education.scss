@@ -43,6 +43,10 @@
     padding-right: 50px;
     padding-left: 50px;
 
+    &__title {
+      margin-bottom: 50px;
+    }
+
     &__wrap {
       display: flex;
       justify-content: space-between;

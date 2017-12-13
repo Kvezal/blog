@@ -1,0 +1,24 @@
+@include MQ(L) {
+  .scroll-bar {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+
+    width: 2px;
+    height: 95%;
+
+    background-color: transparentize($primary-color, .7);
+    transform: translateY(-50%);
+
+    &__handl {
+      position: absolute;
+      top: 0;
+      right: -1px;
+
+      width: 4px;
+
+      background-color: transparentize($primary-color, .4);
+      border-radius: 5px;
+    }
+  }
+}

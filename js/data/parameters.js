@@ -112,7 +112,7 @@ const FILTERS = {
 
   blog: [
     {
-      title: `По дате:`,
+      title: `По дате`,
       type: `radio`,
       options: [
         {
@@ -130,7 +130,7 @@ const FILTERS = {
       ]
     },
     {
-      title: `Технологии:`,
+      title: `Технологии`,
       type: `checkbox`,
       options: [
         {

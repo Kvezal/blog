@@ -8,7 +8,6 @@ import portfolioPresenter from './presenter/portfolio-presenter';
 import data from './data/data';
 import {loadState} from './lib/change-url';
 
-
 const ControllerId = {
   SKILLS: ``,
   EDUCATION: `education`,
@@ -31,7 +30,17 @@ class App {
       const currentState = loadState();
       App.changeTab(currentState);
     };
+    let currentHistoryLength;
+
+    const reloadMainNav = () => {
+      if (history.length === currentHistoryLength) {
+        mainNavPresenter.init();
+        return;
+      }
+      currentHistoryLength = history.length;
+    };
     window.onhashchange = changeHashHandler;
+    window.onpopstate = reloadMainNav;
     changeHashHandler();
 
     mainNavPresenter.init();
