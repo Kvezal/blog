@@ -130,7 +130,7 @@ gulp.task('js:update', ['scripts'], function (done) {
 });
 
 gulp.task('deploy', function () {
-  del('build');
+  del('.publish');
   return gulp.src('build/**/*')
     .pipe(ghPages());
 });
