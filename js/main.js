@@ -1056,10 +1056,10 @@ class PortfolioView extends AbstractView {
     const items = element.querySelectorAll(`.works__item`);
     items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
 
-    /* const descriptionBtns = element.querySelectorAll(`.works__btn--description`);
+    const descriptionBtns = element.querySelectorAll(`.works__btn--description`);
     descriptionBtns.forEach((btn) => {
-      btn.addEventListener(`click`, (evt) => this.descriptionClickHandler(evt, modal));
-    });*/
+      btn.addEventListener(`click`, this.btnDscriptionClickHandler);
+    });
   }
 }
 
@@ -1157,6 +1157,7 @@ class ItemDescriptionView extends AbstractView {
 
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
+const MIN_WIDTH_BROWSER = 1000;
 
 class ItemDescriptionPresenter {
   init(data, wrapper) {
@@ -1170,7 +1171,12 @@ class ItemDescriptionPresenter {
 
 
     this.view.descriptionScroll = (evt) => {
+      if (window.innerWidth < MIN_WIDTH_BROWSER) {
+        return;
+      }
+
       evt.preventDefault();
+
       const target = evt.currentTarget;
 
       if (target.classList.contains(`item-description`)) {
@@ -1298,9 +1304,12 @@ class PortfolioPresenter {
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 
-    /*this.view.descriptionClickHandler = (evt, this.view.modal) => {
+    this.view.btnDscriptionClickHandler = (evt) => {
+      evt.preventDefault();
 
-    };*/
+      this.view.description = itemDescription.init(this.dataItem, this.view.modal);
+      Utils.displayElement(this.view.description.element, this.view.modal);
+    };
 
     Utils.displayElement(this.view.element, `page-main`);
   }
