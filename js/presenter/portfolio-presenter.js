@@ -72,9 +72,12 @@ class PortfolioPresenter {
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 
-    /*this.view.descriptionClickHandler = (evt, this.view.modal) => {
+    this.view.btnDscriptionClickHandler = (evt) => {
+      evt.preventDefault();
 
-    };*/
+      this.view.description = itemDescription.init(this.dataItem, this.view.modal);
+      Utils.displayElement(this.view.description.element, this.view.modal);
+    };
 
     Utils.displayElement(this.view.element, `page-main`);
   }

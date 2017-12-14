@@ -3,6 +3,7 @@ import Utils from '../lib/utils';
 
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
+const MIN_WIDTH_BROWSER = 1000;
 
 class ItemDescriptionPresenter {
   init(data, wrapper) {
@@ -16,7 +17,12 @@ class ItemDescriptionPresenter {
 
 
     this.view.descriptionScroll = (evt) => {
+      if (window.innerWidth < MIN_WIDTH_BROWSER) {
+        return;
+      }
+
       evt.preventDefault();
+
       const target = evt.currentTarget;
 
       if (target.classList.contains(`item-description`)) {

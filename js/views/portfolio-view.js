@@ -64,10 +64,10 @@ class PortfolioView extends AbstractView {
     const items = element.querySelectorAll(`.works__item`);
     items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
 
-    /* const descriptionBtns = element.querySelectorAll(`.works__btn--description`);
+    const descriptionBtns = element.querySelectorAll(`.works__btn--description`);
     descriptionBtns.forEach((btn) => {
-      btn.addEventListener(`click`, (evt) => this.descriptionClickHandler(evt, modal));
-    });*/
+      btn.addEventListener(`click`, this.btnDscriptionClickHandler);
+    });
   }
 }
 
