@@ -7,10 +7,11 @@ class MainNavPresenter {
     const state = loadState();
     this.view = new MainNavView(state);
 
-    this.view.changeTab = (evt) => {
-      const currentState = loadState();
 
+    this.view.changeTab = (evt) => {
       evt.preventDefault();
+
+      const currentState = loadState();
       const tab = evt.target;
 
       if (tab.classList.contains(`main-nav__link--current`)) {
@@ -24,6 +25,34 @@ class MainNavPresenter {
       currentState.currentTab = tab.id;
       saveState(currentState);
     };
+
+
+    this.view.closeMenu = (evt) => {
+      evt.preventDefault();
+
+      const target = evt.target;
+
+      if (target.classList.contains(`main-nav__btn--close`)) {
+        target.classList.remove(`main-nav__btn--close`);
+        this.view.mainNavItems.forEach((item) => {
+          if (!item.firstElementChild.classList.contains(`main-nav__link--current`)) {
+            item.classList.add(`main-nav__item--hidden`);
+          } else {
+            item.style.overflow = `hidden`;
+          }
+        });
+        return;
+      }
+      target.classList.add(`main-nav__btn--close`);
+      this.view.mainNavItems.forEach((item) => {
+        if (!item.firstElementChild.classList.contains(`main-nav__link--current`)) {
+          item.classList.remove(`main-nav__item--hidden`);
+        } else {
+          item.style.overflow = ``;
+        }
+      });
+    };
+
 
     Utils.displayElement(this.view.element, `page-header`);
   }

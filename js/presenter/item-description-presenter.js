@@ -67,8 +67,6 @@ class ItemDescriptionPresenter {
     shiftContent = (params.shift > 0) ? params.coordY - SCROLL_STEP : shiftContent;
     shiftContent = (shiftContent < scrollEnd) ? scrollEnd : shiftContent;
 
-    console.log(ratio);
-
     return {
       height,
       contentHeight,

@@ -1,5 +1,9 @@
 .page-header {
   width: 100%;
+  overflow: hidden;
+
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 
 }
 
@@ -10,8 +14,6 @@
     overflow: hidden;
 
     background-color: $primary-color;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
   }
 }
 

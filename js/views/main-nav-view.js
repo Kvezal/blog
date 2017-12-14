@@ -14,7 +14,7 @@ class MainNavView extends AbstractView {
         <ul class="main-nav__list">
           ${this.templateNavigationItems}
         </ul>
-        <button class="main-nav__close" type="button"></button>
+        <button class="main-nav__btn  main-nav__btn--close" type="button"></button>
       </nav>`
     );
   }
@@ -32,10 +32,13 @@ class MainNavView extends AbstractView {
   }
 
   bind(element) {
+    this.mainNavItems = element.querySelectorAll(`.main-nav__item`);
+
     this.tabs = element.querySelectorAll(`.main-nav__link`);
-    this.tabs.forEach((item) => {
-      item.addEventListener(`click`, this.changeTab);
-    });
+    this.tabs.forEach((item) => item.addEventListener(`click`, this.changeTab));
+
+    const btn = element.querySelector(`.main-nav__btn`);
+    btn.addEventListener(`click`, this.closeMenu);
   }
 }
 

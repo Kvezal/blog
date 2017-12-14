@@ -16,13 +16,23 @@ class PortfolioPresenter {
 
     this.view.pagination = new PaginationPresenter().init(this.view).element;
 
+    const addMouseHandlers = (target) => {
+      target.addEventListener(`mousemove`, itemMouseMoveHandler);
+      target.addEventListener(`mouseout`, itemMouseOutHandler);
+      target.addEventListener(`click`, this.view.openDescription);
+    };
+
+    const removeMouseHandlers = (target) => {
+      target.removeEventListener(`mouseout`, itemMouseOutHandler);
+      target.removeEventListener(`mousemove`, itemMouseMoveHandler);
+      target.removeEventListener(`click`, this.view.openDescription);
+    };
 
     this.view.itemMouseOverHandler = (evt) => {
       evt.preventDefault();
-      if (evt.currentTarget.classList.contains(`works__item`)) {
-        evt.target.addEventListener(`mousemove`, itemMouseMoveHandler);
-        evt.target.addEventListener(`mouseout`, itemMouseOutHandler);
-        evt.target.addEventListener(`click`, this.view.openDescription);
+
+      if (!evt.target.classList.contains(`works__btn`)) {
+        addMouseHandlers(evt.target);
       }
       this.dataItem = this.view.data.find((item) => item.title === evt.currentTarget.dataset.item);
     };
@@ -45,16 +55,19 @@ class PortfolioPresenter {
     const itemMouseOutHandler = (evt) => {
       evt.preventDefault();
       if (evt.target.classList.contains(`works__item`)) {
-        evt.target.addEventListener(`mousemove`, itemMouseMoveHandler);
-        evt.target.addEventListener(`mouseout`, itemMouseOutHandler);
+        removeMouseHandlers(evt.target);
+
         Utils.clearElement(this.view.modal);
       }
     };
 
 
     this.view.openDescription = (evt) => {
-      evt.target.removeEventListener(`mouseout`, itemMouseOutHandler);
-      evt.target.removeEventListener(`mousemove`, itemMouseMoveHandler);
+      if (evt.target.classList.contains(`works__btn`)) {
+        return;
+      }
+      removeMouseHandlers(evt.target);
+
       this.view.description = itemDescription.init(this.dataItem, this.view.modal);
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
