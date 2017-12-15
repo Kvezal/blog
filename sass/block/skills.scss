@@ -42,6 +42,10 @@
 
       margin-bottom: 50px;
     }
+
+    &__list {
+      @include font(22px, 34px);
+    }
   }
 }
 

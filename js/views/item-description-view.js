@@ -1,13 +1,19 @@
 import AbstractView from './abstract-view';
+import Utils from '../lib/utils';
 
 class ItemDescriptionView extends AbstractView {
-  constructor(data) {
+  constructor(data, tab) {
     super();
 
     this.data = data;
+    this.tab = Utils.toUpperCaseFirstLetter(tab);
   }
 
   get template() {
+    return this[`template${this.tab}Description`];
+  }
+
+  get templatePortfolioDescription() {
     return (
       `<section class="item-description">
         <div class="scroll-bar">
@@ -23,6 +29,22 @@ class ItemDescriptionView extends AbstractView {
           <h3 class="item-description__subtitle">Описание</h3>
           <p class="item-description__text">${this.data.fullDescription}</p>
         </div>
+      </section>
+      <div class="overlay"></div>`
+    );
+  }
+
+  get templateEducationDescription() {
+    return (
+      `<section class="item-description">
+        <div class="scroll-bar">
+          <span class="scroll-bar__handl"></span>
+        </div>
+        <button class="item-description__close" type="button"></button>
+        <div class="item-description__wrap">
+          <img src="img/${this.data.name}.png"
+        </div>
+        <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
       </section>
       <div class="overlay"></div>`
     );

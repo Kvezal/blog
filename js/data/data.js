@@ -24,6 +24,37 @@ export default {
     `Написание оптимизированного кода`
   ],
 
+  education: [
+    {
+      name: `basicHTML&CSS`,
+      type: `Интенсив`,
+      title: `Базовый HTML и CSS`,
+      data: `16 января - 22 февраля 2017г.`,
+      state: `100%`
+    },
+    {
+      name: `advancedHTML&CSS`,
+      type: `Интенсив`,
+      title: `“Продвинутый HTML и CSS”`,
+      data: `22 мая - 28 июня 2017г.`,
+      state: `100%`
+    },
+    {
+      name: `basicJS`,
+      type: `Интенсив`,
+      title: `Базовый JavaScript`,
+      data: `8 августа - 20 сентября 2017г.`,
+      state: `100%`
+    },
+    {
+      name: `advancedJS`,
+      type: `Интенсив`,
+      title: `Продвинутый JavaScript`,
+      data: `26 сентября - 8 ноября 2017г.`,
+      state: `100%`
+    }
+  ],
+
   portfolio: [
     {
       title: `Gllacy`,

@@ -7,7 +7,7 @@
   }
 
   &__text {
-    @include font(16px, 22px);
+    @include font(18px, 22px);
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -15,11 +15,17 @@
   &__name {
     font-family: $font-secondary;
     color: $third-color;
+
+    font-size: 16px;
   }
 }
 
 @include MQ(L) {
   .descriptions {
     margin-right: 30px;
+
+    &__text {
+      font-size: 20px;
+    }
   }
 }

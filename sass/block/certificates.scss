@@ -9,6 +9,16 @@
     width: 45%;
     margin-bottom: 30px;
   }
+
+  &__link {
+    @include font(0, 0);
+    display: block;
+    overflow: hidden;
+
+    border-radius: 5px;
+    box-shadow: 0 0 0 2px $secondary-color,
+      0 0 5px 2px $primary-color;
+  }
 }
 
 @include MQ(M) {
@@ -28,6 +38,14 @@
 
     &__item {
       margin-bottom: 25px;
+    }
+
+    &__link {
+      transition: .25s;
+      &:hover {
+        box-shadow: 0 0 0 2px $secondary-color,
+          0 0 15px 3px $primary-color;
+      }
     }
   }
 }

@@ -16,17 +16,20 @@ class PortfolioPresenter {
 
     this.view.pagination = new PaginationPresenter().init(this.view).element;
 
+
     const addMouseHandlers = (target) => {
       target.addEventListener(`mousemove`, itemMouseMoveHandler);
       target.addEventListener(`mouseout`, itemMouseOutHandler);
       target.addEventListener(`click`, this.view.openDescription);
     };
 
+
     const removeMouseHandlers = (target) => {
       target.removeEventListener(`mouseout`, itemMouseOutHandler);
       target.removeEventListener(`mousemove`, itemMouseMoveHandler);
       target.removeEventListener(`click`, this.view.openDescription);
     };
+
 
     this.view.itemMouseOverHandler = (evt) => {
       evt.preventDefault();
@@ -68,14 +71,14 @@ class PortfolioPresenter {
       }
       removeMouseHandlers(evt.target);
 
-      this.view.description = itemDescription.init(this.dataItem, this.view.modal);
+      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 
     this.view.btnDscriptionClickHandler = (evt) => {
       evt.preventDefault();
 
-      this.view.description = itemDescription.init(this.dataItem, this.view.modal);
+      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 

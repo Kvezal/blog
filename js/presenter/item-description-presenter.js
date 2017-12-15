@@ -6,8 +6,8 @@ const START_SCROLL_ELEMENT = 0;
 const MIN_WIDTH_BROWSER = 1000;
 
 class ItemDescriptionPresenter {
-  init(data, wrapper) {
-    this.view = new ItemDescriptionView(data);
+  init(data, tab, wrapper) {
+    this.view = new ItemDescriptionView(data, tab);
 
 
     this.view.closeDescription = (evt) => {
