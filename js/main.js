@@ -1012,9 +1012,9 @@ class ItemDescriptionView extends AbstractView {
         </div>
         <button class="item-description__close" type="button"></button>
         <div class="item-description__wrap">
-          <img src="img/${this.data.name}.png"
+          <img src="img/${this.data.name}.png">
+          <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
         </div>
-        <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
       </section>
       <div class="overlay"></div>`
     );
@@ -1040,7 +1040,7 @@ class ItemDescriptionView extends AbstractView {
 
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
-const MIN_WIDTH_BROWSER = 1000;
+const MIN_WIDTH_BROWSER = 0;
 
 class ItemDescriptionPresenter {
   init(data, tab, wrapper) {
