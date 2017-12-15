@@ -1040,7 +1040,7 @@ class ItemDescriptionView extends AbstractView {
 
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
-const MIN_WIDTH_BROWSER = 0;
+const MIN_WIDTH_BROWSER = 1000;
 
 class ItemDescriptionPresenter {
   init(data, tab, wrapper) {
