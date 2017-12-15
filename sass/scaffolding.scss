@@ -1,4 +1,11 @@
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+
   font-family: $font-primary;
   color: $primary-color;
 }
