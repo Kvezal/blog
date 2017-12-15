@@ -42,9 +42,9 @@ class ItemDescriptionView extends AbstractView {
         </div>
         <button class="item-description__close" type="button"></button>
         <div class="item-description__wrap">
-          <img src="img/${this.data.name}.png"
+          <img src="img/${this.data.name}.png">
+          <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
         </div>
-        <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
       </section>
       <div class="overlay"></div>`
     );
