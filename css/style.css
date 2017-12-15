@@ -544,7 +544,7 @@ img {
 }
 
 .descriptions__text {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 22px;
   margin-top: 0;
   margin-bottom: 0;
@@ -553,6 +553,7 @@ img {
 .descriptions__name {
   font-family: "Montserrat", "Arial", sans-serif;
   color: #a25063;
+  font-size: 16px;
 }
 
 .certificates {
@@ -575,6 +576,15 @@ img {
 .certificates__item {
   width: 45%;
   margin-bottom: 30px;
+}
+
+.certificates__link {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 0 2px #f6f2ec, 0 0 5px 2px #413b41;
 }
 
 .portfolio {
@@ -1095,6 +1105,10 @@ img {
   width: 100%;
   height: 100vh;
   padding: 30px;
+  padding-top: 40px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
   background-color: #f6f2ec;
 }
 
@@ -1163,6 +1177,10 @@ img {
   padding-left: 20px;
   font-family: "Montserrat", "Arial", sans-serif;
   text-indent: 30px;
+}
+
+.item-description__btn {
+  margin-top: 20px;
 }
 
 .overlay {
@@ -1279,6 +1297,11 @@ img {
     font-size: 60px;
     line-height: 60px;
     margin-bottom: 50px;
+  }
+
+  .skills__list {
+    font-size: 22px;
+    line-height: 34px;
   }
 
   .education {
@@ -1400,12 +1423,16 @@ img {
     width: 80%;
     height: auto;
     max-height: 80vh;
-    padding: 30px;
+    padding: 40px;
     background-color: #f6f2ec;
     border-radius: 10px;
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     box-shadow: 0 0 15px #413b41;
+  }
+
+  .item-description__btn {
+    margin-top: 25px;
   }
 }
 
@@ -1477,6 +1504,10 @@ img {
     margin-right: 30px;
   }
 
+  .descriptions__text {
+    font-size: 20px;
+  }
+
   .certificates {
     -webkit-box-align: start;
     -webkit-align-items: flex-start;
@@ -1487,6 +1518,15 @@ img {
 
   .certificates__item {
     margin-bottom: 25px;
+  }
+
+  .certificates__link {
+    -webkit-transition: .25s;
+            transition: .25s;
+  }
+
+  .certificates__link:hover {
+    box-shadow: 0 0 0 2px #f6f2ec, 0 0 15px 3px #413b41;
   }
 
   .portfolio {
@@ -1680,6 +1720,10 @@ img {
     box-sizing: border-box;
     width: 800px;
     background-color: #f6f2ec;
+  }
+
+  .item-description__btn {
+    margin-top: 30px;
   }
 
   .scroll-bar {

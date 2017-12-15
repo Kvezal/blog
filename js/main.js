@@ -882,8 +882,10 @@ class SkillsPresenter {
 var skillsPresenter = new SkillsPresenter();
 
 class EducationView extends AbstractView {
-  constructor() {
+  constructor(data) {
     super();
+
+    this.data = data;
   }
 
   get template() {
@@ -891,102 +893,250 @@ class EducationView extends AbstractView {
       `<section class="education">
         <h1 class="education__title">Образование</h1>
         <div class="education__wrap">
-          <ul class="descriptions">
-            <li class="descriptions__item">
-              <p class="descriptions__text">
-                <span class="descriptions__name">Высшее техническое:</span>
-                “Ангарская Государственная Техническая Академия”
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Факультет:</span>
-                "Техническая Кибернетика”
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Кафедра:</span>
-                Промышленная электроника и информационно-измерительная техника”<br>
-                (специалитет 2010 - 2015г., очная форма обучения)
-              </p>
-            </li>
-            <li class="descriptions__item">
-              <p class="descriptions__text">
-                <span class="descriptions__name">Интенсив:</span>
-                “Базовый HTML и CSS”
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Дата прохождения:</span>
-                16 января - 22 февраля 2017г.
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Соответствия критериям:</span>
-                100%
-              </p>
-            </li>
-            <li class="descriptions__item">
-              <p class="descriptions__text">
-                <span class="descriptions__name">Интенсив:</span>
-                “Продвинутый HTML и CSS”
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Дата прохождения:</span>
-                22 мая - 28 июня 2017г.
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Соответствия критериям:</span>
-                100%
-              </p>
-            </li>
-            <li class="descriptions__item">
-              <p class="descriptions__text">
-                <span class="descriptions__name">Интенсив:</span>
-                “Базовый JavaScript”
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Дата прохождения:</span>
-                8 августа - 20 сентября 2017г.
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Соответствия критериям:</span>
-                100%
-              </p>
-            </li>
-            <li class="descriptions__item">
-              <p class="descriptions__text">
-                <span class="descriptions__name">Интенсив:</span>
-                “Продвинутый JavaScript”
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Дата прохождения:</span>
-                26 сентября - 8 ноября 2017г.
-              </p>
-              <p class="descriptions__text">
-                <span class="descriptions__name">Соответствия критериям:</span>
-                100%
-              </p>
-            </li>
-          </ul>
-          <ul class="certificates">
-            <li class="certificates__item">
-              <img class="certificates__image" src="img/basicHTML&CSS@1x.jpg">
-            </li>
-            <li class="certificates__item">
-              <img class="certificates__image" src="img/advancedHTML&CSS@1x.jpg">
-            </li>
-            <li class="certificates__item">
-              <img class="certificates__image" src="img/basicJS@1x.jpg">
-            </li>
-            <li class="certificates__item">
-              <img class="certificates__image" src="img/advancedJS@1x.jpg">
-            </li>
-          </ul>
+          ${this.templatesLists}
         </div>
+        <div class="modal"></div>
       </section>`
     );
   }
+
+  get templatesLists() {
+    const descriptionItems = [];
+    const certificates = [];
+
+    this.data.forEach((item) => {
+      descriptionItems.push(this.getTemplateDescriptionItem(item));
+      certificates.push(this.getTemplateCertificate(item));
+    });
+
+    return (
+      `<ul class="descriptions">
+        <li class="descriptions__item">
+          <p class="descriptions__text">
+            <span class="descriptions__name">Высшее техническое:</span>
+            “Ангарская Государственная Техническая Академия”
+          </p>
+          <p class="descriptions__text">
+            <span class="descriptions__name">Факультет:</span>
+            "Техническая Кибернетика”
+          </p>
+          <p class="descriptions__text">
+            <span class="descriptions__name">Кафедра:</span>
+            Промышленная электроника и информационно-измерительная техника”<br>
+            (специалитет 2010 - 2015г., очная форма обучения)
+          </p>
+        </li>
+        ${descriptionItems.join(``)}
+      </ul>
+      <ul class="certificates">
+        ${certificates.join(``)}
+      </ul>`
+    );
+  }
+
+  getTemplateDescriptionItem(item) {
+    return (
+      `<li class="descriptions__item">
+        <p class="descriptions__text">
+          <span class="descriptions__name">${item.type}:</span>
+          “${item.title}”
+        </p>
+        <p class="descriptions__text">
+          <span class="descriptions__name">Дата прохождения:</span>
+          ${item.data}
+        </p>
+        <p class="descriptions__text">
+          <span class="descriptions__name">Соответствия критериям:</span>
+          ${item.state}
+        </p>
+      </li>`
+    );
+  }
+
+  getTemplateCertificate(item) {
+    return (
+      `<li class="certificates__item">
+        <a class="certificates__link" href="/documents/${item.name}.pdf">
+          <img class="certificates__image" src="img/${item.name}@1x.jpg" srcset="img/${item.name}@2x.jpg 2x" data-item="${item.name}">
+        </a>
+      </li>`
+    );
+  }
+
+  bind(element) {
+    const items = element.querySelectorAll(`.certificates__link`);
+    items.forEach((item) => item.addEventListener(`click`, this.certificateItemHandler));
+
+    this.modal = element.querySelector(`.modal`);
+  }
 }
 
+class ItemDescriptionView extends AbstractView {
+  constructor(data, tab) {
+    super();
+
+    this.data = data;
+    this.tab = Utils.toUpperCaseFirstLetter(tab);
+  }
+
+  get template() {
+    return this[`template${this.tab}Description`];
+  }
+
+  get templatePortfolioDescription() {
+    return (
+      `<section class="item-description">
+        <div class="scroll-bar">
+          <span class="scroll-bar__handl"></span>
+        </div>
+        <button class="item-description__close" type="button"></button>
+        <div class="item-description__wrap">
+          <h2 class="item-description__title">${this.data.title}</h2>
+          <h3 class="item-description__subtitle">Особенности</h3>
+          <ul class="item-description__list">
+            ${this.templateDescriptionListOfElements}
+          </ul>
+          <h3 class="item-description__subtitle">Описание</h3>
+          <p class="item-description__text">${this.data.fullDescription}</p>
+        </div>
+      </section>
+      <div class="overlay"></div>`
+    );
+  }
+
+  get templateEducationDescription() {
+    return (
+      `<section class="item-description">
+        <div class="scroll-bar">
+          <span class="scroll-bar__handl"></span>
+        </div>
+        <button class="item-description__close" type="button"></button>
+        <div class="item-description__wrap">
+          <img src="img/${this.data.name}.png"
+        </div>
+        <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
+      </section>
+      <div class="overlay"></div>`
+    );
+  }
+
+  get templateDescriptionListOfElements() {
+    return this.data.features.map((feature) => {
+      return `<li class="item-description__element">${feature}</li>`;
+    }).join(``);
+  }
+
+  bind(element) {
+    const btnCloseDescription = element.querySelector(`.item-description__close`);
+    btnCloseDescription.onclick = this.closeDescription;
+
+    this.description = element.querySelector(`.item-description`);
+    this.scrollBar = this.description.querySelector(`.scroll-bar`);
+    this.scrollHandl = this.scrollBar.querySelector(`.scroll-bar__handl`);
+
+    this.description.addEventListener(`wheel`, this.descriptionScroll);
+  }
+}
+
+const SCROLL_STEP = 26;
+const START_SCROLL_ELEMENT = 0;
+const MIN_WIDTH_BROWSER = 1000;
+
+class ItemDescriptionPresenter {
+  init(data, tab, wrapper) {
+    this.view = new ItemDescriptionView(data, tab);
+
+
+    this.view.closeDescription = (evt) => {
+      evt.preventDefault();
+      Utils.clearElement(wrapper);
+    };
+
+
+    this.view.descriptionScroll = (evt) => {
+      if (window.innerWidth < MIN_WIDTH_BROWSER) {
+        return;
+      }
+
+      evt.preventDefault();
+
+      const target = evt.currentTarget;
+
+      if (target.classList.contains(`item-description`)) {
+        const wrap = target.querySelector(`.item-description__wrap`);
+        const top = +wrap.style.transform.replace(/[A-z]|\(|\)/g, ``);
+
+        const descriptionParameters = this.getElementParameters({
+          element: this.view.description,
+          coordY: top,
+          shift: evt.deltaY
+        });
+
+        const scrollBarHeight = this.view.scrollBar.clientHeight;
+        const scrollHandl = this.view.scrollHandl;
+        scrollHandl.style.height = `${scrollBarHeight * descriptionParameters.ratio}px`;
+
+        if (descriptionParameters.height >= descriptionParameters.contentHeight) {
+          wrap.style.transform = ``;
+          scrollHandl.style.transform = ``;
+          return;
+        }
+
+        const scrollRatio = scrollBarHeight / descriptionParameters.height;
+        const shiftScrollHandl = -(scrollRatio * descriptionParameters.ratio * descriptionParameters.shiftContent);
+
+        wrap.style.transform = `translateY(${descriptionParameters.shiftContent}px)`;
+        scrollHandl.style.transform = `translateY(${shiftScrollHandl}px)`;
+      }
+    };
+
+
+    return this.view;
+  }
+
+  getElementParameters(params) {
+    const styleElement = getComputedStyle(params.element);
+    const paddings = +styleElement.paddingTop.replace(/\D/g, ``) +
+        +styleElement.paddingBottom.replace(/\D/g, ``);
+
+    const height = params.element.clientHeight - paddings;
+    const scrollHeight = params.element.scrollHeight;
+    const contentHeight = scrollHeight - paddings;
+    const scrollEnd = -(contentHeight - height);
+    const ratio = height / contentHeight;
+
+    let shiftContent = params.coordY + SCROLL_STEP;
+    shiftContent = (shiftContent > START_SCROLL_ELEMENT) ? START_SCROLL_ELEMENT : shiftContent;
+    shiftContent = (params.shift > 0) ? params.coordY - SCROLL_STEP : shiftContent;
+    shiftContent = (shiftContent < scrollEnd) ? scrollEnd : shiftContent;
+
+    return {
+      height,
+      contentHeight,
+      shiftContent,
+      ratio
+    };
+  }
+}
+
+var itemDescription = new ItemDescriptionPresenter();
+
 class EducationPresenter {
-  init() {
-    this.view = new EducationView();
+  init(data, state) {
+    this.view = new EducationView(data);
+
+
+    const openCertificate = () => {
+      this.view.description = itemDescription.init(this.dataItem, state.currentTab, this.view.modal);
+      Utils.displayElement(this.view.description.element, this.view.modal);
+    };
+
+
+    this.view.certificateItemHandler = (evt) => {
+      evt.preventDefault();
+      this.dataItem = this.view.data.find((item) => item.name === evt.target.dataset.item);
+      openCertificate(evt.target);
+    };
 
     Utils.displayElement(this.view.element, `page-main`);
   }
@@ -1109,135 +1259,6 @@ class ItemFeaturesPresenter {
 
 var itemFeatures = new ItemFeaturesPresenter();
 
-class ItemDescriptionView extends AbstractView {
-  constructor(data) {
-    super();
-
-    this.data = data;
-  }
-
-  get template() {
-    return (
-      `<section class="item-description">
-        <div class="scroll-bar">
-          <span class="scroll-bar__handl"></span>
-        </div>
-        <button class="item-description__close" type="button"></button>
-        <div class="item-description__wrap">
-          <h2 class="item-description__title">${this.data.title}</h2>
-          <h3 class="item-description__subtitle">Особенности</h3>
-          <ul class="item-description__list">
-            ${this.templateDescriptionListOfElements}
-          </ul>
-          <h3 class="item-description__subtitle">Описание</h3>
-          <p class="item-description__text">${this.data.fullDescription}</p>
-        </div>
-      </section>
-      <div class="overlay"></div>`
-    );
-  }
-
-  get templateDescriptionListOfElements() {
-    return this.data.features.map((feature) => {
-      return `<li class="item-description__element">${feature}</li>`;
-    }).join(``);
-  }
-
-  bind(element) {
-    const btnCloseDescription = element.querySelector(`.item-description__close`);
-    btnCloseDescription.onclick = this.closeDescription;
-
-    this.description = element.querySelector(`.item-description`);
-    this.scrollBar = this.description.querySelector(`.scroll-bar`);
-    this.scrollHandl = this.scrollBar.querySelector(`.scroll-bar__handl`);
-
-    this.description.addEventListener(`wheel`, this.descriptionScroll);
-  }
-}
-
-const SCROLL_STEP = 26;
-const START_SCROLL_ELEMENT = 0;
-const MIN_WIDTH_BROWSER = 1000;
-
-class ItemDescriptionPresenter {
-  init(data, wrapper) {
-    this.view = new ItemDescriptionView(data);
-
-
-    this.view.closeDescription = (evt) => {
-      evt.preventDefault();
-      Utils.clearElement(wrapper);
-    };
-
-
-    this.view.descriptionScroll = (evt) => {
-      if (window.innerWidth < MIN_WIDTH_BROWSER) {
-        return;
-      }
-
-      evt.preventDefault();
-
-      const target = evt.currentTarget;
-
-      if (target.classList.contains(`item-description`)) {
-        const wrap = target.querySelector(`.item-description__wrap`);
-        const top = +wrap.style.transform.replace(/[A-z]|\(|\)/g, ``);
-
-        const descriptionParameters = this.getElementParameters({
-          element: this.view.description,
-          coordY: top,
-          shift: evt.deltaY
-        });
-
-        const scrollBarHeight = this.view.scrollBar.clientHeight;
-        const scrollHandl = this.view.scrollHandl;
-        scrollHandl.style.height = `${scrollBarHeight * descriptionParameters.ratio}px`;
-
-        if (descriptionParameters.height >= descriptionParameters.contentHeight) {
-          wrap.style.transform = ``;
-          scrollHandl.style.transform = ``;
-          return;
-        }
-
-        const scrollRatio = scrollBarHeight / descriptionParameters.height;
-        const shiftScrollHandl = -(scrollRatio * descriptionParameters.ratio * descriptionParameters.shiftContent);
-
-        wrap.style.transform = `translateY(${descriptionParameters.shiftContent}px)`;
-        scrollHandl.style.transform = `translateY(${shiftScrollHandl}px)`;
-      }
-    };
-
-
-    return this.view;
-  }
-
-  getElementParameters(params) {
-    const styleElement = getComputedStyle(params.element);
-    const paddings = +styleElement.paddingTop.replace(/\D/g, ``) +
-        +styleElement.paddingBottom.replace(/\D/g, ``);
-
-    const height = params.element.clientHeight - paddings;
-    const scrollHeight = params.element.scrollHeight;
-    const contentHeight = scrollHeight - paddings;
-    const scrollEnd = -(contentHeight - height);
-    const ratio = height / contentHeight;
-
-    let shiftContent = params.coordY + SCROLL_STEP;
-    shiftContent = (shiftContent > START_SCROLL_ELEMENT) ? START_SCROLL_ELEMENT : shiftContent;
-    shiftContent = (params.shift > 0) ? params.coordY - SCROLL_STEP : shiftContent;
-    shiftContent = (shiftContent < scrollEnd) ? scrollEnd : shiftContent;
-
-    return {
-      height,
-      contentHeight,
-      shiftContent,
-      ratio
-    };
-  }
-}
-
-var itemDescription = new ItemDescriptionPresenter();
-
 class PortfolioPresenter {
   init(data, state) {
     this.view = new PortfolioView(data, state);
@@ -1248,17 +1269,20 @@ class PortfolioPresenter {
 
     this.view.pagination = new PaginationPresenter().init(this.view).element;
 
+
     const addMouseHandlers = (target) => {
       target.addEventListener(`mousemove`, itemMouseMoveHandler);
       target.addEventListener(`mouseout`, itemMouseOutHandler);
       target.addEventListener(`click`, this.view.openDescription);
     };
 
+
     const removeMouseHandlers = (target) => {
       target.removeEventListener(`mouseout`, itemMouseOutHandler);
       target.removeEventListener(`mousemove`, itemMouseMoveHandler);
       target.removeEventListener(`click`, this.view.openDescription);
     };
+
 
     this.view.itemMouseOverHandler = (evt) => {
       evt.preventDefault();
@@ -1300,14 +1324,14 @@ class PortfolioPresenter {
       }
       removeMouseHandlers(evt.target);
 
-      this.view.description = itemDescription.init(this.dataItem, this.view.modal);
+      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 
     this.view.btnDscriptionClickHandler = (evt) => {
       evt.preventDefault();
 
-      this.view.description = itemDescription.init(this.dataItem, this.view.modal);
+      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 
@@ -1341,6 +1365,37 @@ var data = {
     `Progressive enhancement`,
     `Соблюдение принципа DRY`,
     `Написание оптимизированного кода`
+  ],
+
+  education: [
+    {
+      name: `basicHTML&CSS`,
+      type: `Интенсив`,
+      title: `Базовый HTML и CSS`,
+      data: `16 января - 22 февраля 2017г.`,
+      state: `100%`
+    },
+    {
+      name: `advancedHTML&CSS`,
+      type: `Интенсив`,
+      title: `“Продвинутый HTML и CSS”`,
+      data: `22 мая - 28 июня 2017г.`,
+      state: `100%`
+    },
+    {
+      name: `basicJS`,
+      type: `Интенсив`,
+      title: `Базовый JavaScript`,
+      data: `8 августа - 20 сентября 2017г.`,
+      state: `100%`
+    },
+    {
+      name: `advancedJS`,
+      type: `Интенсив`,
+      title: `Продвинутый JavaScript`,
+      data: `26 сентября - 8 ноября 2017г.`,
+      state: `100%`
+    }
   ],
 
   portfolio: [
