@@ -21,6 +21,7 @@ class BlogView extends AbstractView {
           </ul>
           <div class="pagination"></div>
         </section>
+        <div class="modal"></div>
       </section>`
     );
   }
@@ -28,8 +29,8 @@ class BlogView extends AbstractView {
   getTemplateListItem(item) {
     return (
       `<li class="articles__item">
-        <p class="articles__name">${item.title} - ${item.description}</p>
-        <a class="btn" href="${item.link}">Прочитать</a>
+        <p class="articles__name">${item.title} - ${item.shortDescription}</p>
+        <a class="btn" href="${item.link}" data-item="${item.date}">Прочитать</a>
       </li>`
     );
   }
@@ -45,11 +46,18 @@ class BlogView extends AbstractView {
   }
 
   bind(element) {
+    const btns = element.querySelectorAll(`.btn`);
+    btns.forEach((btn) => {
+      btn.addEventListener(`click`, this.clickBtnHandler);
+    });
+
     const filter = element.querySelector(`.filter`);
     Utils.replaceOldElement(this.filter, filter);
 
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
+
+    this.modal = element.querySelector(`.modal`);
   }
 }
 

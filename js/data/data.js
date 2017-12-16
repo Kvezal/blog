@@ -243,7 +243,7 @@ export default {
         `Promise`
       ],
       shortDescription: `онлайн-игра в которой игроку предлагается отличать фотографии от фотореалистичных изображений.`,
-      fullDescription: `Приложение спроектировано в соответствии с паттерном MVP, также произведено проектирование структуры данных, с последующей адаптацией приходящих с сервера данных, под ранее созданную структуру(ранее была неизвестна организация серверных данных, для чего и потребовалось их адаптировать под используемую в проекте структуру данных). Функционал проекта реализован в соответствии с техническим заданием. Весь код организован в соответствии с принципом dry. Осуществлена оптимизация кода.`
+      fullDescription: `Приложение спроектировано в соответствии с паттерном MVP, также произведено проектирование структуры данных, с последующей адаптацией приходящих с сервера данных, под ранее созданную структуру (ранее была неизвестна организация данных на серверной стороне, для чего и потребовалось их адаптировать под используемую в проекте структуру). Функционал проекта реализован в соответствии с техническим заданием. Весь код организован в соответствии с принципом dry. Осуществлена оптимизация кода.`
     }
   ],
 
@@ -251,32 +251,41 @@ export default {
     {
       title: `Название статьи 1`,
       link: `#`,
-      description: `Описание 1`,
-      date: new Date() - 1,
+      date: `${new Date() - 1}`,
       article: `Текст статьи`,
       features: [
         `html`
-      ]
+      ],
+      shortDescription: `Описание 1`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     },
     {
       title: `Название статьи 2`,
       link: `#`,
-      description: `Описание 2`,
-      date: new Date() - 2,
+      date: `${new Date() - 2}`,
       article: `Текст статьи`,
       features: [
         `css`
-      ]
+      ],
+      shortDescription: `Описание 2`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     },
     {
       title: `Название статьи 3`,
       link: `#`,
-      description: `Описание 3`,
-      date: new Date() - 3,
+      date: `${new Date() - 3}`,
       article: `Текст статьи`,
       features: [
         `js`
-      ]
+      ],
+      shortDescription: `Описание 3`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     }
   ]
 };
