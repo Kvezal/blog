@@ -77,6 +77,7 @@ const deepClone = (obj) => {
 
 const parametersOfApplication = {
   PAGE_BACK: -1,
+  ITEMS_ON_PAGE_OF_SKILLS: 15,
   ITEMS_ON_PAGE_OF_PORTFOLIO: 6,
   ITEMS_ON_PAGE_OF_BLOG: 7,
   FIRST_PAGE: 1,
@@ -234,10 +235,12 @@ const FILTERS = {
 const initialState = {
   currentTab: ``,
   currentPage: {
+    skills: parametersOfApplication.FIRST_PAGE,
     portfolio: parametersOfApplication.FIRST_PAGE,
     blog: parametersOfApplication.FIRST_PAGE
   },
   amountItems: {
+    skills: parametersOfApplication.ITEMS_ON_PAGE_OF_SKILLS,
     portfolio: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO,
     blog: parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG
   },
@@ -723,7 +726,8 @@ class PaginationView extends AbstractView {
   }
 
   get templateItems() {
-    const tab = this.state.currentTab;
+    const tab = (this.state.currentTab !== ``) ? this.state.currentTab : `skills`;
+
     const amountOfPage = Math.ceil(this.data.length / this.state.amountItems[tab]);
 
     if (!amountOfPage) {
@@ -797,7 +801,8 @@ class PaginationPresenter {
     this.view = new PaginationView(viewTab);
 
     const state = this.view.state;
-    const tab = state.currentTab;
+    const tab = (state.currentTab !== ``) ? state.currentTab : `skills`;
+
 
     this.view.showPage = (evt) => {
       evt.preventDefault();
@@ -805,17 +810,20 @@ class PaginationPresenter {
       saveState(state);
     };
 
+
     this.view.showPreviousPage = (evt) => {
       evt.preventDefault();
       --state.currentPage[tab];
       saveState(state);
     };
 
+
     this.view.showNextPage = (evt) => {
       evt.preventDefault();
       ++state.currentPage[tab];
       saveState(state);
     };
+
 
     return this.view;
   }
@@ -838,42 +846,58 @@ class BlogPresenter {
 var blogPresenter = new BlogPresenter();
 
 class SkillsView extends AbstractView {
-  constructor(data) {
+  constructor(data, state) {
     super();
 
     this.data = data;
+    this.state = state;
   }
 
   get template() {
     return (
       `<section class="skills">
         <h1 class="skills__title">Навыки</h1>
-        <ol class="skills__list">
-          ${this.templateList}
-        </ol>
+        ${this.templateList}
+        <div class="pagination"></div>
       </section>`
     );
   }
 
-  templateListItem(item) {
+  getTemplateListItem(item) {
     return (
       `<li class="skills__item">${item};</li>`
     );
   }
 
   get templateList() {
-    const list = this.data.map((item) => {
-      return this.templateListItem(item);
+    const currentPage = this.state.currentPage[`skills`];
+    const lastPage = currentPage + parametersOfApplication.PAGE_BACK;
+    const startItemPage = lastPage * this.state.amountItems[`skills`];
+    const endItemPagethis = currentPage * this.state.amountItems[`skills`];
+
+    const list = this.data.slice(startItemPage, endItemPagethis).map((item) => {
+      return this.getTemplateListItem(item);
     });
     const indexLastItem = list.length - 1;
     list[indexLastItem] = list[indexLastItem].replace(/;/, ``);
-    return list.join(``);
+    return (
+      `<ol class="skills__list" start="${startItemPage + 1}">
+        ${list.join(``)}
+      </ol>`
+    );
+  }
+
+  bind(element) {
+    const pagination = element.querySelector(`.pagination`);
+    Utils.replaceOldElement(this.pagination, pagination);
   }
 }
 
 class SkillsPresenter {
-  init(data) {
-    this.view = new SkillsView(data);
+  init(data, state) {
+    this.view = new SkillsView(data, state);
+
+    this.view.pagination = new PaginationPresenter().init(this.view).element;
 
     Utils.displayElement(this.view.element, `page-main`);
   }
