@@ -20,7 +20,8 @@ class PaginationView extends AbstractView {
   }
 
   get templateItems() {
-    const tab = this.state.currentTab;
+    const tab = (this.state.currentTab !== ``) ? this.state.currentTab : `skills`;
+
     const amountOfPage = Math.ceil(this.data.length / this.state.amountItems[tab]);
 
     if (!amountOfPage) {

@@ -1,36 +1,54 @@
 import AbstractView from './abstract-view';
+import {parametersOfApplication} from '../data/parameters';
+
+import Utils from '../lib/utils';
+
 
 class SkillsView extends AbstractView {
-  constructor(data) {
+  constructor(data, state) {
     super();
 
     this.data = data;
+    this.state = state;
   }
 
   get template() {
     return (
       `<section class="skills">
         <h1 class="skills__title">Навыки</h1>
-        <ol class="skills__list">
-          ${this.templateList}
-        </ol>
+        ${this.templateList}
+        <div class="pagination"></div>
       </section>`
     );
   }
 
-  templateListItem(item) {
+  getTemplateListItem(item) {
     return (
       `<li class="skills__item">${item};</li>`
     );
   }
 
   get templateList() {
-    const list = this.data.map((item) => {
-      return this.templateListItem(item);
+    const currentPage = this.state.currentPage[`skills`];
+    const lastPage = currentPage + parametersOfApplication.PAGE_BACK;
+    const startItemPage = lastPage * this.state.amountItems[`skills`];
+    const endItemPagethis = currentPage * this.state.amountItems[`skills`];
+
+    const list = this.data.slice(startItemPage, endItemPagethis).map((item) => {
+      return this.getTemplateListItem(item);
     });
     const indexLastItem = list.length - 1;
     list[indexLastItem] = list[indexLastItem].replace(/;/, ``);
-    return list.join(``);
+    return (
+      `<ol class="skills__list" start="${startItemPage + 1}">
+        ${list.join(``)}
+      </ol>`
+    );
+  }
+
+  bind(element) {
+    const pagination = element.querySelector(`.pagination`);
+    Utils.replaceOldElement(this.pagination, pagination);
   }
 }
 

@@ -2,6 +2,7 @@ import deepClone from '../lib/deep-clone';
 
 const parametersOfApplication = {
   PAGE_BACK: -1,
+  ITEMS_ON_PAGE_OF_SKILLS: 15,
   ITEMS_ON_PAGE_OF_PORTFOLIO: 6,
   ITEMS_ON_PAGE_OF_BLOG: 7,
   FIRST_PAGE: 1,
@@ -159,10 +160,12 @@ const FILTERS = {
 const initialState = {
   currentTab: ``,
   currentPage: {
+    skills: parametersOfApplication.FIRST_PAGE,
     portfolio: parametersOfApplication.FIRST_PAGE,
     blog: parametersOfApplication.FIRST_PAGE
   },
   amountItems: {
+    skills: parametersOfApplication.ITEMS_ON_PAGE_OF_SKILLS,
     portfolio: parametersOfApplication.ITEMS_ON_PAGE_OF_PORTFOLIO,
     blog: parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG
   },

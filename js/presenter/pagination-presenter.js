@@ -7,7 +7,8 @@ class PaginationPresenter {
     this.view = new PaginationView(viewTab);
 
     const state = this.view.state;
-    const tab = state.currentTab;
+    const tab = (state.currentTab !== ``) ? state.currentTab : `skills`;
+
 
     this.view.showPage = (evt) => {
       evt.preventDefault();
@@ -15,17 +16,20 @@ class PaginationPresenter {
       saveState(state);
     };
 
+
     this.view.showPreviousPage = (evt) => {
       evt.preventDefault();
       --state.currentPage[tab];
       saveState(state);
     };
 
+
     this.view.showNextPage = (evt) => {
       evt.preventDefault();
       ++state.currentPage[tab];
       saveState(state);
     };
+
 
     return this.view;
   }

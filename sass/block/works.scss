@@ -36,6 +36,10 @@
     border-style: solid;
     border-color: transparentize($primary-color, .6);
     border-radius: 5px;
+
+    &:last-of-type {
+      margin-bottom: 30px;
+    }
   }
 
   &__name {
@@ -70,6 +74,8 @@
 
 @include MQ(M) {
   .works {
+    display: flex;
+    flex-direction: column;
     width: 62.5%;
     margin-top: 0;
 
@@ -92,8 +98,6 @@
 
 @include MQ(L) {
   .works {
-    display: flex;
-    flex-direction: column;
     margin-right: auto;
 
     &__title {
