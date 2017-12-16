@@ -481,6 +481,7 @@ class BlogView extends AbstractView {
           </ul>
           <div class="pagination"></div>
         </section>
+        <div class="modal"></div>
       </section>`
     );
   }
@@ -488,8 +489,8 @@ class BlogView extends AbstractView {
   getTemplateListItem(item) {
     return (
       `<li class="articles__item">
-        <p class="articles__name">${item.title} - ${item.description}</p>
-        <a class="btn" href="${item.link}">Прочитать</a>
+        <p class="articles__name">${item.title} - ${item.shortDescription}</p>
+        <a class="btn" href="${item.link}" data-item="${item.date}">Прочитать</a>
       </li>`
     );
   }
@@ -505,11 +506,18 @@ class BlogView extends AbstractView {
   }
 
   bind(element) {
+    const btns = element.querySelectorAll(`.btn`);
+    btns.forEach((btn) => {
+      btn.addEventListener(`click`, this.clickBtnHandler);
+    });
+
     const filter = element.querySelector(`.filter`);
     Utils.replaceOldElement(this.filter, filter);
 
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
+
+    this.modal = element.querySelector(`.modal`);
   }
 }
 
@@ -829,6 +837,192 @@ class PaginationPresenter {
   }
 }
 
+class ItemDescriptionView extends AbstractView {
+  constructor(data, tab) {
+    super();
+
+    this.data = data;
+    this.tab = Utils.toUpperCaseFirstLetter(tab);
+  }
+
+
+  get template() {
+    return this[`template${this.tab}Description`];
+  }
+
+
+  get templateEducationDescription() {
+    return (
+      `<section class="item-description">
+        <div class="scroll-bar">
+          <span class="scroll-bar__handl"></span>
+        </div>
+        <button class="item-description__close" type="button"></button>
+        <div class="item-description__wrap">
+          <img src="img/${this.data.name}.png">
+          <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
+        </div>
+      </section>
+      <div class="overlay"></div>`
+    );
+  }
+
+
+  get templatePortfolioDescription() {
+    return (
+      `<section class="item-description">
+        <div class="scroll-bar">
+          <span class="scroll-bar__handl"></span>
+        </div>
+        <button class="item-description__close" type="button"></button>
+        <div class="item-description__wrap">
+          <h2 class="item-description__title">${this.data.title}</h2>
+          <h3 class="item-description__subtitle">Особенности</h3>
+          <ul class="item-description__list">
+            ${this.templateDescriptionListOfElements}
+          </ul>
+          <h3 class="item-description__subtitle">Описание</h3>
+          ${this.templateContent}
+        </div>
+      </section>
+      <div class="overlay"></div>`
+    );
+  }
+
+
+  get templateBlogDescription() {
+    return (
+      `<section class="item-description">
+        <div class="scroll-bar">
+          <span class="scroll-bar__handl"></span>
+        </div>
+        <button class="item-description__close" type="button"></button>
+        <div class="item-description__wrap">
+          <h2 class="item-description__title">${this.data.title}</h2>
+          ${this.templateContent}
+        </div>
+      </section>
+      <div class="overlay"></div>`
+    );
+  }
+
+
+  get templateDescriptionListOfElements() {
+    return this.data.features.map((feature) => {
+      return `<li class="item-description__element">${feature}</li>`;
+    }).join(``);
+  }
+
+
+  get templateContent() {
+    const paragraphs = this.data.fullDescription.split(`\n\n`);
+
+    return paragraphs.map((item) => {
+      if (!item) {
+        return `</br></br>`;
+      }
+      return (
+        `<p class="item-description__text">${item.replace(`\n`, `</br>`)}</p>`
+      );
+    }).join(``);
+  }
+
+
+  bind(element) {
+    const btnCloseDescription = element.querySelector(`.item-description__close`);
+    btnCloseDescription.onclick = this.closeDescription;
+
+    this.description = element.querySelector(`.item-description`);
+    this.scrollBar = this.description.querySelector(`.scroll-bar`);
+    this.scrollHandl = this.scrollBar.querySelector(`.scroll-bar__handl`);
+
+    this.description.addEventListener(`wheel`, this.descriptionScroll);
+  }
+}
+
+const SCROLL_STEP = 26;
+const START_SCROLL_ELEMENT = 0;
+const MIN_WIDTH_BROWSER = 1000;
+
+class ItemDescriptionPresenter {
+  init(data, tab, wrapper) {
+    this.view = new ItemDescriptionView(data, tab);
+
+
+    this.view.closeDescription = (evt) => {
+      evt.preventDefault();
+      Utils.clearElement(wrapper);
+    };
+
+
+    this.view.descriptionScroll = (evt) => {
+      if (window.innerWidth < MIN_WIDTH_BROWSER) {
+        return;
+      }
+
+      evt.preventDefault();
+
+      const target = evt.currentTarget;
+
+      if (target.classList.contains(`item-description`)) {
+        const wrap = target.querySelector(`.item-description__wrap`);
+        const top = +wrap.style.transform.replace(/[A-z]|\(|\)/g, ``);
+
+        const descriptionParameters = this.getElementParameters({
+          element: this.view.description,
+          coordY: top,
+          shift: evt.deltaY
+        });
+
+        const scrollBarHeight = this.view.scrollBar.clientHeight;
+        const scrollHandl = this.view.scrollHandl;
+        scrollHandl.style.height = `${scrollBarHeight * descriptionParameters.ratio}px`;
+
+        if (descriptionParameters.height >= descriptionParameters.contentHeight) {
+          wrap.style.transform = ``;
+          scrollHandl.style.transform = ``;
+          return;
+        }
+
+        const scrollRatio = scrollBarHeight / descriptionParameters.height;
+        const shiftScrollHandl = -(scrollRatio * descriptionParameters.ratio * descriptionParameters.shiftContent);
+
+        wrap.style.transform = `translateY(${descriptionParameters.shiftContent}px)`;
+        scrollHandl.style.transform = `translateY(${shiftScrollHandl}px)`;
+      }
+    };
+
+
+    return this.view;
+  }
+
+  getElementParameters(params) {
+    const styleElement = getComputedStyle(params.element);
+    const paddings = +styleElement.paddingTop.replace(/\D/g, ``) +
+        +styleElement.paddingBottom.replace(/\D/g, ``);
+
+    const height = params.element.clientHeight - paddings;
+    const scrollHeight = params.element.scrollHeight;
+    const contentHeight = scrollHeight - paddings;
+    const scrollEnd = -(contentHeight - height);
+    const ratio = height / contentHeight;
+
+    let shiftContent = params.coordY + SCROLL_STEP;
+    shiftContent = (shiftContent > START_SCROLL_ELEMENT) ? START_SCROLL_ELEMENT : shiftContent;
+    shiftContent = (params.shift > 0) ? params.coordY - SCROLL_STEP : shiftContent;
+    shiftContent = (shiftContent < scrollEnd) ? scrollEnd : shiftContent;
+
+    return {
+      height,
+      contentHeight,
+      shiftContent,
+      ratio
+    };
+  }
+}
+
+var itemDescription = new ItemDescriptionPresenter();
+
 class BlogPresenter {
   init(data, state) {
     this.view = new BlogView(data, state);
@@ -838,6 +1032,21 @@ class BlogPresenter {
     this.view.data = filterView.model.data;
 
     this.view.pagination = new PaginationPresenter().init(this.view).element;
+
+
+    const openDescription = () => {
+      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
+      Utils.displayElement(this.view.description.element, this.view.modal);
+    };
+
+
+    this.view.clickBtnHandler = (evt) => {
+      evt.preventDefault();
+
+      this.dataItem = this.view.data.find((item) => item.date === evt.currentTarget.dataset.item);
+      openDescription();
+    };
+
 
     Utils.displayElement(this.view.element, `page-main`);
   }
@@ -994,156 +1203,6 @@ class EducationView extends AbstractView {
     this.modal = element.querySelector(`.modal`);
   }
 }
-
-class ItemDescriptionView extends AbstractView {
-  constructor(data, tab) {
-    super();
-
-    this.data = data;
-    this.tab = Utils.toUpperCaseFirstLetter(tab);
-  }
-
-  get template() {
-    return this[`template${this.tab}Description`];
-  }
-
-  get templatePortfolioDescription() {
-    return (
-      `<section class="item-description">
-        <div class="scroll-bar">
-          <span class="scroll-bar__handl"></span>
-        </div>
-        <button class="item-description__close" type="button"></button>
-        <div class="item-description__wrap">
-          <h2 class="item-description__title">${this.data.title}</h2>
-          <h3 class="item-description__subtitle">Особенности</h3>
-          <ul class="item-description__list">
-            ${this.templateDescriptionListOfElements}
-          </ul>
-          <h3 class="item-description__subtitle">Описание</h3>
-          <p class="item-description__text">${this.data.fullDescription}</p>
-        </div>
-      </section>
-      <div class="overlay"></div>`
-    );
-  }
-
-  get templateEducationDescription() {
-    return (
-      `<section class="item-description">
-        <div class="scroll-bar">
-          <span class="scroll-bar__handl"></span>
-        </div>
-        <button class="item-description__close" type="button"></button>
-        <div class="item-description__wrap">
-          <img src="img/${this.data.name}.png">
-          <a class="btn  item-description__btn" href="documents/${this.data.name}.pdf" target="_blank">Открыть в PDF</a>
-        </div>
-      </section>
-      <div class="overlay"></div>`
-    );
-  }
-
-  get templateDescriptionListOfElements() {
-    return this.data.features.map((feature) => {
-      return `<li class="item-description__element">${feature}</li>`;
-    }).join(``);
-  }
-
-  bind(element) {
-    const btnCloseDescription = element.querySelector(`.item-description__close`);
-    btnCloseDescription.onclick = this.closeDescription;
-
-    this.description = element.querySelector(`.item-description`);
-    this.scrollBar = this.description.querySelector(`.scroll-bar`);
-    this.scrollHandl = this.scrollBar.querySelector(`.scroll-bar__handl`);
-
-    this.description.addEventListener(`wheel`, this.descriptionScroll);
-  }
-}
-
-const SCROLL_STEP = 26;
-const START_SCROLL_ELEMENT = 0;
-const MIN_WIDTH_BROWSER = 1000;
-
-class ItemDescriptionPresenter {
-  init(data, tab, wrapper) {
-    this.view = new ItemDescriptionView(data, tab);
-
-
-    this.view.closeDescription = (evt) => {
-      evt.preventDefault();
-      Utils.clearElement(wrapper);
-    };
-
-
-    this.view.descriptionScroll = (evt) => {
-      if (window.innerWidth < MIN_WIDTH_BROWSER) {
-        return;
-      }
-
-      evt.preventDefault();
-
-      const target = evt.currentTarget;
-
-      if (target.classList.contains(`item-description`)) {
-        const wrap = target.querySelector(`.item-description__wrap`);
-        const top = +wrap.style.transform.replace(/[A-z]|\(|\)/g, ``);
-
-        const descriptionParameters = this.getElementParameters({
-          element: this.view.description,
-          coordY: top,
-          shift: evt.deltaY
-        });
-
-        const scrollBarHeight = this.view.scrollBar.clientHeight;
-        const scrollHandl = this.view.scrollHandl;
-        scrollHandl.style.height = `${scrollBarHeight * descriptionParameters.ratio}px`;
-
-        if (descriptionParameters.height >= descriptionParameters.contentHeight) {
-          wrap.style.transform = ``;
-          scrollHandl.style.transform = ``;
-          return;
-        }
-
-        const scrollRatio = scrollBarHeight / descriptionParameters.height;
-        const shiftScrollHandl = -(scrollRatio * descriptionParameters.ratio * descriptionParameters.shiftContent);
-
-        wrap.style.transform = `translateY(${descriptionParameters.shiftContent}px)`;
-        scrollHandl.style.transform = `translateY(${shiftScrollHandl}px)`;
-      }
-    };
-
-
-    return this.view;
-  }
-
-  getElementParameters(params) {
-    const styleElement = getComputedStyle(params.element);
-    const paddings = +styleElement.paddingTop.replace(/\D/g, ``) +
-        +styleElement.paddingBottom.replace(/\D/g, ``);
-
-    const height = params.element.clientHeight - paddings;
-    const scrollHeight = params.element.scrollHeight;
-    const contentHeight = scrollHeight - paddings;
-    const scrollEnd = -(contentHeight - height);
-    const ratio = height / contentHeight;
-
-    let shiftContent = params.coordY + SCROLL_STEP;
-    shiftContent = (shiftContent > START_SCROLL_ELEMENT) ? START_SCROLL_ELEMENT : shiftContent;
-    shiftContent = (params.shift > 0) ? params.coordY - SCROLL_STEP : shiftContent;
-    shiftContent = (shiftContent < scrollEnd) ? scrollEnd : shiftContent;
-
-    return {
-      height,
-      contentHeight,
-      shiftContent,
-      ratio
-    };
-  }
-}
-
-var itemDescription = new ItemDescriptionPresenter();
 
 class EducationPresenter {
   init(data, state) {
@@ -1610,7 +1669,7 @@ var data = {
         `Promise`
       ],
       shortDescription: `онлайн-игра в которой игроку предлагается отличать фотографии от фотореалистичных изображений.`,
-      fullDescription: `Приложение спроектировано в соответствии с паттерном MVP, также произведено проектирование структуры данных, с последующей адаптацией приходящих с сервера данных, под ранее созданную структуру(ранее была неизвестна организация серверных данных, для чего и потребовалось их адаптировать под используемую в проекте структуру данных). Функционал проекта реализован в соответствии с техническим заданием. Весь код организован в соответствии с принципом dry. Осуществлена оптимизация кода.`
+      fullDescription: `Приложение спроектировано в соответствии с паттерном MVP, также произведено проектирование структуры данных, с последующей адаптацией приходящих с сервера данных, под ранее созданную структуру (ранее была неизвестна организация данных на серверной стороне, для чего и потребовалось их адаптировать под используемую в проекте структуру). Функционал проекта реализован в соответствии с техническим заданием. Весь код организован в соответствии с принципом dry. Осуществлена оптимизация кода.`
     }
   ],
 
@@ -1618,32 +1677,41 @@ var data = {
     {
       title: `Название статьи 1`,
       link: `#`,
-      description: `Описание 1`,
-      date: new Date() - 1,
+      date: `${new Date() - 1}`,
       article: `Текст статьи`,
       features: [
         `html`
-      ]
+      ],
+      shortDescription: `Описание 1`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     },
     {
       title: `Название статьи 2`,
       link: `#`,
-      description: `Описание 2`,
-      date: new Date() - 2,
+      date: `${new Date() - 2}`,
       article: `Текст статьи`,
       features: [
         `css`
-      ]
+      ],
+      shortDescription: `Описание 2`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     },
     {
       title: `Название статьи 3`,
       link: `#`,
-      description: `Описание 3`,
-      date: new Date() - 3,
+      date: `${new Date() - 3}`,
       article: `Текст статьи`,
       features: [
         `js`
-      ]
+      ],
+      shortDescription: `Описание 3`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     }
   ]
 };
