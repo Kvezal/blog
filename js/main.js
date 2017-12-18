@@ -1253,13 +1253,13 @@ class PortfolioView extends AbstractView {
 
   getTemplateListItem(item) {
     return (
-      `<li class="works__item" data-item="${item.id}">
+      `<li class="works__item" data-item="${item.title}">
         <p class="works__name">
           <span>${item.title}</span>
           &#8211; ${item.shortDescription}
         </p>
         <div class="works__wrap">
-          <a class="btn  works__btn  works__btn--description" href="#" target="_blank" data-item="${item.id}">Описание</a>
+          <a class="btn  works__btn  works__btn--description" href="#" target="_blank" data-item="${item.title}">Описание</a>
           <a class="btn  works__btn" href="${item.link}" target="_blank">Перейти на сайт</a>
         </div>
       </li>`
@@ -1367,18 +1367,6 @@ class PortfolioPresenter {
     };
 
 
-    this.view.itemMouseOverHandler = (evt) => {
-      evt.preventDefault();
-
-      if (!evt.target.classList.contains(`works__btn`)) {
-        addMouseHandlers(evt.target);
-      } else {
-        removeMouseHandlers(evt.target);
-      }
-      this.dataItem = this.view.data.find((item) => item.id === evt.currentTarget.dataset.item);
-    };
-
-
     const itemMouseMoveHandler = (evt) => {
       if (evt.target.classList.contains(`works__btn`)) {
         Utils.clearElement(this.view.modal);
@@ -1403,10 +1391,29 @@ class PortfolioPresenter {
     };
 
 
+    const checkBtn = (classList) => {
+      return classList.contains(`works__btn`) && !classList.contains(`works__btn--description`);
+    };
+
+
     const openDescription = (evt) => {
+      if (checkBtn(evt.target.classList)) {
+        return;
+      }
       removeMouseHandlers(evt.target);
+
       this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
       Utils.displayElement(this.view.description.element, this.view.modal);
+    };
+
+
+    this.view.itemMouseOverHandler = (evt) => {
+      evt.preventDefault();
+
+      if (!evt.target.classList.contains(`works__btn`)) {
+        addMouseHandlers(evt.target);
+      }
+      this.dataItem = this.view.data.find((item) => item.title === evt.currentTarget.dataset.item);
     };
 
 
@@ -1454,32 +1461,28 @@ var data = {
       type: `Интенсив`,
       title: `Базовый HTML и CSS`,
       data: `16 января - 22 февраля 2017г.`,
-      state: `100%`,
-      id: `c1`
+      state: `100%`
     },
     {
       name: `advancedHTML&CSS`,
       type: `Интенсив`,
       title: `“Продвинутый HTML и CSS”`,
       data: `22 мая - 28 июня 2017г.`,
-      state: `100%`,
-      id: `c2`
+      state: `100%`
     },
     {
       name: `basicJS`,
       type: `Интенсив`,
       title: `Базовый JavaScript`,
       data: `8 августа - 20 сентября 2017г.`,
-      state: `100%`,
-      id: `c3`
+      state: `100%`
     },
     {
       name: `advancedJS`,
       type: `Интенсив`,
       title: `Продвинутый JavaScript`,
       data: `26 сентября - 8 ноября 2017г.`,
-      state: `100%`,
-      id: `c4`
+      state: `100%`
     }
   ],
 
@@ -1496,7 +1499,6 @@ var data = {
         `Базовая оптимизация`,
         `Валидный код`
       ],
-      id: `w1`,
       shortDescription: `интернет-магазин мороженого.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовался подход "Progressive Enhancement". Использовано немного нативного JS для реализации всплывающего окна и подключения Яндекс карты с помощью API (при выключеном JS, кнопка вызывающая появление модального окна, будет осуществлять переход на отдельную страницу, а роль карты исполняет фоновое изображение блока с картой). Произведена базовая оптимизация проекта(использованы спрайты для растровых иконок и минифицирован CSS и JS). Выполнена резиновая верстка в диападоне от 900 до 1200px.`
     },
@@ -1512,7 +1514,6 @@ var data = {
         `Базовая оптимизация`,
         `Валидный код`
       ],
-      id: `w2`,
       shortDescription: `сайт web-студии.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовался подход "Progressive Enhancement". Использовано немного нативного JS для реализации всплывающего окна и подключения Яндекс карты с помощью API. Произведена базовая оптимизация проекта(использованы спрайты для растровых иконок и минифицирован CSS и JS).`
     },
@@ -1528,7 +1529,6 @@ var data = {
         `Базовая оптимизация`,
         `Валидный код`
       ],
-      id: `w3`,
       shortDescription: `интернет-магазин строительных материалов и инструментов для ремонта.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовался подход "Progressive Enhancement". Использовано немного нативного JS для реализации всплывающего окна и подключения Яндекс карты с помощью API. Произведена базовая оптимизация проекта(использованы спрайты для растровых иконок и минифицирован CSS и JS).`
     },
@@ -1544,7 +1544,6 @@ var data = {
         `Базовая оптимизация`,
         `Валидный код`
       ],
-      id: `w4`,
       shortDescription: `информационный сайт для туристов.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовался подход "Progressive Enhancement". Использовано немного нативного JS для реализации всплывающего окна и подключения Google карты с помощью API. Произведена базовая оптимизация проекта(использованы спрайты для растровых иконок и минифицирован CSS и JS). Выполнена резиновая верстка в диападоне от 768 до 1200px.`
     },
@@ -1562,7 +1561,6 @@ var data = {
         `Базовая оптимизация`,
         `Валидный код`
       ],
-      id: `w5`,
       shortDescription: `интернет-магазин гаджетов.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовался подход "Progressive Enhancement". Использовано немного нативного JS для реализации всплывающего окна и подключения Яндекс карты с помощью API (при выключеном JS, кнопка вызывающая появление модального окна, будет осуществлять переход на отдельную страницу, а роль карты исполняет фоновое изображение блока с картой). Произведена базовая оптимизация проекта(использованы спрайты для растровых иконок и минифицирован CSS и JS). Первая попытка работы с CSS-препроцессором и сборщиком проектов(в данном случае использовались препроцессор LESS и сборщик Gulp).`
     },
@@ -1585,7 +1583,6 @@ var data = {
         `Оптимизация`,
         `Валидный код`
       ],
-      id: `w6`,
       shortDescription: `интернет-магазин вязаных игрушек.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовались подход "Graceful Degradation" и "Mobile First", также использовалась БЭМ-методология. Использовано немного нативного JS для реализации всплывающего окна, меню (в мобильной версии сайта) и подключения Яндекс карты с помощью API (при выключеном JS в качестве карты выступает фоновое изображение блока к которому подключается карта). Сделана раскадровка и ретинизация изображений с целью ускорения загрузки страницы, чтобы качество изображений было одинакого высоким как на ретиновых, так и на обычных экранах. Произведена сборка и базовая оптимизация проекта с помощью Gulp (оптимизация графики, SVG-спрайты, сборка CSS из SASS, минификация JS и собранного CSS, автоприфексование свойств и группировка media-выражений).`
     },
@@ -1608,7 +1605,6 @@ var data = {
         `Оптимизация`,
         `Валидный код`
       ],
-      id: `w7`,
       shortDescription: `промо-сайт приложения.`,
       fullDescription: `Верстка проекта реализована в соответствии с PSD-макетом, соблюден "Pixel-Perfect". В процессе разработки использовались подход "Progressive Enhancement" и "Mobile First", также использовалась БЭМ-методология. Использовано немного нативного JS для реализации всплывающего окна, меню (в мобильной версии сайта) и подключения Яндекс карты с помощью API (при выключеном JS в качестве карты выступает фоновое изображение блока к которому подключается карта). Сделана раскадровка и ретинизация изображений с целью ускорения загрузки страницы, чтобы качество изображений было одинакого высоким как на ретиновых, так и на обычных экранах. Произведена базовая сборка и оптимизация проекта с помощью Gulp (оптимизация графики, SVG-спрайты, сборка CSS из SASS, минификация JS и собранного CSS, автоприфексование свойств и группировка media-выражений).`
     },
@@ -1630,7 +1626,6 @@ var data = {
         `Оптимизация`,
         `Валидный код`
       ],
-      id: `w8`,
       shortDescription: `сайт-портфолио.`,
       fullDescription: `В процессе разработки использовались подход "Progressive Enhancement" и "Mobile First", также использовалась БЭМ-методология. Сделана раскадровка и ретинизация изображений с целью ускорения загрузки страницы, чтобы качество изображений было одинакого высоким как на ретиновых, так и на обычных экранах. Произведена базовая сборка и оптимизация проекта с помощью Gulp (оптимизация графики, SVG-спрайты, сборка CSS из SASS, минификация JS и собранного CSS, автоприфексование свойств и группировка media-выражений). Проект разрабатывался с учетом неработоспособного JS.`
     },
@@ -1646,7 +1641,6 @@ var data = {
         `Модульность`,
         `AJAX`
       ],
-      id: `w9`,
       shortDescription: `сервис размещения объявлений о сдаче в аренду недвижимости в центре Токио.`,
       fullDescription: `Выполнена загрузка данных с сервера с последующим их отображением на карте в виде меток, при нажатии на которые осуществляется появление карточки для текущей метки. Так же реализовано перетаскивание метки с последующей синхронизацией ее с полем "Адрес" (так же можно задавать координаты внутри этого поля). Написана логика для интерактивной фильтрации полученных элементов по категориям: тип жилья, цена, количество комнат, количество гостей и особенности. Выполнена валидация и синхронизация полей ввода, добавлена возможность загрузки фотографий. При нажатии на кнопку "Опубликовать", данные проверяются на валидность и в случае успеха отправляются на сервер, при этом происходит сброс введенных данных. Обмен данными с сервером осуществляется посредством AJAX (получение и публикация данных). Код написан модульно, использован функциональный стиль. Произведена оптимизация логики исполнения кода.`
     },
@@ -1662,7 +1656,6 @@ var data = {
         `Модульность`,
         `AJAX`
       ],
-      id: `w10`,
       shortDescription: `сервис просмотра изображений.`,
       fullDescription: `Выполнена загрузка данных с сервера с последующим их отображением в галерее в виде фотографий загруженных пользователями, при нажатии на которые появляется модальное окно с исходным размером фотографии. Реализована загрузка фотографии при нажатии на иконку фотоаппарата с последующим наложением на загруженное фото одного из эффектов (хром, сепия, марвин, фобос или зной) и регулировка выбранного эффекта с помощью ползунка. Выполнена валидация полей ввода (хэш-теги, комментарии). При нажатии на кнопку публикации, данные отправляются на сервер, при этом окно с загруженной фотографией закрывается и происходит сброс введенных данных. Написана логика для интерактивной фильтрации полученных элементов по категориям: рекомендуемые, популярные, обсуждаемые и случайные. Обмен данными с сервером осуществляется посредством AJAX (получение и публикация данных). Код написан модульно, использован функциональный стиль. Произведена оптимизация логики исполнения кода.`
     },
@@ -1680,7 +1673,6 @@ var data = {
         `Модульность`,
         `Promise`
       ],
-      id: `w11`,
       shortDescription: `онлайн-игра в которой игроку предлагается отличать фотографии от фотореалистичных изображений.`,
       fullDescription: `Приложение спроектировано в соответствии с паттерном MVP, также произведено проектирование структуры данных, с последующей адаптацией приходящих с сервера данных, под ранее созданную структуру (ранее была неизвестна организация данных на серверной стороне, для чего и потребовалось их адаптировать под используемую в проекте структуру). Функционал проекта реализован в соответствии с техническим заданием. Весь код организован в соответствии с принципом dry. Осуществлена оптимизация кода.`
     }
@@ -1695,7 +1687,6 @@ var data = {
       features: [
         `html`
       ],
-      id: `a1`,
       shortDescription: `Описание 1`,
       fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
 
@@ -1709,7 +1700,6 @@ var data = {
       features: [
         `css`
       ],
-      id: `a2`,
       shortDescription: `Описание 2`,
       fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
 
@@ -1723,7 +1713,6 @@ var data = {
       features: [
         `js`
       ],
-      id: `a3`,
       shortDescription: `Описание 3`,
       fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
 
