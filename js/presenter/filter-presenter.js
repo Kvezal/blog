@@ -1,5 +1,7 @@
+import App from '../application';
 import FilterModel from '../models/filter-model';
 import FilterView from '../views/filter-view';
+
 import deepClone from '../lib/deep-clone';
 import {saveState} from '../lib/change-url';
 import {parametersOfApplication, FILTERS} from '../data/parameters';
@@ -26,12 +28,14 @@ class FilterPresenter {
       evt.preventDefault();
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
+      App.changeTab(viewTab.state);
     };
 
     this.view.resetFilterSetting = () => {
       viewTab.state.currentFilter[this.model.tab] = deepClone(FILTERS[this.model.tab]);
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
+      App.changeTab(viewTab.state);
     };
 
     return this.view;

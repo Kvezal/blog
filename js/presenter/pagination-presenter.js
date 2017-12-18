@@ -1,4 +1,4 @@
-// import App from '../application';
+import App from '../application';
 import PaginationView from '../views/pagination-view';
 import {saveState} from '../lib/change-url';
 
@@ -14,6 +14,7 @@ class PaginationPresenter {
       evt.preventDefault();
       state.currentPage[tab] = +evt.target.textContent;
       saveState(state);
+      App.changeTab(state);
     };
 
 
@@ -21,6 +22,7 @@ class PaginationPresenter {
       evt.preventDefault();
       --state.currentPage[tab];
       saveState(state);
+      App.changeTab(state);
     };
 
 
@@ -28,6 +30,7 @@ class PaginationPresenter {
       evt.preventDefault();
       ++state.currentPage[tab];
       saveState(state);
+      App.changeTab(state);
     };
 
 

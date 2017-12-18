@@ -1,17 +1,17 @@
+import App from '../application';
 import MainNavView from '../views/main-nav-view';
+
 import Utils from '../lib/utils';
-import {saveState, loadState} from '../lib/change-url';
+import {saveState} from '../lib/change-url';
 
 class MainNavPresenter {
-  init() {
-    const state = loadState();
+  init(state) {
     this.view = new MainNavView(state);
 
 
     this.view.changeTab = (evt) => {
       evt.preventDefault();
 
-      const currentState = loadState();
       const tab = evt.target;
 
       if (tab.classList.contains(`main-nav__link--current`)) {
@@ -22,8 +22,9 @@ class MainNavPresenter {
       tab.classList.add(`main-nav__link--current`);
       tab.removeAttribute(`href`);
 
-      currentState.currentTab = tab.id;
-      saveState(currentState);
+      this.view.state.currentTab = tab.id;
+      saveState(this.view.state);
+      App.changeTab(this.view.state);
     };
 
 

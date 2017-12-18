@@ -26,25 +26,27 @@ const routerId = {
 
 class App {
   init() {
-    const changeHashHandler = () => {
-      const currentState = loadState();
-      App.changeTab(currentState);
+    const loadPage = () => {
+      const state = loadState();
+      App.changeTab(state);
+      mainNavPresenter.init(state);
     };
-    let currentHistoryLength;
 
-    const reloadMainNav = () => {
+
+    let currentHistoryLength;
+    const reloadPage = () => {
       if (history.length === currentHistoryLength) {
-        mainNavPresenter.init();
+        loadPage();
         return;
       }
       currentHistoryLength = history.length;
     };
-    window.onhashchange = changeHashHandler;
-    window.onpopstate = reloadMainNav;
-    changeHashHandler();
 
-    mainNavPresenter.init();
+
+    window.onpopstate = reloadPage;
+    loadPage();
   }
+
 
   static changeTab(state) {
     if (state.currentTab === ``) {
