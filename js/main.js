@@ -395,15 +395,13 @@ const loadState = () => {
 };
 
 class MainNavPresenter {
-  init() {
-    const state = loadState();
+  init(state) {
     this.view = new MainNavView(state);
 
 
     this.view.changeTab = (evt) => {
       evt.preventDefault();
 
-      const currentState = loadState();
       const tab = evt.target;
 
       if (tab.classList.contains(`main-nav__link--current`)) {
@@ -414,8 +412,9 @@ class MainNavPresenter {
       tab.classList.add(`main-nav__link--current`);
       tab.removeAttribute(`href`);
 
-      currentState.currentTab = tab.id;
-      saveState(currentState);
+      this.view.state.currentTab = tab.id;
+      saveState(this.view.state);
+      App.changeTab(this.view.state);
     };
 
 
@@ -680,12 +679,14 @@ class FilterPresenter {
       evt.preventDefault();
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
+      App.changeTab(viewTab.state);
     };
 
     this.view.resetFilterSetting = () => {
       viewTab.state.currentFilter[this.model.tab] = deepClone(FILTERS[this.model.tab]);
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
+      App.changeTab(viewTab.state);
     };
 
     return this.view;
@@ -803,7 +804,6 @@ class PaginationView extends AbstractView {
   }
 }
 
-// import App from '../application';
 class PaginationPresenter {
   init(viewTab) {
     this.view = new PaginationView(viewTab);
@@ -816,6 +816,7 @@ class PaginationPresenter {
       evt.preventDefault();
       state.currentPage[tab] = +evt.target.textContent;
       saveState(state);
+      App.changeTab(state);
     };
 
 
@@ -823,6 +824,7 @@ class PaginationPresenter {
       evt.preventDefault();
       --state.currentPage[tab];
       saveState(state);
+      App.changeTab(state);
     };
 
 
@@ -830,6 +832,7 @@ class PaginationPresenter {
       evt.preventDefault();
       ++state.currentPage[tab];
       saveState(state);
+      App.changeTab(state);
     };
 
 
@@ -1739,25 +1742,27 @@ const routerId = {
 
 class App {
   init() {
-    const changeHashHandler = () => {
-      const currentState = loadState();
-      App.changeTab(currentState);
+    const loadPage = () => {
+      const state = loadState();
+      App.changeTab(state);
+      mainNavPresenter.init(state);
     };
-    let currentHistoryLength;
 
-    const reloadMainNav = () => {
+
+    let currentHistoryLength;
+    const reloadPage = () => {
       if (history.length === currentHistoryLength) {
-        mainNavPresenter.init();
+        loadPage();
         return;
       }
       currentHistoryLength = history.length;
     };
-    window.onhashchange = changeHashHandler;
-    window.onpopstate = reloadMainNav;
-    changeHashHandler();
 
-    mainNavPresenter.init();
+
+    window.onpopstate = reloadPage;
+    loadPage();
   }
+
 
   static changeTab(state) {
     if (state.currentTab === ``) {
