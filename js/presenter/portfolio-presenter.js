@@ -20,24 +20,14 @@ class PortfolioPresenter {
     const addMouseHandlers = (target) => {
       target.addEventListener(`mousemove`, itemMouseMoveHandler);
       target.addEventListener(`mouseout`, itemMouseOutHandler);
-      target.addEventListener(`click`, this.view.openDescription);
+      target.addEventListener(`click`, openDescription);
     };
 
 
     const removeMouseHandlers = (target) => {
       target.removeEventListener(`mouseout`, itemMouseOutHandler);
       target.removeEventListener(`mousemove`, itemMouseMoveHandler);
-      target.removeEventListener(`click`, this.view.openDescription);
-    };
-
-
-    this.view.itemMouseOverHandler = (evt) => {
-      evt.preventDefault();
-
-      if (!evt.target.classList.contains(`works__btn`)) {
-        addMouseHandlers(evt.target);
-      }
-      this.dataItem = this.view.data.find((item) => item.title === evt.currentTarget.dataset.item);
+      target.removeEventListener(`click`, openDescription);
     };
 
 
@@ -65,8 +55,13 @@ class PortfolioPresenter {
     };
 
 
-    this.view.openDescription = (evt) => {
-      if (evt.target.classList.contains(`works__btn`)) {
+    const checkBtn = (classList) => {
+      return classList.contains(`works__btn`) && !classList.contains(`works__btn--description`);
+    };
+
+
+    const openDescription = (evt) => {
+      if (checkBtn(evt.target.classList)) {
         return;
       }
       removeMouseHandlers(evt.target);
@@ -75,11 +70,21 @@ class PortfolioPresenter {
       Utils.displayElement(this.view.description.element, this.view.modal);
     };
 
+
+    this.view.itemMouseOverHandler = (evt) => {
+      evt.preventDefault();
+
+      if (!evt.target.classList.contains(`works__btn`)) {
+        addMouseHandlers(evt.target);
+      }
+      this.dataItem = this.view.data.find((item) => item.title === evt.currentTarget.dataset.item);
+    };
+
+
     this.view.btnDscriptionClickHandler = (evt) => {
       evt.preventDefault();
 
-      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
-      Utils.displayElement(this.view.description.element, this.view.modal);
+      openDescription(evt);
     };
 
     Utils.displayElement(this.view.element, `page-main`);
