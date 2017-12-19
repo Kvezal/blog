@@ -1,4 +1,3 @@
-import App from '../application';
 import FilterModel from '../models/filter-model';
 import FilterView from '../views/filter-view';
 
@@ -8,10 +7,14 @@ import {parametersOfApplication, FILTERS} from '../data/parameters';
 
 class FilterPresenter {
   init(viewTab) {
-    this.model = new FilterModel(viewTab);
+    const filterElement = () => {
+      this.model = new FilterModel(viewTab);
+      this.view = new FilterView(this.model);
+      this.model.filterData();
+      return this.model.data;
+    };
+    viewTab.currentData = filterElement();
 
-    this.view = new FilterView(this.model);
-    this.model.filterData();
 
     this.view.changeStateOption = (evt) => {
       evt.preventDefault();
@@ -24,28 +27,35 @@ class FilterPresenter {
       });
     };
 
+
     this.view.applyFilterSettings = (evt) => {
       evt.preventDefault();
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      App.changeTab(viewTab.state);
+      viewTab.currentData = filterElement();
+      viewTab.updateList();
     };
+
 
     this.view.resetFilterSetting = () => {
       viewTab.state.currentFilter[this.model.tab] = deepClone(FILTERS[this.model.tab]);
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      App.changeTab(viewTab.state);
+      viewTab.currentData = viewTab.data;
+      viewTab.updateList();
     };
+
 
     return this.view;
   }
+
 
   isCurrentSetting(options, id) {
     return options.some((option) => {
       return option.id === id;
     });
   }
+
 
   changeStateRadio(options, currentElement) {
     if (!this.isCurrentSetting(options, currentElement.id)) {
@@ -55,6 +65,7 @@ class FilterPresenter {
       option.checked = (option.id === currentElement.id);
     });
   }
+
 
   changeStateCheckbox(options, currentElement) {
     options.forEach((option) => {
