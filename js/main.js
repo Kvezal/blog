@@ -469,54 +469,23 @@ class BlogView extends AbstractView {
     this.state = state;
   }
 
+
   get template() {
     return (
       `<section class="blog">
         <section class="filter"></section>
-        <section class="articles">
-          <h1 class="articles__title">Статьи</h1>
-          <ul class="articles__list">
-            ${this.templateList}
-          </ul>
-          <div class="pagination"></div>
-        </section>
-        <div class="modal"></div>
+        <section class="articles"></section>
       </section>`
     );
   }
 
-  getTemplateListItem(item) {
-    return (
-      `<li class="articles__item">
-        <p class="articles__name">${item.title} - ${item.shortDescription}</p>
-        <a class="btn" href="${item.link}" data-item="${item.date}">Прочитать</a>
-      </li>`
-    );
-  }
-
-  get templateList() {
-    const lastPage = this.state.currentPage[`blog`] + parametersOfApplication.PAGE_BACK;
-    const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
-    const endItemPagethis = this.state.currentPage[`blog`] * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
-
-    return this.data.slice(startItemPage, endItemPagethis).map((item) => {
-      return this.getTemplateListItem(item);
-    }).join(``);
-  }
 
   bind(element) {
-    const btns = element.querySelectorAll(`.btn`);
-    btns.forEach((btn) => {
-      btn.addEventListener(`click`, this.clickBtnHandler);
-    });
-
     const filter = element.querySelector(`.filter`);
     Utils.replaceOldElement(this.filter, filter);
 
-    const pagination = element.querySelector(`.pagination`);
-    Utils.replaceOldElement(this.pagination, pagination);
-
-    this.modal = element.querySelector(`.modal`);
+    this.articles = element.querySelector(`.articles`);
+    this.updateList();
   }
 }
 
@@ -659,10 +628,14 @@ class FilterView extends AbstractView {
 
 class FilterPresenter {
   init(viewTab) {
-    this.model = new FilterModel(viewTab);
+    const filterElement = () => {
+      this.model = new FilterModel(viewTab);
+      this.view = new FilterView(this.model);
+      this.model.filterData();
+      return this.model.data;
+    };
+    viewTab.currentData = filterElement();
 
-    this.view = new FilterView(this.model);
-    this.model.filterData();
 
     this.view.changeStateOption = (evt) => {
       evt.preventDefault();
@@ -675,28 +648,35 @@ class FilterPresenter {
       });
     };
 
+
     this.view.applyFilterSettings = (evt) => {
       evt.preventDefault();
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      App.changeTab(viewTab.state);
+      viewTab.currentData = filterElement();
+      viewTab.updateList();
     };
+
 
     this.view.resetFilterSetting = () => {
       viewTab.state.currentFilter[this.model.tab] = deepClone(FILTERS[this.model.tab]);
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      App.changeTab(viewTab.state);
+      viewTab.currentData = viewTab.data;
+      viewTab.updateList();
     };
+
 
     return this.view;
   }
+
 
   isCurrentSetting(options, id) {
     return options.some((option) => {
       return option.id === id;
     });
   }
+
 
   changeStateRadio(options, currentElement) {
     if (!this.isCurrentSetting(options, currentElement.id)) {
@@ -707,12 +687,68 @@ class FilterPresenter {
     });
   }
 
+
   changeStateCheckbox(options, currentElement) {
     options.forEach((option) => {
       if (option.id === currentElement.id) {
         option.checked = currentElement.checked;
       }
     });
+  }
+}
+
+class ArticlesView extends AbstractView {
+  constructor(parentView) {
+    super();
+
+    this.data = parentView.currentData;
+    this.state = parentView.state;
+  }
+
+  get template() {
+    return (
+      `<section class="articles">
+        <h1 class="articles__title">Статьи</h1>
+        <ul class="articles__list">
+          ${this.templateList}
+        </ul>
+        <div class="pagination"></div>
+        <div class="modal"></div>
+      </section>`
+    );
+  }
+
+  getTemplateListItem(item) {
+    return (
+      `<li class="articles__item">
+        <p class="articles__name">${item.title} - ${item.shortDescription}</p>
+        <a class="btn" href="${item.link}" data-item="${item.date}">Прочитать</a>
+      </li>`
+    );
+  }
+
+  get templateList() {
+    const lastPage = this.state.currentPage[`blog`] + parametersOfApplication.PAGE_BACK;
+    const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
+    const endItemPagethis = this.state.currentPage[`blog`] * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
+
+    return this.data.slice(startItemPage, endItemPagethis).map((item) => {
+      return this.getTemplateListItem(item);
+    }).join(``);
+  }
+
+  bind(element) {
+    this.modal = element.querySelector(`.modal`);
+
+    const btns = element.querySelectorAll(`.btn`);
+    btns.forEach((btn) => {
+      btn.addEventListener(`click`, this.clickBtnHandler);
+    });
+
+    const pagination = element.querySelector(`.pagination`);
+    Utils.replaceOldElement(this.pagination, pagination);
+
+    this.container = element.querySelector(`.articles`);
   }
 }
 
@@ -816,7 +852,7 @@ class PaginationPresenter {
       evt.preventDefault();
       state.currentPage[tab] = +evt.target.textContent;
       saveState(state);
-      App.changeTab(state);
+      this.view.updateComponent();
     };
 
 
@@ -824,7 +860,7 @@ class PaginationPresenter {
       evt.preventDefault();
       --state.currentPage[tab];
       saveState(state);
-      App.changeTab(state);
+      this.view.updateComponent();
     };
 
 
@@ -832,7 +868,7 @@ class PaginationPresenter {
       evt.preventDefault();
       ++state.currentPage[tab];
       saveState(state);
-      App.changeTab(state);
+      this.view.updateComponent();
     };
 
 
@@ -1026,15 +1062,16 @@ class ItemDescriptionPresenter {
 
 var itemDescription = new ItemDescriptionPresenter();
 
-class BlogPresenter {
-  init(data, state) {
-    this.view = new BlogView(data, state);
+class ArticlesPresenter {
+  init(parentView) {
+    this.view = new ArticlesView(parentView);
 
-    const filterView = new FilterPresenter().init(this.view);
-    this.view.filter = filterView.element;
-    this.view.data = filterView.model.data;
 
-    this.view.pagination = new PaginationPresenter().init(this.view).element;
+    const paginationView = new PaginationPresenter().init(this.view);
+    paginationView.updateComponent = () => {
+      parentView.updateList();
+    };
+    this.view.pagination = paginationView.element;
 
 
     const openDescription = () => {
@@ -1048,6 +1085,24 @@ class BlogPresenter {
 
       this.dataItem = this.view.data.find((item) => item.date === evt.currentTarget.dataset.item);
       openDescription();
+    };
+
+
+    return this.view;
+  }
+}
+
+class BlogPresenter {
+  init(data, state) {
+    this.view = new BlogView(data, state);
+
+    const filterView = new FilterPresenter().init(this.view);
+    this.view.filter = filterView.element;
+
+    this.view.updateList = () => {
+      const articlesView = new ArticlesPresenter().init(this.view);
+      Utils.replaceOldElement(articlesView.element, this.view.articles);
+      this.view.articles = articlesView.container;
     };
 
 
@@ -1109,7 +1164,13 @@ class SkillsPresenter {
   init(data, state) {
     this.view = new SkillsView(data, state);
 
-    this.view.pagination = new PaginationPresenter().init(this.view).element;
+
+    const paginationView = new PaginationPresenter().init(this.view);
+    paginationView.updateComponent = () => {
+      new SkillsPresenter().init(data, state);
+    };
+    this.view.pagination = paginationView.element;
+
 
     Utils.displayElement(this.view.element, `page-main`);
   }
@@ -1242,13 +1303,36 @@ class PortfolioView extends AbstractView {
     return (
       `<section class="portfolio">
         <section class="filter"></section>
-        <section class="works">
-          <h1 class="works__title">Работы</h1>
-          <ul class="works__list">
-            ${this.templateList}
-          </ul>
-          <div class="pagination"></div>
-        </section>
+        <section class="works"></section>
+      </section>`
+    );
+  }
+
+  bind(element) {
+    const filter = element.querySelector(`.filter`);
+    Utils.replaceOldElement(this.filter, filter);
+
+    this.works = element.querySelector(`.works`);
+    this.updateList();
+  }
+}
+
+class WorksView extends AbstractView {
+  constructor(parentView) {
+    super();
+
+    this.data = parentView.currentData;
+    this.state = parentView.state;
+  }
+
+  get template() {
+    return (
+      `<section class="works">
+        <h1 class="works__title">Работы</h1>
+        <ul class="works__list">
+          ${this.templateList}
+        </ul>
+        <div class="pagination"></div>
         <div class="modal"></div>
       </section>`
     );
@@ -1281,13 +1365,10 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
-    const filter = element.querySelector(`.filter`);
-    Utils.replaceOldElement(this.filter, filter);
+    this.modal = element.querySelector(`.modal`);
 
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
-
-    this.modal = element.querySelector(`.modal`);
 
     const items = element.querySelectorAll(`.works__item`);
     items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
@@ -1296,6 +1377,8 @@ class PortfolioView extends AbstractView {
     descriptionBtns.forEach((btn) => {
       btn.addEventListener(`click`, this.btnDscriptionClickHandler);
     });
+
+    this.container = element.querySelector(`.works`);
   }
 }
 
@@ -1345,15 +1428,16 @@ class ItemFeaturesPresenter {
 
 var itemFeatures = new ItemFeaturesPresenter();
 
-class PortfolioPresenter {
-  init(data, state) {
-    this.view = new PortfolioView(data, state);
+class WorksPresenter {
+  init(parentView) {
+    this.view = new WorksView(parentView);
 
-    const filterView = new FilterPresenter().init(this.view);
-    this.view.filter = filterView.element;
-    this.view.data = filterView.model.data;
 
-    this.view.pagination = new PaginationPresenter().init(this.view).element;
+    const paginationView = new PaginationPresenter().init(this.view);
+    paginationView.updateComponent = () => {
+      parentView.updateList();
+    };
+    this.view.pagination = paginationView.element;
 
 
     const addMouseHandlers = (target) => {
@@ -1422,9 +1506,27 @@ class PortfolioPresenter {
 
     this.view.btnDscriptionClickHandler = (evt) => {
       evt.preventDefault();
-
       openDescription(evt);
     };
+
+    return this.view;
+  }
+}
+
+class PortfolioPresenter {
+  init(data, state) {
+    this.view = new PortfolioView(data, state);
+
+    const filterView = new FilterPresenter().init(this.view);
+    this.view.filter = filterView.element;
+
+
+    this.view.updateList = () => {
+      const worksView = new WorksPresenter().init(this.view);
+      Utils.replaceOldElement(worksView.element, this.view.works);
+      this.view.works = worksView.container;
+    };
+
 
     Utils.displayElement(this.view.element, `page-main`);
   }
@@ -1730,7 +1832,6 @@ const ControllerId = {
   PORTFOLIO: `portfolio`,
   BLOG: `blog`
 };
-
 
 const routerId = {
   [ControllerId.SKILLS]: skillsPresenter.init,
