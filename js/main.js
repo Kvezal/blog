@@ -481,8 +481,8 @@ class BlogView extends AbstractView {
 
 
   bind(element) {
-    const filter = element.querySelector(`.filter`);
-    Utils.replaceOldElement(this.filter, filter);
+    this.filter = element.querySelector(`.filter`);
+    this.updateFilter();
 
     this.articles = element.querySelector(`.articles`);
     this.updateList();
@@ -623,6 +623,8 @@ class FilterView extends AbstractView {
     filterOptions.forEach((option) => {
       option.addEventListener(`change`, this.changeStateOption);
     });
+
+    this.container = element.querySelector(`.filter`);
   }
 }
 
@@ -632,9 +634,9 @@ class FilterPresenter {
       this.model = new FilterModel(viewTab);
       this.view = new FilterView(this.model);
       this.model.filterData();
-      return this.model.data;
+      viewTab.currentData = deepClone(this.model.data);
     };
-    viewTab.currentData = filterElement();
+    filterElement();
 
 
     this.view.changeStateOption = (evt) => {
@@ -653,7 +655,7 @@ class FilterPresenter {
       evt.preventDefault();
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      viewTab.currentData = filterElement();
+      filterElement();
       viewTab.updateList();
     };
 
@@ -662,8 +664,9 @@ class FilterPresenter {
       viewTab.state.currentFilter[this.model.tab] = deepClone(FILTERS[this.model.tab]);
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      viewTab.currentData = viewTab.data;
+      filterElement();
       viewTab.updateList();
+      viewTab.updateFilter();
     };
 
 
@@ -1096,8 +1099,13 @@ class BlogPresenter {
   init(data, state) {
     this.view = new BlogView(data, state);
 
-    const filterView = new FilterPresenter().init(this.view);
-    this.view.filter = filterView.element;
+
+    this.view.updateFilter = () => {
+      const filterView = new FilterPresenter().init(this.view);
+      Utils.replaceOldElement(filterView.element, this.view.filter);
+      this.view.filter = filterView.container;
+    };
+
 
     this.view.updateList = () => {
       const articlesView = new ArticlesPresenter().init(this.view);
@@ -1309,8 +1317,8 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
-    const filter = element.querySelector(`.filter`);
-    Utils.replaceOldElement(this.filter, filter);
+    this.filter = element.querySelector(`.filter`);
+    this.updateFilter();
 
     this.works = element.querySelector(`.works`);
     this.updateList();
@@ -1517,8 +1525,12 @@ class PortfolioPresenter {
   init(data, state) {
     this.view = new PortfolioView(data, state);
 
-    const filterView = new FilterPresenter().init(this.view);
-    this.view.filter = filterView.element;
+
+    this.view.updateFilter = () => {
+      const filterView = new FilterPresenter().init(this.view);
+      Utils.replaceOldElement(filterView.element, this.view.filter);
+      this.view.filter = filterView.container;
+    };
 
 
     this.view.updateList = () => {
@@ -1866,17 +1878,12 @@ class App {
 
 
   static changeTab(state) {
-    if (state.currentTab === ``) {
-      const currentData = [...data[`skills`]];
-      return routerId[state.currentTab](currentData, state);
+    let currentData = [...data[`skills`]];
+    if (state.currentTab !== ``) {
+      currentData = [...data[state.currentTab]];
     }
 
-    if (!data[state.currentTab]) {
-      return routerId[state.currentTab]();
-    }
-
-    const currentData = [...data[state.currentTab]];
-    return routerId[state.currentTab](currentData, state);
+    routerId[state.currentTab](currentData, state);
   }
 }
 
