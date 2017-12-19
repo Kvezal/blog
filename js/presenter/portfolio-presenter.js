@@ -9,8 +9,12 @@ class PortfolioPresenter {
   init(data, state) {
     this.view = new PortfolioView(data, state);
 
-    const filterView = new FilterPresenter().init(this.view);
-    this.view.filter = filterView.element;
+
+    this.view.updateFilter = () => {
+      const filterView = new FilterPresenter().init(this.view);
+      Utils.replaceOldElement(filterView.element, this.view.filter);
+      this.view.filter = filterView.container;
+    };
 
 
     this.view.updateList = () => {

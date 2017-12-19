@@ -51,6 +51,8 @@ class FilterView extends AbstractView {
     filterOptions.forEach((option) => {
       option.addEventListener(`change`, this.changeStateOption);
     });
+
+    this.container = element.querySelector(`.filter`);
   }
 }
 

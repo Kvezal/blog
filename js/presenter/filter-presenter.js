@@ -11,9 +11,9 @@ class FilterPresenter {
       this.model = new FilterModel(viewTab);
       this.view = new FilterView(this.model);
       this.model.filterData();
-      return this.model.data;
+      viewTab.currentData = deepClone(this.model.data);
     };
-    viewTab.currentData = filterElement();
+    filterElement();
 
 
     this.view.changeStateOption = (evt) => {
@@ -32,7 +32,7 @@ class FilterPresenter {
       evt.preventDefault();
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      viewTab.currentData = filterElement();
+      filterElement();
       viewTab.updateList();
     };
 
@@ -41,8 +41,9 @@ class FilterPresenter {
       viewTab.state.currentFilter[this.model.tab] = deepClone(FILTERS[this.model.tab]);
       viewTab.state.currentPage[this.model.tab] = parametersOfApplication.FIRST_PAGE;
       saveState(viewTab.state);
-      viewTab.currentData = viewTab.data;
+      filterElement();
       viewTab.updateList();
+      viewTab.updateFilter();
     };
 
 

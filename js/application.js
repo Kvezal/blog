@@ -5,8 +5,8 @@ import skillsPresenter from './presenter/skills-presenter';
 import educationPresenter from './presenter/education-presenter';
 import portfolioPresenter from './presenter/portfolio-presenter';
 
-import data from './data/data';
 import {loadState} from './lib/change-url';
+import data from './data/data';
 
 
 const ControllerId = {
@@ -49,17 +49,12 @@ class App {
 
 
   static changeTab(state) {
-    if (state.currentTab === ``) {
-      const currentData = [...data[`skills`]];
-      return routerId[state.currentTab](currentData, state);
+    let currentData = [...data[`skills`]];
+    if (state.currentTab !== ``) {
+      currentData = [...data[state.currentTab]];
     }
 
-    if (!data[state.currentTab]) {
-      return routerId[state.currentTab]();
-    }
-
-    const currentData = [...data[state.currentTab]];
-    return routerId[state.currentTab](currentData, state);
+    routerId[state.currentTab](currentData, state);
   }
 }
 

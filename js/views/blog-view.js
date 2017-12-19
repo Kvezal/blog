@@ -1,7 +1,5 @@
 import AbstractView from './abstract-view';
 
-import Utils from '../lib/utils';
-
 class BlogView extends AbstractView {
   constructor(data, state) {
     super();
@@ -22,8 +20,8 @@ class BlogView extends AbstractView {
 
 
   bind(element) {
-    const filter = element.querySelector(`.filter`);
-    Utils.replaceOldElement(this.filter, filter);
+    this.filter = element.querySelector(`.filter`);
+    this.updateFilter();
 
     this.articles = element.querySelector(`.articles`);
     this.updateList();

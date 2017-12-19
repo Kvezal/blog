@@ -1,5 +1,4 @@
 import AbstractView from './abstract-view';
-import Utils from '../lib/utils';
 
 class PortfolioView extends AbstractView {
   constructor(data, state) {
@@ -19,8 +18,8 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
-    const filter = element.querySelector(`.filter`);
-    Utils.replaceOldElement(this.filter, filter);
+    this.filter = element.querySelector(`.filter`);
+    this.updateFilter();
 
     this.works = element.querySelector(`.works`);
     this.updateList();
