@@ -1,7 +1,7 @@
 import WorksView from '../views/works-view';
-import PaginationPresenter from '../presenter/pagination-presenter';
-import itemFeatures from '../presenter/item-features-presenter';
-import itemDescription from '../presenter/item-description-presenter';
+import PaginationPresenter from './pagination-presenter';
+import itemFeatures from './item-features-presenter';
+import itemDescription from './item-description-presenter';
 
 import Utils from '../lib/utils';
 
@@ -9,12 +9,11 @@ class WorksPresenter {
   init(parentView) {
     this.view = new WorksView(parentView);
 
-    const paginationView = new PaginationPresenter().init(this.view);
 
+    const paginationView = new PaginationPresenter().init(this.view);
     paginationView.updateComponent = () => {
       parentView.updateList();
     };
-
     this.view.pagination = paginationView.element;
 
 

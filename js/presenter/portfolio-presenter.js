@@ -4,6 +4,7 @@ import WorksPresenter from './works-presenter';
 
 import Utils from '../lib/utils';
 
+
 class PortfolioPresenter {
   init(data, state) {
     this.view = new PortfolioView(data, state);

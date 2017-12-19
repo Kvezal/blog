@@ -8,13 +8,13 @@ import portfolioPresenter from './presenter/portfolio-presenter';
 import data from './data/data';
 import {loadState} from './lib/change-url';
 
+
 const ControllerId = {
   SKILLS: ``,
   EDUCATION: `education`,
   PORTFOLIO: `portfolio`,
   BLOG: `blog`
 };
-
 
 const routerId = {
   [ControllerId.SKILLS]: skillsPresenter.init,

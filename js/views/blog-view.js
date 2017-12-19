@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {parametersOfApplication} from '../data/parameters';
+
 import Utils from '../lib/utils';
 
 class BlogView extends AbstractView {
@@ -10,54 +10,23 @@ class BlogView extends AbstractView {
     this.state = state;
   }
 
+
   get template() {
     return (
       `<section class="blog">
         <section class="filter"></section>
-        <section class="articles">
-          <h1 class="articles__title">Статьи</h1>
-          <ul class="articles__list">
-            ${this.templateList}
-          </ul>
-          <div class="pagination"></div>
-        </section>
-        <div class="modal"></div>
+        <section class="articles"></section>
       </section>`
     );
   }
 
-  getTemplateListItem(item) {
-    return (
-      `<li class="articles__item">
-        <p class="articles__name">${item.title} - ${item.shortDescription}</p>
-        <a class="btn" href="${item.link}" data-item="${item.date}">Прочитать</a>
-      </li>`
-    );
-  }
-
-  get templateList() {
-    const lastPage = this.state.currentPage[`blog`] + parametersOfApplication.PAGE_BACK;
-    const startItemPage = lastPage * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
-    const endItemPagethis = this.state.currentPage[`blog`] * parametersOfApplication.ITEMS_ON_PAGE_OF_BLOG;
-
-    return this.data.slice(startItemPage, endItemPagethis).map((item) => {
-      return this.getTemplateListItem(item);
-    }).join(``);
-  }
 
   bind(element) {
-    const btns = element.querySelectorAll(`.btn`);
-    btns.forEach((btn) => {
-      btn.addEventListener(`click`, this.clickBtnHandler);
-    });
-
     const filter = element.querySelector(`.filter`);
     Utils.replaceOldElement(this.filter, filter);
 
-    const pagination = element.querySelector(`.pagination`);
-    Utils.replaceOldElement(this.pagination, pagination);
-
-    this.modal = element.querySelector(`.modal`);
+    this.articles = element.querySelector(`.articles`);
+    this.updateList();
   }
 }
 

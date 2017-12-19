@@ -50,10 +50,10 @@ class WorksView extends AbstractView {
   }
 
   bind(element) {
+    this.modal = element.querySelector(`.modal`);
+
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
-
-    this.modal = element.querySelector(`.modal`);
 
     const items = element.querySelectorAll(`.works__item`);
     items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
