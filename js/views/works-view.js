@@ -25,13 +25,13 @@ class WorksView extends AbstractView {
 
   getTemplateListItem(item) {
     return (
-      `<li class="works__item" data-item="${item.title}">
+      `<li class="works__item" data-item="${item.id}">
         <p class="works__name">
           <span>${item.title}</span>
           &#8211; ${item.shortDescription}
         </p>
         <div class="works__wrap">
-          <a class="btn  works__btn  works__btn--description" href="#" target="_blank" data-item="${item.title}">Описание</a>
+          <a class="btn  works__btn  works__btn--description" href="#" target="_blank" data-item="${item.id}">Описание</a>
           <a class="btn  works__btn" href="${item.link}" target="_blank">Перейти на сайт</a>
         </div>
       </li>`

@@ -172,7 +172,8 @@ const initialState = {
   currentFilter: {
     portfolio: deepClone(FILTERS.portfolio),
     blog: deepClone(FILTERS.blog)
-  }
+  },
+  currentWindow: ``
 };
 
 export {

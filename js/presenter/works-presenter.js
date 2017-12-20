@@ -4,9 +4,11 @@ import itemFeatures from './item-features-presenter';
 import itemDescription from './item-description-presenter';
 
 import Utils from '../lib/utils';
+import {saveState} from '../lib/change-url';
+
 
 class WorksPresenter {
-  init(parentView) {
+  init(parentView, container) {
     this.view = new WorksView(parentView);
 
 
@@ -20,14 +22,14 @@ class WorksPresenter {
     const addMouseHandlers = (target) => {
       target.addEventListener(`mousemove`, itemMouseMoveHandler);
       target.addEventListener(`mouseout`, itemMouseOutHandler);
-      target.addEventListener(`click`, openDescription);
+      target.addEventListener(`click`, this.view.btnDscriptionClickHandler);
     };
 
 
     const removeMouseHandlers = (target) => {
       target.removeEventListener(`mouseout`, itemMouseOutHandler);
       target.removeEventListener(`mousemove`, itemMouseMoveHandler);
-      target.removeEventListener(`click`, openDescription);
+      target.removeEventListener(`click`, this.view.btnDscriptionClickHandler);
     };
 
 
@@ -60,14 +62,14 @@ class WorksPresenter {
     };
 
 
-    const openDescription = (evt) => {
-      if (checkBtn(evt.target.classList)) {
+    const openDescription = () => {
+      if (!this.view.state.currentWindow) {
         return;
       }
-      removeMouseHandlers(evt.target);
 
-      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
-      Utils.displayElement(this.view.description.element, this.view.modal);
+      this.dataItem = this.view.data.find((item) => item.id === this.view.state.currentWindow);
+
+      itemDescription.init(this.dataItem, this.view.state, this.view.modal);
     };
 
 
@@ -77,16 +79,28 @@ class WorksPresenter {
       if (!evt.target.classList.contains(`works__btn`)) {
         addMouseHandlers(evt.target);
       }
-      this.dataItem = this.view.data.find((item) => item.title === evt.currentTarget.dataset.item);
+      this.dataItem = this.view.data.find((item) => item.id === evt.currentTarget.dataset.item);
     };
 
 
     this.view.btnDscriptionClickHandler = (evt) => {
       evt.preventDefault();
-      openDescription(evt);
+      if (checkBtn(evt.target.classList)) {
+        return;
+      }
+      removeMouseHandlers(evt.target);
+
+      if (!this.view.state.currentWindow) {
+        this.view.state.currentWindow = this.dataItem.id;
+      }
+      saveState(this.view.state);
+
+      openDescription();
     };
 
-    return this.view;
+    Utils.replaceOldElement(this.view.element, container);
+    openDescription();
+    return this.view.container;
   }
 }
 

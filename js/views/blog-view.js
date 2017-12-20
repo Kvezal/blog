@@ -21,10 +21,7 @@ class BlogView extends AbstractView {
 
   bind(element) {
     this.filter = element.querySelector(`.filter`);
-    this.updateFilter();
-
     this.articles = element.querySelector(`.articles`);
-    this.updateList();
   }
 }
 

@@ -1,12 +1,13 @@
 import FilterModel from '../models/filter-model';
 import FilterView from '../views/filter-view';
 
+import Utils from '../lib/utils';
 import deepClone from '../lib/deep-clone';
 import {saveState} from '../lib/change-url';
 import {parametersOfApplication, FILTERS} from '../data/parameters';
 
 class FilterPresenter {
-  init(viewTab) {
+  init(viewTab, container) {
     const filterElement = () => {
       this.model = new FilterModel(viewTab);
       this.view = new FilterView(this.model);
@@ -46,8 +47,8 @@ class FilterPresenter {
       viewTab.updateFilter();
     };
 
-
-    return this.view;
+    Utils.replaceOldElement(this.view.element, container);
+    return this.view.container;
   }
 
 

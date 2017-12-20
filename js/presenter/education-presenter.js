@@ -1,6 +1,8 @@
 import EducationView from '../views/education-view';
 import itemDescription from './item-description-presenter';
+
 import Utils from '../lib/utils';
+import {saveState} from '../lib/change-url';
 
 class EducationPresenter {
   init(data, state) {
@@ -8,18 +10,27 @@ class EducationPresenter {
 
 
     const openCertificate = () => {
-      this.view.description = itemDescription.init(this.dataItem, state.currentTab, this.view.modal);
-      Utils.displayElement(this.view.description.element, this.view.modal);
+      const dataItem = this.view.data.find((item) => item.id === state.currentWindow);
+
+      if (!dataItem) {
+        return;
+      }
+
+      itemDescription.init(dataItem, state, this.view.modal);
     };
 
 
     this.view.certificateItemHandler = (evt) => {
       evt.preventDefault();
-      this.dataItem = this.view.data.find((item) => item.name === evt.target.dataset.item);
-      openCertificate(evt.target);
+
+      state.currentWindow = evt.currentTarget.dataset.item;
+      saveState(state);
+      openCertificate();
     };
 
+
     Utils.displayElement(this.view.element, `page-main`);
+    openCertificate();
   }
 }
 

@@ -75,8 +75,8 @@ class EducationView extends AbstractView {
   getTemplateCertificate(item) {
     return (
       `<li class="certificates__item">
-        <a class="certificates__link" href="/documents/${item.name}.pdf">
-          <img class="certificates__image" src="img/${item.name}@1x.jpg" srcset="img/${item.name}@2x.jpg 2x" data-item="${item.name}">
+        <a class="certificates__link" href="/documents/${item.name}.pdf" data-item="${item.id}">
+          <img class="certificates__image" src="img/${item.name}@1x.jpg" srcset="img/${item.name}@2x.jpg 2x">
         </a>
       </li>`
     );

@@ -1,17 +1,23 @@
 import ItemDescriptionView from '../views/item-description-view';
+
 import Utils from '../lib/utils';
+import {saveState} from '../lib/change-url';
+
 
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
 const MIN_WIDTH_BROWSER = 1000;
 
 class ItemDescriptionPresenter {
-  init(data, tab, wrapper) {
-    this.view = new ItemDescriptionView(data, tab);
+  init(data, state, wrapper) {
+    this.view = new ItemDescriptionView(data, state.currentTab);
 
 
     this.view.closeDescription = (evt) => {
       evt.preventDefault();
+
+      state.currentWindow = ``;
+      saveState(state);
       Utils.clearElement(wrapper);
     };
 
@@ -54,7 +60,7 @@ class ItemDescriptionPresenter {
     };
 
 
-    return this.view;
+    Utils.displayElement(this.view.element, wrapper);
   }
 
   getElementParameters(params) {

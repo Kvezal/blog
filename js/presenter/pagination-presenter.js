@@ -1,4 +1,5 @@
 import PaginationView from '../views/pagination-view';
+
 import {saveState} from '../lib/change-url';
 
 class PaginationPresenter {

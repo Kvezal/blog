@@ -27,7 +27,7 @@ class ArticlesView extends AbstractView {
     return (
       `<li class="articles__item">
         <p class="articles__name">${item.title} - ${item.shortDescription}</p>
-        <a class="btn" href="${item.link}" data-item="${item.date}">Прочитать</a>
+        <a class="btn" href="${item.link}" data-date="${item.date}" data-item="${item.id}">Прочитать</a>
       </li>`
     );
   }

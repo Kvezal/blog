@@ -22,7 +22,7 @@ const getArrayFromObject = (obj) => {
 const compressState = (state) => {
   const cloneState = deepClone(state);
   const parameters = getArrayFromObject(cloneState);
-  let [tab, page, amountItems, filters] = parameters.map((item) => getArrayFromObject(item));
+  let [tab, page, amountItems, filters, currentWindow] = parameters.map((item) => getArrayFromObject(item));
   filters = filters.map((filter) => {
     const settings = [];
     filter.forEach((item) => {
@@ -33,7 +33,7 @@ const compressState = (state) => {
   const stringfilters = filters.map((filter) => {
     return filter.join(``);
   }).join(`&`);
-  const stringParameters = [tab, page, amountItems, stringfilters].join(`?`);
+  const stringParameters = [tab, page, amountItems, stringfilters, currentWindow].join(`?`);
   return stringParameters;
 };
 
@@ -41,7 +41,7 @@ const compressState = (state) => {
 const decompressState = (dataString) => {
   const cloneInitialState = deepClone(initialState);
 
-  let [currentTab, currentPage, amountItems, currentFilter] = dataString.split(`?`);
+  let [currentTab, currentPage, amountItems, currentFilter, currentWindow] = dataString.split(`?`);
   [currentPage, amountItems] = [currentPage, amountItems].map((parameter) => parameter.split(`,`).map((item) => +item));
 
   currentFilter = currentFilter.split(`&`).map((filter) => filter.split(``).map((item) => +item));
@@ -49,7 +49,8 @@ const decompressState = (dataString) => {
   const parameters = {
     currentTab,
     currentPage,
-    amountItems
+    amountItems,
+    currentWindow
   };
 
   for (const key in parameters) {

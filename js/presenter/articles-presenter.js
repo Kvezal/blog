@@ -3,9 +3,10 @@ import PaginationPresenter from './pagination-presenter';
 import itemDescription from './item-description-presenter';
 
 import Utils from '../lib/utils';
+import {saveState} from '../lib/change-url';
 
 class ArticlesPresenter {
-  init(parentView) {
+  init(parentView, container) {
     this.view = new ArticlesView(parentView);
 
 
@@ -17,20 +18,27 @@ class ArticlesPresenter {
 
 
     const openDescription = () => {
-      this.view.description = itemDescription.init(this.dataItem, this.view.state.currentTab, this.view.modal);
-      Utils.displayElement(this.view.description.element, this.view.modal);
+      if (!this.view.state.currentWindow) {
+        return;
+      }
+
+      const dataItem = this.view.data.find((item) => item.id === this.view.state.currentWindow);
+      this.view.description = itemDescription.init(dataItem, this.view.state, this.view.modal);
     };
 
 
     this.view.clickBtnHandler = (evt) => {
       evt.preventDefault();
 
-      this.dataItem = this.view.data.find((item) => item.date === evt.currentTarget.dataset.item);
+      this.view.state.currentWindow = evt.currentTarget.dataset.item;
+      saveState(this.view.state);
       openDescription();
     };
 
 
-    return this.view;
+    Utils.replaceOldElement(this.view.element, container);
+    openDescription();
+    return this.view.container;
   }
 }
 

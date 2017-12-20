@@ -19,10 +19,7 @@ class PortfolioView extends AbstractView {
 
   bind(element) {
     this.filter = element.querySelector(`.filter`);
-    this.updateFilter();
-
     this.works = element.querySelector(`.works`);
-    this.updateList();
   }
 }
 

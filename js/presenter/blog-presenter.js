@@ -11,20 +11,18 @@ class BlogPresenter {
 
 
     this.view.updateFilter = () => {
-      const filterView = new FilterPresenter().init(this.view);
-      Utils.replaceOldElement(filterView.element, this.view.filter);
-      this.view.filter = filterView.container;
+      this.view.filter = new FilterPresenter().init(this.view, this.view.filter);
     };
 
 
     this.view.updateList = () => {
-      const articlesView = new ArticlesPresenter().init(this.view);
-      Utils.replaceOldElement(articlesView.element, this.view.articles);
-      this.view.articles = articlesView.container;
+      this.view.articles = new ArticlesPresenter().init(this.view, this.view.articles);
     };
 
 
     Utils.displayElement(this.view.element, `page-main`);
+    this.view.updateFilter();
+    this.view.updateList();
   }
 }
 

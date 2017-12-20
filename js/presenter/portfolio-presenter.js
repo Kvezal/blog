@@ -11,20 +11,18 @@ class PortfolioPresenter {
 
 
     this.view.updateFilter = () => {
-      const filterView = new FilterPresenter().init(this.view);
-      Utils.replaceOldElement(filterView.element, this.view.filter);
-      this.view.filter = filterView.container;
+      this.view.filter = new FilterPresenter().init(this.view, this.view.filter);
     };
 
 
     this.view.updateList = () => {
-      const worksView = new WorksPresenter().init(this.view);
-      Utils.replaceOldElement(worksView.element, this.view.works);
-      this.view.works = worksView.container;
+      this.view.works = new WorksPresenter().init(this.view, this.view.works);
     };
 
 
     Utils.displayElement(this.view.element, `page-main`);
+    this.view.updateFilter();
+    this.view.updateList();
   }
 }
 
