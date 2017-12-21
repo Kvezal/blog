@@ -2,7 +2,7 @@ const OPACITY_HIDDEN = 0;
 const OPACITY_SHOWING = 1;
 
 
-const INITIAL_DELAY = 10;
+const INITIAL_DELAY = 20;
 
 
 class VisialEffects {
