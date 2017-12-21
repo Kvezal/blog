@@ -83,6 +83,8 @@ class EducationView extends AbstractView {
   }
 
   bind(element) {
+    this.container = element.querySelector(`.education`);
+
     const items = element.querySelectorAll(`.certificates__link`);
     items.forEach((item) => item.addEventListener(`click`, this.certificateItemHandler));
 

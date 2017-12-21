@@ -6,6 +6,7 @@ import educationPresenter from './presenter/education-presenter';
 import portfolioPresenter from './presenter/portfolio-presenter';
 
 import {loadState} from './lib/change-url';
+import VisialEffects from './lib/visual-effects';
 import data from './data/data';
 
 
@@ -22,6 +23,9 @@ const routerId = {
   [ControllerId.PORTFOLIO]: portfolioPresenter.init,
   [ControllerId.BLOG]: blogPresenter.init
 };
+
+let tab;
+const DELAY_TAB_SHOW = 250;
 
 
 class App {
@@ -54,7 +58,14 @@ class App {
       currentData = [...data[state.currentTab]];
     }
 
-    routerId[state.currentTab](currentData, state);
+    if (tab) {
+      VisialEffects.hideTab(tab, DELAY_TAB_SHOW);
+    }
+
+    window.setTimeout(() => {
+      tab = routerId[state.currentTab](currentData, state);
+      VisialEffects.showTab(tab, DELAY_TAB_SHOW);
+    }, DELAY_TAB_SHOW);
   }
 }
 

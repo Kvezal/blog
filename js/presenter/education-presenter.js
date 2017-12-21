@@ -31,6 +31,8 @@ class EducationPresenter {
 
     Utils.displayElement(this.view.element, `page-main`);
     openCertificate();
+
+    return this.view.container;
   }
 }
 

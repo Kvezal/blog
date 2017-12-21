@@ -26,8 +26,9 @@ class SkillsPresenter {
 
 
     Utils.displayElement(this.view.element, `page-main`);
-
     VisialEffects.showOpacity(this.view.items, SPEED_SHOWING);
+
+    return this.view.container;
   }
 }
 

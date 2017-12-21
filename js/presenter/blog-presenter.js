@@ -23,6 +23,8 @@ class BlogPresenter {
     Utils.displayElement(this.view.element, `page-main`);
     this.view.updateFilter();
     this.view.updateList();
+
+    return this.view.container;
   }
 }
 

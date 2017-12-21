@@ -47,6 +47,8 @@ class SkillsView extends AbstractView {
   }
 
   bind(element) {
+    this.container = element.querySelector(`.skills`);
+
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
 

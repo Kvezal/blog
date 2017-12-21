@@ -6,10 +6,26 @@ const INITIAL_DELAY = 20;
 
 
 class VisialEffects {
+  static showTab(tab, delay) {
+    tab.style.opacity = OPACITY_HIDDEN;
+    tab.style.transitionDuration = `${delay}ms`;
+
+    window.setTimeout(() => {
+      tab.style.opacity = OPACITY_SHOWING;
+    }, INITIAL_DELAY);
+  }
+
+
+  static hideTab(tab, delay) {
+    tab.style.transitionDuration = `${delay}ms`;
+    tab.style.opacity = OPACITY_HIDDEN;
+  }
+
+
   static showOpacity(items, speedShowing) {
     items.forEach((item, index) => {
       item.style.opacity = OPACITY_HIDDEN;
-      item.style.transitionDuration = `.75s`;
+      item.style.transitionDuration = `750ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_SHOWING;
@@ -22,7 +38,7 @@ class VisialEffects {
     items.forEach((item, index) => {
       item.style.opacity = OPACITY_HIDDEN;
       item.style.transform = `scale(0.3)`;
-      item.style.transitionDuration = `.75s`;
+      item.style.transitionDuration = `750ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_SHOWING;
@@ -35,7 +51,7 @@ class VisialEffects {
   static showTranslateOpacity(items, speedShowing) {
     items.forEach((item, index) => {
       item.style.opacity = OPACITY_HIDDEN;
-      item.style.transitionDuration = `1s`;
+      item.style.transitionDuration = `1000ms`;
 
       item.style.transform = (index % 2) ? `translate(-150px)` :
         `translate(150px)`;
@@ -50,7 +66,7 @@ class VisialEffects {
 
   static hideOpacity(items, speedShowing) {
     items.forEach((item, index) => {
-      item.style.transitionDuration = `.25s`;
+      item.style.transitionDuration = `250ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_HIDDEN;
@@ -61,7 +77,7 @@ class VisialEffects {
 
   static hideScaleOpacity(items, speedShowing) {
     items.forEach((item, index) => {
-      item.style.transitionDuration = `.25s`;
+      item.style.transitionDuration = `250ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_HIDDEN;
@@ -73,7 +89,7 @@ class VisialEffects {
 
   static hideTranslateOpacity(items, speedShowing) {
     items.forEach((item, index) => {
-      item.style.transitionDuration = `.25s`;
+      item.style.transitionDuration = `250ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_HIDDEN;
