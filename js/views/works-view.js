@@ -55,8 +55,8 @@ class WorksView extends AbstractView {
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
 
-    const items = element.querySelectorAll(`.works__item`);
-    items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
+    this.items = element.querySelectorAll(`.works__item`);
+    this.items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
 
     const descriptionBtns = element.querySelectorAll(`.works__btn--description`);
     descriptionBtns.forEach((btn) => {

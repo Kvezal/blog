@@ -5,6 +5,15 @@ import itemDescription from './item-description-presenter';
 
 import Utils from '../lib/utils';
 import {saveState} from '../lib/change-url';
+import VisialEffects from '../lib/visual-effects';
+
+
+const OFFSET_FROM_CURSOR = {
+  y: 15,
+  x: 15
+};
+
+const SPEED_SHOWING = 60;
 
 
 class WorksPresenter {
@@ -14,7 +23,12 @@ class WorksPresenter {
 
     const paginationView = new PaginationPresenter().init(this.view);
     paginationView.updateComponent = () => {
-      parentView.updateList();
+      const delay = this.view.items.length * SPEED_SHOWING;
+      VisialEffects.hideScaleOpacity(this.view.items, SPEED_SHOWING);
+
+      window.setTimeout(() => {
+        parentView.updateList();
+      }, delay);
     };
     this.view.pagination = paginationView.element;
 
@@ -39,8 +53,8 @@ class WorksPresenter {
         return;
       }
       const coords = {
-        top: evt.clientY + 10,
-        left: evt.clientX + 10
+        top: evt.clientY + OFFSET_FROM_CURSOR.y,
+        left: evt.clientX + OFFSET_FROM_CURSOR.x
       };
       this.view.features = itemFeatures.init(this.dataItem, coords);
       Utils.displayElement(this.view.features.element, this.view.modal);
@@ -100,6 +114,7 @@ class WorksPresenter {
 
     Utils.replaceOldElement(this.view.element, container);
     openDescription();
+    VisialEffects.showScaleOpacity(this.view.items, SPEED_SHOWING);
     return this.view.container;
   }
 }

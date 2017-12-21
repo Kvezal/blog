@@ -24,7 +24,7 @@ class SkillsView extends AbstractView {
 
   getTemplateListItem(item) {
     return (
-      `<li class="skills__item  skills__item--hidden">${item};</li>`
+      `<li class="skills__item">${item};</li>`
     );
   }
 
