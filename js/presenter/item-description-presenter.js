@@ -7,18 +7,29 @@ import {saveState} from '../lib/change-url';
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
 const MIN_WIDTH_BROWSER = 1000;
+const KEY_CODE_ESC = 27;
 
 class ItemDescriptionPresenter {
   init(data, state, wrapper) {
     this.view = new ItemDescriptionView(data, state.currentTab);
 
-
-    this.view.closeDescription = (evt) => {
-      evt.preventDefault();
-
+    const closeDescription = () => {
       state.currentWindow = ``;
       saveState(state);
       Utils.clearElement(wrapper);
+    };
+
+
+    const btnCloseDescriptionKeyPressHandler = (evt) => {
+      if (evt.keyCode === KEY_CODE_ESC) {
+        closeDescription();
+      }
+    };
+
+
+    this.view.btnCloseDescriptionClickHandler = (evt) => {
+      evt.preventDefault();
+      closeDescription();
     };
 
 
@@ -60,6 +71,7 @@ class ItemDescriptionPresenter {
     };
 
 
+    window.addEventListener(`keydown`, btnCloseDescriptionKeyPressHandler);
     Utils.displayElement(this.view.element, wrapper);
   }
 

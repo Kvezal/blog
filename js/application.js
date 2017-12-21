@@ -30,25 +30,9 @@ const DELAY_TAB_SHOW = 250;
 
 class App {
   init() {
-    const loadPage = () => {
-      const state = loadState();
-      App.changeTab(state);
-      mainNavPresenter.init(state);
-    };
-
-
-    /*let currentHistoryLength;
-    const reloadPage = () => {
-      if (history.length === currentHistoryLength) {
-        loadPage();
-        return;
-      }
-      currentHistoryLength = history.length;
-    };
-
-
-    window.onpopstate = reloadPage;*/
-    loadPage();
+    const state = loadState();
+    App.changeTab(state);
+    mainNavPresenter.init(state);
   }
 
 

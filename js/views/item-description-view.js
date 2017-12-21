@@ -94,7 +94,7 @@ class ItemDescriptionView extends AbstractView {
 
   bind(element) {
     const btnCloseDescription = element.querySelector(`.item-description__close`);
-    btnCloseDescription.onclick = this.closeDescription;
+    btnCloseDescription.onclick = this.btnCloseDescriptionClickHandler;
 
     this.description = element.querySelector(`.item-description`);
     this.scrollBar = this.description.querySelector(`.scroll-bar`);
