@@ -483,6 +483,7 @@ class BlogView extends AbstractView {
 
 
   bind(element) {
+    this.container = element.querySelector(`.blog`);
     this.filter = element.querySelector(`.filter`);
     this.articles = element.querySelector(`.articles`);
   }
@@ -1078,10 +1079,26 @@ const INITIAL_DELAY = 20;
 
 
 class VisialEffects {
+  static showTab(tab, delay) {
+    tab.style.opacity = OPACITY_HIDDEN;
+    tab.style.transitionDuration = `${delay}ms`;
+
+    window.setTimeout(() => {
+      tab.style.opacity = OPACITY_SHOWING;
+    }, INITIAL_DELAY);
+  }
+
+
+  static hideTab(tab, delay) {
+    tab.style.transitionDuration = `${delay}ms`;
+    tab.style.opacity = OPACITY_HIDDEN;
+  }
+
+
   static showOpacity(items, speedShowing) {
     items.forEach((item, index) => {
       item.style.opacity = OPACITY_HIDDEN;
-      item.style.transitionDuration = `.75s`;
+      item.style.transitionDuration = `750ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_SHOWING;
@@ -1094,7 +1111,7 @@ class VisialEffects {
     items.forEach((item, index) => {
       item.style.opacity = OPACITY_HIDDEN;
       item.style.transform = `scale(0.3)`;
-      item.style.transitionDuration = `.75s`;
+      item.style.transitionDuration = `750ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_SHOWING;
@@ -1107,7 +1124,7 @@ class VisialEffects {
   static showTranslateOpacity(items, speedShowing) {
     items.forEach((item, index) => {
       item.style.opacity = OPACITY_HIDDEN;
-      item.style.transitionDuration = `1s`;
+      item.style.transitionDuration = `1000ms`;
 
       item.style.transform = (index % 2) ? `translate(-150px)` :
         `translate(150px)`;
@@ -1122,7 +1139,7 @@ class VisialEffects {
 
   static hideOpacity(items, speedShowing) {
     items.forEach((item, index) => {
-      item.style.transitionDuration = `.25s`;
+      item.style.transitionDuration = `250ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_HIDDEN;
@@ -1133,7 +1150,7 @@ class VisialEffects {
 
   static hideScaleOpacity(items, speedShowing) {
     items.forEach((item, index) => {
-      item.style.transitionDuration = `.25s`;
+      item.style.transitionDuration = `250ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_HIDDEN;
@@ -1145,7 +1162,7 @@ class VisialEffects {
 
   static hideTranslateOpacity(items, speedShowing) {
     items.forEach((item, index) => {
-      item.style.transitionDuration = `.25s`;
+      item.style.transitionDuration = `250ms`;
 
       window.setTimeout(() => {
         item.style.opacity = OPACITY_HIDDEN;
@@ -1221,6 +1238,8 @@ class BlogPresenter {
     Utils.displayElement(this.view.element, `page-main`);
     this.view.updateFilter();
     this.view.updateList();
+
+    return this.view.container;
   }
 }
 
@@ -1269,6 +1288,8 @@ class SkillsView extends AbstractView {
   }
 
   bind(element) {
+    this.container = element.querySelector(`.skills`);
+
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
 
@@ -1297,8 +1318,9 @@ class SkillsPresenter {
 
 
     Utils.displayElement(this.view.element, `page-main`);
-
     VisialEffects.showOpacity(this.view.items, SPEED_SHOWING$1);
+
+    return this.view.container;
   }
 }
 
@@ -1388,6 +1410,8 @@ class EducationView extends AbstractView {
   }
 
   bind(element) {
+    this.container = element.querySelector(`.education`);
+
     const items = element.querySelectorAll(`.certificates__link`);
     items.forEach((item) => item.addEventListener(`click`, this.certificateItemHandler));
 
@@ -1422,6 +1446,8 @@ class EducationPresenter {
 
     Utils.displayElement(this.view.element, `page-main`);
     openCertificate();
+
+    return this.view.container;
   }
 }
 
@@ -1445,6 +1471,7 @@ class PortfolioView extends AbstractView {
   }
 
   bind(element) {
+    this.container = element.querySelector(`.portfolio`);
     this.filter = element.querySelector(`.filter`);
     this.works = element.querySelector(`.works`);
   }
@@ -1690,6 +1717,8 @@ class PortfolioPresenter {
     Utils.displayElement(this.view.element, `page-main`);
     this.view.updateFilter();
     this.view.updateList();
+
+    return this.view.container;
   }
 }
 
@@ -2142,6 +2171,9 @@ const routerId = {
   [ControllerId.BLOG]: blogPresenter.init
 };
 
+let tab;
+const DELAY_TAB_SHOW = 250;
+
 
 class App {
   init() {
@@ -2173,7 +2205,14 @@ class App {
       currentData = [...data[state.currentTab]];
     }
 
-    routerId[state.currentTab](currentData, state);
+    if (tab) {
+      VisialEffects.hideTab(tab, DELAY_TAB_SHOW);
+    }
+
+    window.setTimeout(() => {
+      tab = routerId[state.currentTab](currentData, state);
+      VisialEffects.showTab(tab, DELAY_TAB_SHOW);
+    }, DELAY_TAB_SHOW);
   }
 }
 
