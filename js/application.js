@@ -43,12 +43,12 @@ class App {
     }
 
     if (tab) {
-      VisialEffects.hideTab(tab, DELAY_TAB_SHOW);
+      VisialEffects.hideElement(tab, DELAY_TAB_SHOW);
     }
 
     window.setTimeout(() => {
       tab = routerId[state.currentTab](currentData, state);
-      VisialEffects.showTab(tab, DELAY_TAB_SHOW);
+      VisialEffects.showElement(tab, DELAY_TAB_SHOW);
     }, DELAY_TAB_SHOW);
   }
 }

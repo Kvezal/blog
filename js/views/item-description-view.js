@@ -99,6 +99,7 @@ class ItemDescriptionView extends AbstractView {
     this.description = element.querySelector(`.item-description`);
     this.scrollBar = this.description.querySelector(`.scroll-bar`);
     this.scrollHandl = this.scrollBar.querySelector(`.scroll-bar__handl`);
+    this.overlay = element.querySelector(`.overlay`);
 
     this.description.addEventListener(`wheel`, this.descriptionScroll);
   }

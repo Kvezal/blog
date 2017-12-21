@@ -2,21 +2,31 @@ import ItemDescriptionView from '../views/item-description-view';
 
 import Utils from '../lib/utils';
 import {saveState} from '../lib/change-url';
+import VisialEffects from '../lib/visual-effects';
 
 
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
 const MIN_WIDTH_BROWSER = 1000;
 const KEY_CODE_ESC = 27;
+const TIME_SHOWING_MODAL = 500;
+const TIME_HIDING_MODAL = 250;
 
 class ItemDescriptionPresenter {
   init(data, state, wrapper) {
     this.view = new ItemDescriptionView(data, state.currentTab);
 
     const closeDescription = () => {
+      window.removeEventListener(`keydown`, btnCloseDescriptionKeyPressHandler);
       state.currentWindow = ``;
       saveState(state);
-      Utils.clearElement(wrapper);
+
+      VisialEffects.hideElement(this.view.description, TIME_HIDING_MODAL);
+      VisialEffects.hideElement(this.view.overlay, TIME_HIDING_MODAL);
+
+      window.setTimeout(() => {
+        Utils.clearElement(wrapper);
+      }, TIME_HIDING_MODAL);
     };
 
 
@@ -73,6 +83,9 @@ class ItemDescriptionPresenter {
 
     window.addEventListener(`keydown`, btnCloseDescriptionKeyPressHandler);
     Utils.displayElement(this.view.element, wrapper);
+
+    VisialEffects.showElement(this.view.description, TIME_SHOWING_MODAL);
+    VisialEffects.showElement(this.view.overlay, TIME_SHOWING_MODAL);
   }
 
   getElementParameters(params) {

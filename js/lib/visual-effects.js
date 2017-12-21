@@ -6,7 +6,7 @@ const INITIAL_DELAY = 20;
 
 
 class VisialEffects {
-  static showTab(tab, delay) {
+  static showElement(tab, delay) {
     tab.style.opacity = OPACITY_HIDDEN;
     tab.style.transitionDuration = `${delay}ms`;
 
@@ -16,9 +16,9 @@ class VisialEffects {
   }
 
 
-  static hideTab(tab, delay) {
-    tab.style.transitionDuration = `${delay}ms`;
-    tab.style.opacity = OPACITY_HIDDEN;
+  static hideElement(modal, delay) {
+    modal.style.transitionDuration = `${delay}ms`;
+    modal.style.opacity = OPACITY_HIDDEN;
   }
 
 
