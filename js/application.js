@@ -33,7 +33,7 @@ class App {
     };
 
 
-    let currentHistoryLength;
+    /*let currentHistoryLength;
     const reloadPage = () => {
       if (history.length === currentHistoryLength) {
         loadPage();
@@ -43,7 +43,7 @@ class App {
     };
 
 
-    window.onpopstate = reloadPage;
+    window.onpopstate = reloadPage;*/
     loadPage();
   }
 

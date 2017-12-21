@@ -86,6 +86,8 @@ class PaginationView extends AbstractView {
     if (next) {
       next.addEventListener(`click`, this.showNextPage);
     }
+
+    this.container = element.querySelector(`.pagination`);
   }
 }
 

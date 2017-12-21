@@ -24,7 +24,7 @@ class SkillsView extends AbstractView {
 
   getTemplateListItem(item) {
     return (
-      `<li class="skills__item">${item};</li>`
+      `<li class="skills__item  skills__item--hidden">${item};</li>`
     );
   }
 
@@ -49,6 +49,8 @@ class SkillsView extends AbstractView {
   bind(element) {
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
+
+    this.items = element.querySelectorAll(`.skills__item`);
   }
 }
 
