@@ -975,7 +975,7 @@ class ItemDescriptionView extends AbstractView {
 
   bind(element) {
     const btnCloseDescription = element.querySelector(`.item-description__close`);
-    btnCloseDescription.onclick = this.closeDescription;
+    btnCloseDescription.onclick = this.btnCloseDescriptionClickHandler;
 
     this.description = element.querySelector(`.item-description`);
     this.scrollBar = this.description.querySelector(`.scroll-bar`);
@@ -988,18 +988,29 @@ class ItemDescriptionView extends AbstractView {
 const SCROLL_STEP = 26;
 const START_SCROLL_ELEMENT = 0;
 const MIN_WIDTH_BROWSER = 1000;
+const KEY_CODE_ESC = 27;
 
 class ItemDescriptionPresenter {
   init(data, state, wrapper) {
     this.view = new ItemDescriptionView(data, state.currentTab);
 
-
-    this.view.closeDescription = (evt) => {
-      evt.preventDefault();
-
+    const closeDescription = () => {
       state.currentWindow = ``;
       saveState(state);
       Utils.clearElement(wrapper);
+    };
+
+
+    const btnCloseDescriptionKeyPressHandler = (evt) => {
+      if (evt.keyCode === KEY_CODE_ESC) {
+        closeDescription();
+      }
+    };
+
+
+    this.view.btnCloseDescriptionClickHandler = (evt) => {
+      evt.preventDefault();
+      closeDescription();
     };
 
 
@@ -1041,6 +1052,7 @@ class ItemDescriptionPresenter {
     };
 
 
+    window.addEventListener(`keydown`, btnCloseDescriptionKeyPressHandler);
     Utils.displayElement(this.view.element, wrapper);
   }
 
@@ -2177,25 +2189,9 @@ const DELAY_TAB_SHOW = 250;
 
 class App {
   init() {
-    const loadPage = () => {
-      const state = loadState();
-      App.changeTab(state);
-      mainNavPresenter.init(state);
-    };
-
-
-    /*let currentHistoryLength;
-    const reloadPage = () => {
-      if (history.length === currentHistoryLength) {
-        loadPage();
-        return;
-      }
-      currentHistoryLength = history.length;
-    };
-
-
-    window.onpopstate = reloadPage;*/
-    loadPage();
+    const state = loadState();
+    App.changeTab(state);
+    mainNavPresenter.init(state);
   }
 
 
