@@ -44,6 +44,7 @@ class ArticlesView extends AbstractView {
 
   bind(element) {
     this.modal = element.querySelector(`.modal`);
+    this.items = element.querySelectorAll(`.articles__item`);
 
     const btns = element.querySelectorAll(`.btn`);
     btns.forEach((btn) => {

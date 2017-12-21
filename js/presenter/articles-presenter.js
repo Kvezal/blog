@@ -4,6 +4,11 @@ import itemDescription from './item-description-presenter';
 
 import Utils from '../lib/utils';
 import {saveState} from '../lib/change-url';
+import VisialEffects from '../lib/visual-effects';
+
+
+const SPEED_SHOWING = 60;
+
 
 class ArticlesPresenter {
   init(parentView, container) {
@@ -12,7 +17,12 @@ class ArticlesPresenter {
 
     const paginationView = new PaginationPresenter().init(this.view);
     paginationView.updateComponent = () => {
-      parentView.updateList();
+      const delay = this.view.items.length * SPEED_SHOWING;
+      VisialEffects.hideTranslateOpacity(this.view.items, SPEED_SHOWING);
+
+      window.setTimeout(() => {
+        parentView.updateList();
+      }, delay);
     };
     this.view.pagination = paginationView.element;
 
@@ -38,6 +48,7 @@ class ArticlesPresenter {
 
     Utils.replaceOldElement(this.view.element, container);
     openDescription();
+    VisialEffects.showTranslateOpacity(this.view.items, SPEED_SHOWING);
     return this.view.container;
   }
 }
