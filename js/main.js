@@ -741,6 +741,7 @@ class ArticlesView extends AbstractView {
 
   bind(element) {
     this.modal = element.querySelector(`.modal`);
+    this.items = element.querySelectorAll(`.articles__item`);
 
     const btns = element.querySelectorAll(`.btn`);
     btns.forEach((btn) => {
@@ -839,6 +840,8 @@ class PaginationView extends AbstractView {
     if (next) {
       next.addEventListener(`click`, this.showNextPage);
     }
+
+    this.container = element.querySelector(`.pagination`);
   }
 }
 
@@ -1067,6 +1070,96 @@ class ItemDescriptionPresenter {
 
 var itemDescription = new ItemDescriptionPresenter();
 
+const OPACITY_HIDDEN = 0;
+const OPACITY_SHOWING = 1;
+
+
+const INITIAL_DELAY = 10;
+
+
+class VisialEffects {
+  static showOpacity(items, speedShowing) {
+    items.forEach((item, index) => {
+      item.style.opacity = OPACITY_HIDDEN;
+      item.style.transitionDuration = `.75s`;
+
+      window.setTimeout(() => {
+        item.style.opacity = OPACITY_SHOWING;
+      }, INITIAL_DELAY + speedShowing * index);
+    });
+  }
+
+
+  static showScaleOpacity(items, speedShowing) {
+    items.forEach((item, index) => {
+      item.style.opacity = OPACITY_HIDDEN;
+      item.style.transform = `scale(0.3)`;
+      item.style.transitionDuration = `.75s`;
+
+      window.setTimeout(() => {
+        item.style.opacity = OPACITY_SHOWING;
+        item.style.transform = `scale(1)`;
+      }, INITIAL_DELAY + speedShowing * index);
+    });
+  }
+
+
+  static showTranslateOpacity(items, speedShowing) {
+    items.forEach((item, index) => {
+      item.style.opacity = OPACITY_HIDDEN;
+      item.style.transitionDuration = `1s`;
+
+      item.style.transform = (index % 2) ? `translate(-150px)` :
+        `translate(150px)`;
+
+      window.setTimeout(() => {
+        item.style.opacity = OPACITY_SHOWING;
+        item.style.transform = `translate(0)`;
+      }, INITIAL_DELAY + speedShowing * index);
+    });
+  }
+
+
+  static hideOpacity(items, speedShowing) {
+    items.forEach((item, index) => {
+      item.style.transitionDuration = `.25s`;
+
+      window.setTimeout(() => {
+        item.style.opacity = OPACITY_HIDDEN;
+      }, INITIAL_DELAY + speedShowing * index);
+    });
+  }
+
+
+  static hideScaleOpacity(items, speedShowing) {
+    items.forEach((item, index) => {
+      item.style.transitionDuration = `.25s`;
+
+      window.setTimeout(() => {
+        item.style.opacity = OPACITY_HIDDEN;
+        item.style.transform = `scale(0.3)`;
+      }, INITIAL_DELAY + speedShowing * index);
+    });
+  }
+
+
+  static hideTranslateOpacity(items, speedShowing) {
+    items.forEach((item, index) => {
+      item.style.transitionDuration = `.25s`;
+
+      window.setTimeout(() => {
+        item.style.opacity = OPACITY_HIDDEN;
+
+        item.style.transform = (index % 2) ? `translate(-100px)` :
+          `translate(100px)`;
+      }, INITIAL_DELAY + speedShowing * index);
+    });
+  }
+}
+
+const SPEED_SHOWING = 60;
+
+
 class ArticlesPresenter {
   init(parentView, container) {
     this.view = new ArticlesView(parentView);
@@ -1074,7 +1167,12 @@ class ArticlesPresenter {
 
     const paginationView = new PaginationPresenter().init(this.view);
     paginationView.updateComponent = () => {
-      parentView.updateList();
+      const delay = this.view.items.length * SPEED_SHOWING;
+      VisialEffects.hideTranslateOpacity(this.view.items, SPEED_SHOWING);
+
+      window.setTimeout(() => {
+        parentView.updateList();
+      }, delay);
     };
     this.view.pagination = paginationView.element;
 
@@ -1100,6 +1198,7 @@ class ArticlesPresenter {
 
     Utils.replaceOldElement(this.view.element, container);
     openDescription();
+    VisialEffects.showTranslateOpacity(this.view.items, SPEED_SHOWING);
     return this.view.container;
   }
 }
@@ -1172,8 +1271,13 @@ class SkillsView extends AbstractView {
   bind(element) {
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
+
+    this.items = element.querySelectorAll(`.skills__item`);
   }
 }
+
+const SPEED_SHOWING$1 = 50;
+
 
 class SkillsPresenter {
   init(data, state) {
@@ -1182,14 +1286,22 @@ class SkillsPresenter {
 
     const paginationView = new PaginationPresenter().init(this.view);
     paginationView.updateComponent = () => {
-      new SkillsPresenter().init(data, state);
+      const delay = this.view.items.length * SPEED_SHOWING$1;
+      VisialEffects.hideOpacity(this.view.items, SPEED_SHOWING$1);
+
+      window.setTimeout(() => {
+        new SkillsPresenter().init(this.view.data, this.view.state);
+      }, delay);
     };
     this.view.pagination = paginationView.element;
 
 
     Utils.displayElement(this.view.element, `page-main`);
+
+    VisialEffects.showOpacity(this.view.items, SPEED_SHOWING$1);
   }
 }
+
 
 var skillsPresenter = new SkillsPresenter();
 
@@ -1391,8 +1503,8 @@ class WorksView extends AbstractView {
     const pagination = element.querySelector(`.pagination`);
     Utils.replaceOldElement(this.pagination, pagination);
 
-    const items = element.querySelectorAll(`.works__item`);
-    items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
+    this.items = element.querySelectorAll(`.works__item`);
+    this.items.forEach((item) => item.addEventListener(`mouseover`, this.itemMouseOverHandler));
 
     const descriptionBtns = element.querySelectorAll(`.works__btn--description`);
     descriptionBtns.forEach((btn) => {
@@ -1449,6 +1561,14 @@ class ItemFeaturesPresenter {
 
 var itemFeatures = new ItemFeaturesPresenter();
 
+const OFFSET_FROM_CURSOR = {
+  y: 15,
+  x: 15
+};
+
+const SPEED_SHOWING$2 = 60;
+
+
 class WorksPresenter {
   init(parentView, container) {
     this.view = new WorksView(parentView);
@@ -1456,7 +1576,12 @@ class WorksPresenter {
 
     const paginationView = new PaginationPresenter().init(this.view);
     paginationView.updateComponent = () => {
-      parentView.updateList();
+      const delay = this.view.items.length * SPEED_SHOWING$2;
+      VisialEffects.hideScaleOpacity(this.view.items, SPEED_SHOWING$2);
+
+      window.setTimeout(() => {
+        parentView.updateList();
+      }, delay);
     };
     this.view.pagination = paginationView.element;
 
@@ -1481,8 +1606,8 @@ class WorksPresenter {
         return;
       }
       const coords = {
-        top: evt.clientY + 10,
-        left: evt.clientX + 10
+        top: evt.clientY + OFFSET_FROM_CURSOR.y,
+        left: evt.clientX + OFFSET_FROM_CURSOR.x
       };
       this.view.features = itemFeatures.init(this.dataItem, coords);
       Utils.displayElement(this.view.features.element, this.view.modal);
@@ -1542,6 +1667,7 @@ class WorksPresenter {
 
     Utils.replaceOldElement(this.view.element, container);
     openDescription();
+    VisialEffects.showScaleOpacity(this.view.items, SPEED_SHOWING$2);
     return this.view.container;
   }
 }
@@ -1875,6 +2001,146 @@ var data = {
       fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
 
       Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 4`,
+      link: `#`,
+      date: `${new Date() - 4}`,
+      article: `Текст статьи`,
+      features: [
+        `css`
+      ],
+      id: `b4`,
+      shortDescription: `Описание 4`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 5`,
+      link: `#`,
+      date: `${new Date() - 5}`,
+      article: `Текст статьи`,
+      features: [
+        `js`
+      ],
+      id: `b5`,
+      shortDescription: `Описание 5`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 6`,
+      link: `#`,
+      date: `${new Date() - 6}`,
+      article: `Текст статьи`,
+      features: [
+        `css`
+      ],
+      id: `b6`,
+      shortDescription: `Описание 6`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 7`,
+      link: `#`,
+      date: `${new Date() - 7}`,
+      article: `Текст статьи`,
+      features: [
+        `js`
+      ],
+      id: `b7`,
+      shortDescription: `Описание 7`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 8`,
+      link: `#`,
+      date: `${new Date() - 8}`,
+      article: `Текст статьи`,
+      features: [
+        `css`
+      ],
+      id: `b8`,
+      shortDescription: `Описание 8`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 9`,
+      link: `#`,
+      date: `${new Date() - 9}`,
+      article: `Текст статьи`,
+      features: [
+        `js`
+      ],
+      id: `b9`,
+      shortDescription: `Описание 9`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 10`,
+      link: `#`,
+      date: `${new Date() - 10}`,
+      article: `Текст статьи`,
+      features: [
+        `css`
+      ],
+      id: `b10`,
+      shortDescription: `Описание 10`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 11`,
+      link: `#`,
+      date: `${new Date() - 11}`,
+      article: `Текст статьи`,
+      features: [
+        `js`
+      ],
+      id: `b11`,
+      shortDescription: `Описание 11`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 12`,
+      link: `#`,
+      date: `${new Date() - 12}`,
+      article: `Текст статьи`,
+      features: [
+        `css`
+      ],
+      id: `b12`,
+      shortDescription: `Описание 12`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
+    },
+    {
+      title: `Название статьи 13`,
+      link: `#`,
+      date: `${new Date() - 13}`,
+      article: `Текст статьи`,
+      features: [
+        `js`
+      ],
+      id: `b13`,
+      shortDescription: `Описание 13`,
+      fullDescription: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis ut diam quam nulla porttitor massa id. Neque convallis a cras semper auctor neque vitae. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Sagittis eu volutpat odio facilisis mauris sit. Risus nec feugiat in fermentum posuere urna. Eleifend mi in nulla posuere. Habitant morbi tristique senectus et netus et malesuada fames ac. Vel eros donec ac odio tempor orci dapibus ultrices in. Duis ultricies lacus sed turpis tincidunt id aliquet. Eu scelerisque felis imperdiet proin. Nibh ipsum consequat nisl vel pretium. In nisl nisi scelerisque eu.
+
+      Rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Nunc non blandit massa enim. Urna et pharetra pharetra massa massa ultricies mi quis hendrerit. Duis ultricies lacus sed turpis tincidunt id aliquet. Pellentesque adipiscing commodo elit at imperdiet dui. Non arcu risus quis varius quam quisque. Vel pharetra vel turpis nunc eget lorem dolor sed viverra. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Elementum tempus egestas sed sed risus pretium quam. Gravida neque convallis a cras semper. Id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique. Elit ullamcorper dignissim cras tincidunt. Fermentum et sollicitudin ac orci phasellus egestas. Ac felis donec et odio pellentesque diam.`
     }
   ]
 };
@@ -1903,7 +2169,7 @@ class App {
     };
 
 
-    let currentHistoryLength;
+    /*let currentHistoryLength;
     const reloadPage = () => {
       if (history.length === currentHistoryLength) {
         loadPage();
@@ -1913,7 +2179,7 @@ class App {
     };
 
 
-    window.onpopstate = reloadPage;
+    window.onpopstate = reloadPage;*/
     loadPage();
   }
 
